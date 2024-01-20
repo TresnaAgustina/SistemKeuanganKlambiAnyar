@@ -29,7 +29,8 @@ Route::prefix('/auth')->group(function () {
 // *** View Routes *** //
 Route::middleware('auth:sanctum')->group(function () {
     // --Dashboard
-    Route::get('/dashboard', function () {
-        return view('dashboard');
+    Route::get('/', function () {
+        return view('welcome');
     })->name('dashboard');
 });
+
