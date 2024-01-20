@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('bayaran__pegawai__rumahans', function (Blueprint $table) {
+        Schema::create('bayaran_pegawai_rumahan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_pgw_rumahan');
             $table->unsignedBigInteger('id_kasbon_pgw')->nullable();
@@ -24,9 +24,9 @@ return new class extends Migration
             $table->double('jumlah_bersih');
 
             // relationship
-            $table->foreign('id_pgw_rumahan')->references('id')->on('pegawai__rumahans')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('id_kasbon_pgw')->references('id')->on('kasbon__pegawais')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('id_mstr_jaritan')->references('id')->on('master__jaritans')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_pgw_rumahan')->references('id')->on('pegawai_rumahan')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_kasbon_pgw')->references('id')->on('kasbon_pegawai')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_mstr_jaritan')->references('id')->on('master_jaritan')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -38,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bayaran__pegawai__rumahans');
+        Schema::dropIfExists('bayaran_pegawai_rumahan');
     }
 };

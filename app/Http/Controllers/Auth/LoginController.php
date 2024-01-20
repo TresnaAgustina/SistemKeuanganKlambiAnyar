@@ -33,6 +33,9 @@ class LoginController extends Controller
                 return response()->json([
                     'message' => 'Invalid credentials',
                 ], 401);
+
+                // return for monolith app
+                // return redirect()->route('login')->with('error', 'Invalid credentials');
             }
 
             // user data
@@ -45,10 +48,16 @@ class LoginController extends Controller
                 'access_token' => $token,
                 'token_type' => 'Bearer',
             ]);
+
+            // return for monolith app
+            // return redirect()->route('dashboard')->with('success', 'Login success');
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Login Error: '. $e->getMessage(),
             ], 500);
+
+            // return for monolith app
+            // return redirect()->route('login')->with('error', 'Login Error: '. $e->getMessage());
         }
     }
 }

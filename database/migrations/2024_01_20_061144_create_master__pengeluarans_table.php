@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('master__pengeluarans', function (Blueprint $table) {
+        Schema::create('master_pengeluaran', function (Blueprint $table) {
             $table->id();
             $table->string('nama_atribut');
             $table->enum('tipe', ['perusahaan', 'pribadi']);
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('master__pengeluarans');
+        Schema::dropIfExists('master_pengeluaran');
     }
 };
