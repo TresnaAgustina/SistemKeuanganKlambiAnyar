@@ -13,10 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('pegawai__normals', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
-            $table->string('password');
+            $table->string('nama');
+            $table->string('nip');
+            $table->string('alamat');
+            $table->string('no_telp');
+            $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
+            $table->double('gaji_pokok');
+            $table->enum('status', ['active', 'inactive']);
             $table->timestamps();
         });
     }
@@ -28,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('pegawai__normals');
     }
 };
