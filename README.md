@@ -39,7 +39,7 @@ Sebelum memulai proses pengembangann, pastikan sudah berada pada branch `dev` da
 2. **Buat branch baru**
    ```bash
    git brach nama_branch
-   _Note: rubah `nama_branch` sesuai dengan kebutuhan_
+     _Note: rubah `nama_branch` sesuai dengan kebutuhan_
 
 3. **Pindah sekaligus membuat branch baru:**
    ```bash
