@@ -29,3 +29,19 @@ sistem keuangan untuk mengatur keuangan (Pemasukan, pengeluaran, penggajian) pad
 7. **Run Server:**
    ```bash
    php artisan serve
+
+### Note:
+Sebelum memulai proses pengembangann, pastikan sudah berada pada branch `dev` dan membuat branch baru dengan nama sendiri, `ex: agus`
+1. **Pindah dari `main` ke-branch `dev`:**
+   ```bash
+   git checkout dev
+
+2. **Buat branch baru**
+   ```bash
+   git brach nama_branch
+**Note: rubah `nama_branch` sesuai dengan kebutuhan**
+
+3. **Pindah sekaligus membuat branch baru:**
+   ```bash
+   git checkout -M nama_branch
+**Note: rubah `nama_branch` sesuai dengan kebutuhan**
