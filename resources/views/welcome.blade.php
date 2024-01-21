@@ -45,6 +45,16 @@
                     </svg>
                 </div>
 
+                <form action="{{ url('/jaritan/create') }}" method="post">
+                    @csrf
+
+                    <input type="text" name="jenis_jaritan" id="">
+                    <input type="text" name="harga_dalam" id="">
+                    <input type="text" name="harga_luar" id="">
+
+                    <button type="submit">Submit</button>
+                </form>
+
                 <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                     <div class="grid grid-cols-1 md:grid-cols-2">
                         <div class="p-6">

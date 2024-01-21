@@ -35,7 +35,9 @@ class LoginController extends Controller
                 ], 401);
 
                 // return for monolith app
-                // return redirect()->route('login')->with('error', 'Invalid credentials');
+                // return redirect()->route('login')->with(
+                //     'error', 'Invalid credentials'
+                // );
             }
 
             // user data
@@ -50,14 +52,18 @@ class LoginController extends Controller
             ]);
 
             // return for monolith app
-            // return redirect()->route('dashboard')->with('success', 'Login success');
+            // return redirect()->route('dashboard')->with(
+            //     'success', 'Login success'
+            // );
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Login Error: '. $e->getMessage(),
             ], 500);
 
             // return for monolith app
-            // return redirect()->route('login')->with('error', 'Login Error: '. $e->getMessage());
+            // return redirect()->route('login')->with(
+            //     'error', 'Login Error: '. $e->getMessage()
+            // );
         }
     }
 }

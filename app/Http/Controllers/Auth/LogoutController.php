@@ -26,14 +26,18 @@ class LogoutController extends Controller
             ]);
 
             // return for monolith app
-            // return redirect()->route('login')->with('success', 'Logout success');
+            // return redirect()->route('login')->with(
+            //     'success', 'Logout success'
+            // );
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Logout Error: '. $e->getMessage(),
             ], 500);
 
             // return for monolith app
-            // return redirect()->route('dashboard')->with('error', 'Logout Error: '. $e->getMessage());
+            // return redirect()->route('dashboard')->with(
+            //     'error', 'Logout Error: '. $e->getMessage()
+            // );
         }
     }
 }
