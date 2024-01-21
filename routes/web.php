@@ -36,7 +36,7 @@ Route::prefix('/jaritan')->group(function () {
         // --Create
         Route::post('/create', Jaritan\CreateMasterJaritanController::class)->name('jaritan.create');
         // --Update
-        Route::put('/update/{id}', Jaritan\UpdateMasterJaritanController::class)->name('jaritan.update');
+        Route::post('/update/{id}', Jaritan\UpdateMasterJaritanController::class)->name('jaritan.update');
         // --Delete
         Route::delete('/delete/{id}', Jaritan\DeleteMasterJaritanController::class)->name('jaritan.delete');
     });
@@ -49,7 +49,7 @@ Route::prefix('/pemasukan')->group(function () {
     // --create
     Route::post('/create', Pemasukan\CreateMasterPemasukanController::class)->name('pemasukan.create');
     // --update
-    Route::put('/update/{id}', Pemasukan\UpdateMasterPemasukanController::class)->name('pemasukan.update');
+    Route::post('/update/{id}', Pemasukan\UpdateMasterPemasukanController::class)->name('pemasukan.update');
     // --delete
     Route::delete('/delete/{id}', Pemasukan\DeleteMasterPemasukanController::class)->name('pemasukan.delete');
 });
@@ -61,7 +61,7 @@ Route::prefix('/pengeluaran')->group(function () {
     // --create
     Route::post('/create', Pengeluaran\CreateMasterPengeluaranController::class)->name('pengeluaran.create');
     // --update
-    Route::put('/update/{id}', Pengeluaran\UpdateMasterPengeluaranController::class)->name('pengeluaran.update');
+    Route::post('/update/{id}', Pengeluaran\UpdateMasterPengeluaranController::class)->name('pengeluaran.update');
     // --delete
     Route::delete('/delete/{id}', Pengeluaran\DeleteMasterPengeluaranController::class)->name('pengeluaran.delete');
 });

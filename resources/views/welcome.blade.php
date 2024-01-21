@@ -45,14 +45,14 @@
                     </svg>
                 </div>
 
-                <form action="{{ url('/jaritan/create') }}" method="post">
+                {{-- form test --}}
+                <form action="{{ url('/pemasukan/update/15') }}" method="post">
                     @csrf
+                    @method('PUT')
 
-                    <input type="text" name="jenis_jaritan" id="">
-                    <input type="text" name="harga_dalam" id="">
-                    <input type="text" name="harga_luar" id="">
-
-                    <button type="submit">Submit</button>
+                    <input type="text" name="nama_atribut" id="">
+                    <br>
+                    <input type="submit" value="submit">
                 </form>
 
                 <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">

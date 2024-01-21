@@ -23,6 +23,20 @@ class UpdateMasterJaritanController extends Controller
             // // check if data exists in database
             $check = Master_Jaritan::where('id', $request->id)->first();
 
+            // if data not found
+            if (!$check) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Data not found',
+                    'data' => Null
+                ], 404);
+
+                // for monolith app
+                // return redirect()->route('jaritan.all')->with(
+                //     'error', 'Data not found'
+                // );
+            }
+
             // validation
             $validate = $request->validate([
                'jenis_jaritan' => 'required|unique:master_jaritan,jenis_jaritan',
