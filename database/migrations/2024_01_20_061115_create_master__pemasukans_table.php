@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('master__pemasukans', function (Blueprint $table) {
+        Schema::create('master_pemasukan', function (Blueprint $table) {
             $table->id();
             $table->string('nama_atribut');
             $table->timestamps();
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('master__pemasukans');
+        Schema::dropIfExists('master_pemasukan');
     }
 };

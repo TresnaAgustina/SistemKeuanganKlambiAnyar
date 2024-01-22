@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('penjualans', function (Blueprint $table) {
+        Schema::create('penjualan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_mstr_pengeluaran');
             $table->date('tanggal');
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->text('keterangan');
             $table->string('bukti_pembayaran')->nullable();
             // relationship
-            $table->foreign('id_mstr_pengeluaran')->references('id')->on('master__pengeluarans')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_mstr_pengeluaran')->references('id')->on('master_pengeluaran')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -37,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('penjualans');
+        Schema::dropIfExists('penjualan');
     }
 };

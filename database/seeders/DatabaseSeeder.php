@@ -20,5 +20,12 @@ class DatabaseSeeder extends Seeder
             'username' => 'admin',
             'password' => bcrypt('admin'),
         ]);
+
+        // include other seeders
+        $this->call([
+            master_pemasukan_seeder::class,
+            master_pengeluaran_seeder::class,
+            master_jaritan_seeder::class,
+        ]);
     }
 }
