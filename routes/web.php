@@ -67,20 +67,20 @@ Route::prefix('/pengeluaran')->group(function () {
 });
 
 
-Route::get('/auth/login', function () {
-    return view('welcome');
-})->name('login');
+// Route::get('/auth/login', function () {
+//     return view('welcome');
+// })->name('login');
 
-// *** View Routes *** //
-Route::middleware('auth:sanctum')->group(function () {
-    // --Dashboard
-    Route::get('/', function () {
-        return view('welcome');
-    })->name('dashboard');
-});
+// // *** View Routes *** //
+// Route::middleware('auth:sanctum')->group(function () {
+//     // --Dashboard
+//     Route::get('/', function () {
+//         return view('welcome');
+//     })->name('dashboard');
+// });
 
 Route::get('/', function () {
-    return view('layouts.main');
+    return view('dashboard.index');
 });
 
 
