@@ -83,3 +83,9 @@ Route::middleware('auth:sanctum')->group(function () {
     })->name('dashboard');
 });
 
+Route::get('/', function () {
+    return view('layouts.main');
+});
+
+
+
