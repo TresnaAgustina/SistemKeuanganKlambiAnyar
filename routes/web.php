@@ -44,26 +44,30 @@ Route::prefix('/jaritan')->group(function () {
 
 // *** Master Pemasukan Routes *** //
 Route::prefix('/pemasukan')->group(function () {
-    // --view
-    Route::get('/all', Pemasukan\ViewMasterPemasukanController::class)->name('pemasukan.all');
-    // --create
-    Route::post('/create', Pemasukan\CreateMasterPemasukanController::class)->name('pemasukan.create');
-    // --update
-    Route::post('/update/{id}', Pemasukan\UpdateMasterPemasukanController::class)->name('pemasukan.update');
-    // --delete
-    Route::delete('/delete/{id}', Pemasukan\DeleteMasterPemasukanController::class)->name('pemasukan.delete');
+    Route::middleware('auth:sanctum')->group(function () {
+        // --view
+        Route::get('/all', Pemasukan\ViewMasterPemasukanController::class)->name('pemasukan.all');
+        // --create
+        Route::post('/create', Pemasukan\CreateMasterPemasukanController::class)->name('pemasukan.create');
+        // --update
+        Route::post('/update/{id}', Pemasukan\UpdateMasterPemasukanController::class)->name('pemasukan.update');
+        // --delete
+        Route::delete('/delete/{id}', Pemasukan\DeleteMasterPemasukanController::class)->name('pemasukan.delete');
+    });
 });
 
 // *** Master Pengeluaran Routes *** //
 Route::prefix('/pengeluaran')->group(function () {
-    // --view
-    Route::get('/all', Pengeluaran\ViewMasterPengeluaranController::class)->name('pengeluaran.all');
-    // --create
-    Route::post('/create', Pengeluaran\CreateMasterPengeluaranController::class)->name('pengeluaran.create');
-    // --update
-    Route::post('/update/{id}', Pengeluaran\UpdateMasterPengeluaranController::class)->name('pengeluaran.update');
-    // --delete
-    Route::delete('/delete/{id}', Pengeluaran\DeleteMasterPengeluaranController::class)->name('pengeluaran.delete');
+    Route::middleware('auth:sacntum')->group(function () {
+        // --view
+        Route::get('/all', Pengeluaran\ViewMasterPengeluaranController::class)->name('pengeluaran.all');
+        // --create
+        Route::post('/create', Pengeluaran\CreateMasterPengeluaranController::class)->name('pengeluaran.create');
+        // --update
+        Route::post('/update/{id}', Pengeluaran\UpdateMasterPengeluaranController::class)->name('pengeluaran.update');
+        // --delete
+        Route::delete('/delete/{id}', Pengeluaran\DeleteMasterPengeluaranController::class)->name('pengeluaran.delete');
+    });
 });
 
 

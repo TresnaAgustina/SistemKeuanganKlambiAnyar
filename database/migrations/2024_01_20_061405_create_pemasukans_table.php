@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_mstr_pemasukan');
             $table->date('tanggal');
-            $table->double('jumlah');
+            $table->double('total');
+            $table->text('keterangan')->nullable();
 
             // relationship
             $table->foreign('id_mstr_pemasukan')->references('id')->on('master_pemasukan')->onDelete('cascade')->onUpdate('cascade');
