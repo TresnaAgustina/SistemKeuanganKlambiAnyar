@@ -23,71 +23,117 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
-          <li class="nav-header">MULTI LEVEL EXAMPLE</li>
+          <li class="nav-header">MAIN NAVIGATION</li>
 
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="fas fa-circle nav-icon"></i>
-              <p>Level 1</p>
+          <li class="nav-item ">
+            <a href="/" class="nav-link {{ Request::is('/', 'dashboard*') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>Dashboard</p>
             </a>
           </li>
-          <li class="nav-item">
+
+          <li class="nav-item ">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-circle"></i>
+                <i class="nav-icon fas fa-file"></i>
               <p>
-                Level 1
-                <i class="right fas fa-angle-left"></i>
+                Data Master
+                <i class="nav-icon right fas fa-angle-left"></i>
               </p>
             </a>
+
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Level 2</p>
+                  <p>Jaritan</p>
                 </a>
               </li>
+
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>
-                    Level 2
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
+                  <p>Pemasukan</p>
                 </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-dot-circle nav-icon"></i>
-                      <p>Level 3</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-dot-circle nav-icon"></i>
-                      <p>Level 3</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="#" class="nav-link">
-                      <i class="far fa-dot-circle nav-icon"></i>
-                      <p>Level 3</p>
-                    </a>
-                  </li>
-                </ul>
               </li>
+
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Level 2</p>
+                  <p>Pengeluaran</p>
                 </a>
               </li>
+
             </ul>
           </li>
+
           <li class="nav-item">
             <a href="#" class="nav-link">
-              <i class="fas fa-circle nav-icon"></i>
-              <p>Level 1</p>
+                <i class="nav-icon fas fa-money-bill-alt"></i>
+              {{-- <i class="nav-icon fas fa-circle"></i> --}}
+              <p>
+                Transaksi
+                <i class="nav-icon right fas fa-angle-left"></i>
+              </p>
             </a>
+
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Jaritan</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Pemasukan</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Pengeluaran</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-file-alt"></i>
+              {{-- <i class="nav-icon fas fa-circle"></i> --}}
+              <p>
+                Laporan
+                <i class="nav-icon right fas fa-angle-left"></i>
+              </p>
+            </a>
+
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Jaritan</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Pemasukan</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Pengeluaran</p>
+                </a>
+              </li>
+
+            </ul>
           </li>
         </ul>
       </nav>
