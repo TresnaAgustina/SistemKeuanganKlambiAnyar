@@ -91,20 +91,20 @@ Route::prefix('/mstr/pengeluaran')->group(function () {
 });
 
 // *** Pemasukan Routes *** //
-// Route::prefix('/pemasukan')->group(function () {
-//     // --view
-//     Route::get('/all', GetAllPemasukanController::class)->name('pemasukan.all');
-//     // --get by id
-//     Route::get('/detail/{id}', GetDetailPemasukanController::class)->name('pemasukan.detail');
-//     // --search
-//     Route::get('/search', SearchPemasukanController::class)->name('pemasukan.search');
-//     // --create
-//     Route::post('/create', CreatePemasukanController::class)->name('pemasukan.create');
-//     // --update
-//     Route::post('/update/{id}', UpdatePemasukanController::class)->name('pemasukan.update');
-//     // --delete
-//     Route::delete('/delete/{id}', DeletePemasukanController::class)->name('pemasukan.delete');
-// });
+Route::prefix('/pemasukan')->group(function () {
+    // --view
+    Route::get('/all', GetAllPemasukanController::class, '__invoke')->name('pemasukan.all');
+    // --get by id
+    Route::get('/detail/{id}', GetDetailPemasukanController::class)->name('pemasukan.detail');
+    // --search
+    Route::post('/search', SearchPemasukanController::class)->name('pemasukan.search');
+    // --create
+    Route::post('/create', CreatePemasukanController::class)->name('pemasukan.create');
+    // --update
+    Route::post('/update/{id}', UpdatePemasukanController::class)->name('pemasukan.update');
+    // --delete
+    Route::delete('/delete/{id}', DeletePemasukanController::class)->name('pemasukan.delete');
+});
 
 // *** View Routes *** //
 // Route::middleware('auth:sanctum')->group(function () {

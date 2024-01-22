@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Pemasukan;
 
-use App\Http\Controllers\Controller;
+use App\Models\Pemasukan;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class DeletePemasukanController extends Controller
 {

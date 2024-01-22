@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Pemasukan;
 
-use App\Http\Controllers\Controller;
+use App\Models\Pemasukan;
 use Illuminate\Http\Request;
+use App\Models\Master_Pemasukan;
+use App\Http\Controllers\Controller;
 
 class GetDetailPemasukanController extends Controller
 {
@@ -18,6 +20,14 @@ class GetDetailPemasukanController extends Controller
         try {
             //get data by id
             $pemasukan = Pemasukan::findOrFail($request->id);
+
+            // / get nama_atribut from master_pemasukan
+            $mstr_data = Master_Pemasukan::all();
+            foreach ($mstr_data as $key => $value) {
+                if ($pemasukan->id_mstr_pemasukan == $value->id) {
+                    $pemasukan->nama_atribut = $value->nama_atribut;
+                }
+            }
 
             // if data not found
             if (!$pemasukan) {
@@ -37,13 +47,7 @@ class GetDetailPemasukanController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Success get data',
-                'data' => [
-                    'id' => $pemasukan->id,
-                    'id_mstr_pemasukan' => $pemasukan->id_mstr_pemasukan,
-                    'tanggal' => $pemasukan->tanggal,
-                    'total' => $pemasukan->total,
-                    'keterangan' => $pemasukan->keterangan,
-                ]
+                'data' => $pemasukan
             ], 200);
 
             // for monolith app

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Pemasukan;
 
-use App\Http\Controllers\Controller;
+use App\Models\Pemasukan;
 use Illuminate\Http\Request;
+use App\Models\Master_Pemasukan;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class SearchPemasukanController extends Controller
 {
@@ -19,6 +22,25 @@ class SearchPemasukanController extends Controller
             //get request
             $data = $request->all();
 
+            // validate request
+            $validator = Validator::make($data, [
+                'keyword' => 'required|string',
+            ]);
+
+            // check if validator is fails
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Error: ' . $validator->errors()->first(),
+                    'data' => Null
+                ], 400);
+
+                // for monolith app
+                // return redirect()->back()->with(
+                //     'error', 'Error: ' . $validator->errors()->first()
+                // );
+            }
+
             // get data by keyword
             $pemasukan = Pemasukan::where('id_mstr_pemasukan', 'like', '%' . $data['keyword'] . '%')
                 ->orWhere('tanggal', 'like', '%' . $data['keyword'] . '%')
@@ -27,30 +49,28 @@ class SearchPemasukanController extends Controller
                 ->get();
 
             // if data not found, return success response but data is null
-            if (!$pemasukan) {
+            if ($pemasukan->isEmpty()) {
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Data not found',
-                    'data' => Null
+                    'data' => null
                 ], 200);
+            }
 
-                // for monolith app
-                // return redirect()->back()->with(
-                //     'success', 'Data not found'
-                // );
+            // Loop through each item in the $pemasukan collection
+            foreach ($pemasukan as $item) {
+                // Find the corresponding master_pemasukan record
+                $masterPemasukan = Master_Pemasukan::find($item->id_mstr_pemasukan);
+
+                // Assign the nama_atribut property
+                $item->nama_atribut = $masterPemasukan->nama_atribut;
             }
 
             // return response
             return response()->json([
                 'status' => 'success',
                 'message' => 'Success get data',
-                'data' => [
-                    'id' => $pemasukan->id,
-                    'id_mstr_pemasukan' => $pemasukan->id_mstr_pemasukan,
-                    'tanggal' => $pemasukan->tanggal,
-                    'total' => $pemasukan->total,
-                    'keterangan' => $pemasukan->keterangan,
-                ]
+                'data' => $pemasukan
             ], 200);
 
             // for monolith app

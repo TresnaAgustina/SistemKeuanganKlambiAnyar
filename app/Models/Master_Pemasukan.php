@@ -13,4 +13,10 @@ class Master_Pemasukan extends Model
     protected $fillable = [
         'nama_atribut',
     ];
+
+
+    public function pemasukan()
+    {
+        return $this->hasMany(Pemasukan::class);
+    }
 }

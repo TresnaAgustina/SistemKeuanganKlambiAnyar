@@ -104,7 +104,7 @@ class CreatePemasukanController extends Controller
 
             // for monolith app
             // return redirect()->back()->with(
-            //     'error', 'Failed create data'
+            //     'error', 'Error:' . $e->getMessage()
             // );
         }
     }

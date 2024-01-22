@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Pemasukan;
 
-use App\Http\Controllers\Controller;
+use App\Models\Pemasukan;
 use Illuminate\Http\Request;
+use App\Models\Master_Pemasukan;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class UpdatePemasukanController extends Controller
 {
@@ -20,7 +23,7 @@ class UpdatePemasukanController extends Controller
             $data = $request->all();
 
             // find by id
-            $pemasukan = Pemasukan::findOrFail($data['id']);
+            $pemasukan = Pemasukan::findOrFail($request->id);
 
             // validate request
             $validator = Validator::make($data, [
@@ -66,17 +69,19 @@ class UpdatePemasukanController extends Controller
                 // );
             }
 
+            // / get nama_atribut from master_pemasukan
+            $mstr_data = Master_Pemasukan::all();
+            foreach ($mstr_data as $key => $value) {
+                if ($pemasukan->id_mstr_pemasukan == $value->id) {
+                    $pemasukan->nama_atribut = $value->nama_atribut;
+                }
+            }
+
             // return response
             return response()->json([
                 'status' => 'success',
                 'message' => 'Success update data',
-                'data' => [
-                    'id' => $pemasukan->id,
-                    'id_mstr_pemasukan' => $pemasukan->id_mstr_pemasukan,
-                    'tanggal' => $pemasukan->tanggal,
-                    'total' => $pemasukan->total,
-                    'keterangan' => $pemasukan->keterangan,
-                ]
+                'data' => $pemasukan
             ], 200);
 
             // for monolith app

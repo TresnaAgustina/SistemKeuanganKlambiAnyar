@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pemasukan;
 use App\Models\Pemasukan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Master_Pemasukan;
 
 class GetAllPemasukanController extends Controller
 {
@@ -19,25 +20,21 @@ class GetAllPemasukanController extends Controller
         try {
             //get all data from database
             $data = Pemasukan::all();
-
+            $mstr_data = Master_Pemasukan::all();
             // get nama_atribut from master_pemasukan
-            $data->map(function ($item) {
-                $item->nama_atribut = $item->master_pemasukan->nama_atribut;
-                return $item;
-            });
+            foreach ($data as $key => $value) {
+                foreach ($mstr_data as $key2 => $value2) {
+                    if ($value->id_mstr_pemasukan == $value2->id) {
+                        $value->nama_atribut = $value2->nama_atribut;
+                    }
+                }
+            }
 
             // return response
             return response()->json([
                 'status' => 'success',
-                'message' => 'Success get all data',
-                'data' => [
-                    'id' => $data->id,
-                    'id_mstr_pemasukan' => $data->id_mstr_pemasukan,
-                    'nama_atribut' => $data->nama_atribut,
-                    'tanggal' => $data->tanggal,
-                    'total' => $data->total,
-                    'keterangan' => $data->keterangan,
-                ]
+                'message' => 'Successfully get all pemasukan',
+                'data' => $data
             ], 200);
 
             // for monolith app
