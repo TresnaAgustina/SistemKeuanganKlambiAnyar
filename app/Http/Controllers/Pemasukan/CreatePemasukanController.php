@@ -21,6 +21,19 @@ class CreatePemasukanController extends Controller
             // get all request
             $data = $request->all();
 
+            // check if request data is empty
+            if (!$data) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Request data is empty',
+                ], 400);
+
+                // for monolith app
+                // return redirect()->back()->with(
+                //     'error', 'Request data is empty'
+                // );
+            }
+
             // get data master_pemasukan by id_mstr_pemasukan
             $data_mstr = Master_Pemasukan::find($data['id_mstr_pemasukan']);
 

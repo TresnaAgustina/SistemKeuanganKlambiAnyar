@@ -19,16 +19,17 @@ class GetAllPemasukanController extends Controller
     {
         try {
             //get all data from database
-            $data = Pemasukan::all();
-            $mstr_data = Master_Pemasukan::all();
-            // get nama_atribut from master_pemasukan
-            foreach ($data as $key => $value) {
-                foreach ($mstr_data as $key2 => $value2) {
-                    if ($value->id_mstr_pemasukan == $value2->id) {
-                        $value->nama_atribut = $value2->nama_atribut;
-                    }
-                }
-            }
+            $data = Pemasukan::join('master_pemasukan', 'pemasukan.id_mstr_pemasukan', '=', 'master_pemasukan.id')
+                ->select(
+                    'pemasukan.id',
+                    'pemasukan.id_mstr_pemasukan',
+                    'master_pemasukan.nama_atribut',
+                    'pemasukan.tanggal',
+                    'pemasukan.total',
+                    'pemasukan.keterangan',
+                )
+                ->get();
+
 
             // return response
             return response()->json([

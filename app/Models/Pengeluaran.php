@@ -14,7 +14,6 @@ class Pengeluaran extends Model
         'id_mstr_pengeluaran',
         'tanggal',
         'metode_pembayaran',
-        'jmlh_bayar_awal',
         'subtotal',
         'keterangan',
         'bukti_pembayaran',

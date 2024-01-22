@@ -11,6 +11,12 @@ use App\Http\Controllers\Pemasukan\GetAllPemasukanController;
 use App\Http\Controllers\Pemasukan\SearchPemasukanController;
 use App\Http\Controllers\Pemasukan\UpdatePemasukanController;
 use App\Http\Controllers\Pemasukan\GetDetailPemasukanController;
+use App\Http\Controllers\Pengeluaran\CreatePengeluaranController;
+use App\Http\Controllers\Pengeluaran\DeletePengeluaranController;
+use App\Http\Controllers\Pengeluaran\GetAllPengeluaranController;
+use App\Http\Controllers\Pengeluaran\SearchPengeluaranController;
+use App\Http\Controllers\Pengeluaran\UpdatePengeluaranController;
+use App\Http\Controllers\Pengeluaran\GetDetailPengeluaranController;
 use App\Http\Controllers\Master\Jaritan\ViewMasterJaritanController;
 use App\Http\Controllers\Master\Jaritan\CreateMasterJaritanController;
 use App\Http\Controllers\Master\Jaritan\DeleteMasterJaritanController;
@@ -104,6 +110,22 @@ Route::prefix('/pemasukan')->group(function () {
     Route::post('/update/{id}', UpdatePemasukanController::class)->name('pemasukan.update');
     // --delete
     Route::delete('/delete/{id}', DeletePemasukanController::class)->name('pemasukan.delete');
+});
+
+// *** Pengeluaran Routes *** //
+Route::prefix('/pengeluaran')->group(function () {
+    // --view
+    Route::get('/all', GetAllPengeluaranController::class)->name('pengeluaran.all');
+    // --get by id
+    Route::get('/detail/{id}', GetDetailPengeluaranController::class)->name('pengeluaran.detail');
+    // --search
+    Route::post('/search', SearchPengeluaranController::class)->name('pengeluaran.search');
+    // --create
+    Route::post('/create', CreatePengeluaranController::class)->name('pengeluaran.create');
+    // --update
+    Route::post('/update/{id}', UpdatePengeluaranController::class)->name('pengeluaran.update');
+    // --delete
+    Route::delete('/delete/{id}', DeletePengeluaranController::class)->name('pengeluaran.delete');
 });
 
 // *** View Routes *** //
