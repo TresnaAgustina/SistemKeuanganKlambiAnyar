@@ -29,7 +29,7 @@ Route::prefix('/auth')->group(function () {
 });
 
 // *** Master Jaritan Routes *** //
-Route::prefix('/jaritan')->group(function () {
+Route::prefix('/mstr/jaritan')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         // --View
         Route::get('/all', Jaritan\ViewMasterJaritanController::class)->name('jaritan.all');
@@ -42,8 +42,9 @@ Route::prefix('/jaritan')->group(function () {
     });
 });
 
+
 // *** Master Pemasukan Routes *** //
-Route::prefix('/pemasukan')->group(function () {
+Route::prefix('/mstr/pemasukan')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         // --view
         Route::get('/all', Pemasukan\ViewMasterPemasukanController::class)->name('pemasukan.all');
@@ -57,8 +58,8 @@ Route::prefix('/pemasukan')->group(function () {
 });
 
 // *** Master Pengeluaran Routes *** //
-Route::prefix('/pengeluaran')->group(function () {
-    Route::middleware('auth:sacntum')->group(function () {
+Route::prefix('/mstr/pengeluaran')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
         // --view
         Route::get('/all', Pengeluaran\ViewMasterPengeluaranController::class)->name('pengeluaran.all');
         // --create
@@ -70,17 +71,20 @@ Route::prefix('/pengeluaran')->group(function () {
     });
 });
 
-
-Route::get('/auth/login', function () {
-    return view('welcome');
-})->name('login');
-
-// *** View Routes *** //
-Route::middleware('auth:sanctum')->group(function () {
-    // --Dashboard
-    Route::get('/', function () {
-        return view('welcome');
-    })->name('dashboard');
+// *** Pemasukan Routes *** //
+Route::prefix('/pemasukan')->group(function () {
+        // --view
+        Route::get('/all', GetAllPemasukanController::class)->name('pemasukan.all');
+        // --get by id
+        Route::get('/detail/{id}', GetDetailPemasukanController::class)->name('pemasukan.get');
+        // --search
+        Route::get('/search', SearchPemasukanController::class)->name('pemasukan.search');
+        // --create
+        Route::post('/create', CreatePemasukanController::class)->name('pemasukan.create');
+        // --update
+        Route::post('/update/{id}', UpdatePemasukanController::class)->name('pemasukan.update');
+        // --delete
+        Route::delete('/delete/{id}', DeletePemasukanController::class)->name('pemasukan.delete');
 });
 
 Route::get('/', function () {
