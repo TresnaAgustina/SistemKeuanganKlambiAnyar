@@ -79,8 +79,24 @@ Route::prefix('/pengeluaran')->group(function () {
 //     })->name('dashboard');
 // });
 
+
+
+// * Routes Untuk Coba Fitur Tambahan Baru Setengah * //
+
 Route::get('/', function () {
     return view('dashboard.index');
+});
+
+Route::get('/jaritan/all', function () {
+    return view('master.jaritan.index');
+});
+
+Route::get('/login', function () {
+    return view('sesi.login');
+});
+
+Route::get('/register', function () {
+    return view('sesi.register');
 });
 
 

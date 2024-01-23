@@ -32,8 +32,8 @@
             </a>
           </li>
 
-          <li class="nav-item ">
-            <a href="#" class="nav-link">
+          <li class="nav-item {{ Request::is('jaritan*') ? 'menu-open' : '' }} ">
+            <a href="#" class="nav-link {{ Request::is('jaritan*') ? 'active' : '' }}">
                 <i class="nav-icon fas fa-file"></i>
               <p>
                 Data Master
@@ -43,7 +43,7 @@
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="/jaritan/all" class="nav-link {{ Request::is('jaritan*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Jaritan</p>
                 </a>
@@ -66,8 +66,8 @@
             </ul>
           </li>
 
-          <li class="nav-item">
-            <a href="#" class="nav-link">
+          <li class="nav-item {{ Request::is('test', 'test2') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ Request::is('test', 'test2') ? 'active' : '' }}">
                 <i class="nav-icon fas fa-money-bill-alt"></i>
               {{-- <i class="nav-icon fas fa-circle"></i> --}}
               <p>
@@ -78,14 +78,14 @@
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="/test2" class="nav-link {{ Request::is('test2') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Jaritan</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="/test" class="nav-link {{ Request::is('test') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Pemasukan</p>
                 </a>
