@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Keuangan\CreateKeuanganController;
+use App\Http\Controllers\Keuangan\DeleteKeuanganController;
+use App\Http\Controllers\Keuangan\GetAllKeuanganController;
+use App\Http\Controllers\Keuangan\UpdateKeuanganController;
 use App\Http\Controllers\Pemasukan\CreatePemasukanController;
 use App\Http\Controllers\Pemasukan\DeletePemasukanController;
 use App\Http\Controllers\Pemasukan\GetAllPemasukanController;
@@ -16,8 +20,8 @@ use App\Http\Controllers\Pengeluaran\DeletePengeluaranController;
 use App\Http\Controllers\Pengeluaran\GetAllPengeluaranController;
 use App\Http\Controllers\Pengeluaran\SearchPengeluaranController;
 use App\Http\Controllers\Pengeluaran\UpdatePengeluaranController;
-use App\Http\Controllers\Pengeluaran\GetDetailPengeluaranController;
 use App\Http\Controllers\Master\Jaritan\ViewMasterJaritanController;
+use App\Http\Controllers\Pengeluaran\GetDetailPengeluaranController;
 use App\Http\Controllers\Master\Jaritan\CreateMasterJaritanController;
 use App\Http\Controllers\Master\Jaritan\DeleteMasterJaritanController;
 use App\Http\Controllers\Master\Jaritan\UpdateMasterJaritanController;
@@ -126,6 +130,18 @@ Route::prefix('/pengeluaran')->group(function () {
     Route::post('/update/{id}', UpdatePengeluaranController::class)->name('pengeluaran.update');
     // --delete
     Route::delete('/delete/{id}', DeletePengeluaranController::class)->name('pengeluaran.delete');
+});
+
+// *** Keuangan Route *** //
+Route::prefix('/keuangan')->group(function (){
+    // --view
+    Route::get('/all', GetAllKeuanganController::class)->name('keuangan.all');
+    // --create
+    Route::post('/create', CreateKeuanganController::class)->name('keuangan.create');
+    // --update
+    Route::post('/update/{id}', UpdateKeuanganController::class)->name('keuangan.update');
+    // --delete
+    Route::delete('/delete/{id}', DeleteKeuanganController::class)->name('keuangan.delete');
 });
 
 // *** View Routes *** //
