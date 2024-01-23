@@ -30,40 +30,26 @@ class LoginController extends Controller
 
             // attempt to login
             if (!$user) {
-                return response()->json([
-                    'message' => 'Invalid credentials',
-                ], 401);
-
                 // return for monolith app
-                // return redirect()->route('login')->with(
-                //     'error', 'Invalid credentials'
-                // );
+                return redirect()->route('login')->with(
+                    'error', 'Invalid credentials'
+                );
             }
-
-            // user data
 
             // generate token
             $token = $user->createToken('auth_token')->plainTextToken;
 
-            // return token
-            return response()->json([
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-            ]);
+            // create session
+            $request->session()->put('token', $token);
 
-            // return for monolith app
-            // return redirect()->route('dashboard')->with(
-            //     'success', 'Login success'
-            // );
+            // redirect to dashboard
+            return redirect()->route('dashboard')->with(
+                'success', 'Login success'
+            );
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Login Error: '. $e->getMessage(),
-            ], 500);
-
-            // return for monolith app
-            // return redirect()->route('login')->with(
-            //     'error', 'Login Error: '. $e->getMessage()
-            // );
+            return redirect()->route('login')->with(
+                'error', 'Login Error: '. $e->getMessage()
+            );
         }
     }
 }

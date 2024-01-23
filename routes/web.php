@@ -28,7 +28,8 @@ use App\Http\Controllers\Master\Pengeluaran\ViewMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\CreateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\DeleteMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\UpdateMasterPengeluaranController;
-
+use App\Http\Controllers\Views\DashboardController;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,7 +44,7 @@ use App\Http\Controllers\Master\Pengeluaran\UpdateMasterPengeluaranController;
 
 // *** Auth Routes *** //
 Route::prefix('/auth')->group(function () {
-    Route::post('/login', LoginController::class)->name('login');
+    Route::post('/login', LoginController::class)->name('login.auth');
     Route::post('/register', RegisterController::class)->name('register');
     // --Logout
     Route::middleware('auth:sanctum')->group(function () {
@@ -143,9 +144,8 @@ Route::prefix('/pengeluaran')->group(function () {
 
 // * Routes Untuk Coba Fitur Tambahan Baru Setengah * //
 
-
-Route::get('/', function () {
-    return view('dashboard.index');
+Route::middleware('auth:sanctum')->group(function (){
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 Route::get('/jaritan/all', function () {
@@ -154,7 +154,7 @@ Route::get('/jaritan/all', function () {
 
 Route::get('/login', function () {
     return view('sesi.login');
-});
+})->name('login');
 
 Route::get('/register', function () {
     return view('sesi.register');
