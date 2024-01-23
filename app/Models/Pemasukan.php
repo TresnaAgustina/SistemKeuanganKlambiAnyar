@@ -13,7 +13,8 @@ class Pemasukan extends Model
     protected $fillable = [
         'id_mstr_pemasukan',
         'tanggal',
-        'jumlah',
+        'total',
+        'keterangan',
     ];
 
     public function master_pemasukan()

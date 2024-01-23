@@ -45,16 +45,6 @@
                     </svg>
                 </div>
 
-                {{-- form test --}}
-                <form action="{{ url('/pemasukan/update/15') }}" method="post">
-                    @csrf
-                    @method('PUT')
-
-                    <input type="text" name="nama_atribut" id="">
-                    <br>
-                    <input type="submit" value="submit">
-                </form>
-
                 <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                     <div class="grid grid-cols-1 md:grid-cols-2">
                         <div class="p-6">

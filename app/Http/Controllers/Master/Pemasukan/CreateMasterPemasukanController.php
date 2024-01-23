@@ -30,13 +30,13 @@ class CreateMasterPemasukanController extends Controller
             if (!$validate) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Failed create data',
+                    'message' => 'Failed validate data',
                     'data' => Null
                 ], 400);
 
                 // for monolith app
                 // return redirect()->back()->with(
-                //     'error', 'Failed create data'
+                //     'error', 'Failed validate data'
                 // );
             }
 

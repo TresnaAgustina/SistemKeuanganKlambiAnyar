@@ -14,4 +14,9 @@ class Master_Pengeluaran extends Model
         'nama_atribut',
         'tipe',
     ];
+
+    public function pengeluaran()
+    {
+        return $this->hasMany(Pengeluaran::class);
+    }
 }

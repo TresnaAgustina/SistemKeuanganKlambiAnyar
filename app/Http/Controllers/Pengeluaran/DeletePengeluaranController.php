@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Pemasukan;
+namespace App\Http\Controllers\Pengeluaran;
 
-use App\Models\Pemasukan;
+use App\Models\Pengeluaran;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
-class DeletePemasukanController extends Controller
+class DeletePengeluaranController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -17,61 +18,58 @@ class DeletePemasukanController extends Controller
     public function __invoke(Request $request)
     {
         try {
-            //get data by id
-            $pemasukan = Pemasukan::findOrFail($request->id);
+            //get dta by id
+            $data = Pengeluaran::findOrFail($request->id);
 
-            // if data not found
-            if (!$pemasukan) {
+            //if data is empty
+            if (!$data) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Error: Data not found',
-                    'data' => Null
+                    'message' => 'Data not found',
                 ], 404);
 
                 // for monolith app
                 // return redirect()->back()->with(
-                //     'error', 'Error: Data not found'
+                //     'error', 'Data not found'
                 // );
             }
 
-            // delete data
-            $delete = $pemasukan->delete();
+            //delete data and unlink image from storage/pengeluaran
+            Storage::delete('public/pengeluaran/' . $data->bukti_pembayaran);
+            $data->delete();
 
-            // check if delete is success
-            if (!$delete) {
+            //if delete data and unlink image is fails
+            if (!$data) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Error: Failed to delete data',
-                    'data' => Null
+                    'message' => 'Delete data is failed',
                 ], 400);
 
                 // for monolith app
                 // return redirect()->back()->with(
-                //     'error', 'Error: Failed to delete data'
+                //     'error', 'Delete data is failed'
                 // );
             }
 
-            // return response
+            //if delete data and unlink image is success
             return response()->json([
                 'status' => 'success',
-                'message' => 'Success delete data',
-                'data' => Null
+                'message' => 'Delete data is success',
             ], 200);
 
             // for monolith app
             // return redirect()->back()->with(
-            //     'success', 'Success delete data'
+            //     'success', 'Delete data is success'
             // );
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Error: ' . $e->getMessage(),
-                'data' => Null
+                'message' => $e->getMessage(),
             ], 500);
 
             // for monolith app
             // return redirect()->back()->with(
-            //     'error', 'Error: ' . $e->getMessage()
+            //     'error', $e->getMessage()
             // );
         }
     }

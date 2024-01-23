@@ -18,10 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger('id_mstr_pengeluaran');
             $table->date('tanggal');
             $table->string('metode_pembayaran');
-            $table->double('jmlh_bayar_awal');
             $table->double('subtotal');
-            $table->text('keterangan');
-            $table->string('bukti_pembayaran');
+            $table->text('keterangan')->nullable();
+            $table->string('bukti_pembayaran')->nullable();
 
             // relationship
             $table->foreign('id_mstr_pengeluaran')->references('id')->on('master_pengeluaran')->onDelete('cascade')->onUpdate('cascade');
