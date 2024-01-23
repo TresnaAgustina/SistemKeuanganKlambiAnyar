@@ -126,7 +126,22 @@ Route::prefix('/pengeluaran')->group(function () {
 });
 
 
+// Route::get('/auth/login', function () {
+//     return view('welcome');
+// })->name('login');
 
+// // *** View Routes *** //
+// Route::middleware('auth:sanctum')->group(function () {
+//     // --Dashboard
+//     Route::get('/', function () {
+//         return view('welcome');
+//     })->name('dashboard');
+// });
+
+
+
+
+// * Routes Untuk Coba Fitur Tambahan Baru Setengah * //
 
 
 Route::get('/', function () {
