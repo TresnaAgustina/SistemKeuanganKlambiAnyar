@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ViewLoginController;
 use App\Http\Controllers\Pemasukan\CreatePemasukanController;
 use App\Http\Controllers\Pemasukan\DeletePemasukanController;
 use App\Http\Controllers\Pemasukan\GetAllPemasukanController;
@@ -43,6 +44,7 @@ use App\Http\Controllers\Master\Pengeluaran\UpdateMasterPengeluaranController;
 
 // *** Auth Routes *** //
 Route::prefix('/auth')->group(function () {
+    Route::get('/login', ViewLoginController::class)->name('login');
     Route::post('/login', LoginController::class)->name('login');
     Route::post('/register', RegisterController::class)->name('register');
     // --Logout
@@ -144,11 +146,15 @@ Route::prefix('/pengeluaran')->group(function () {
 // * Routes Untuk Coba Fitur Tambahan Baru Setengah * //
 
 
-Route::get('/', function () {
+Route::get('/dashboard', function () {
     return view('dashboard.index');
-});
+})->name('dashboard');
 
-Route::get('/jaritan/all', function () {
+// Route::get('/', function () {
+//     return view('dashboard.index');
+// });
+
+Route::get('/mstr/jaritan/all', function () {
     return view('master.jaritan.index');
 });
 

@@ -46,15 +46,15 @@ class LoginController extends Controller
             $token = $user->createToken('auth_token')->plainTextToken;
 
             // return token
-            return response()->json([
-                'access_token' => $token,
-                'token_type' => 'Bearer',
-            ]);
+            // return response()->json([
+            //     'access_token' => $token,
+            //     'token_type' => 'Bearer',
+            // ]);
 
             // return for monolith app
-            // return redirect()->route('dashboard')->with(
-            //     'success', 'Login success'
-            // );
+            return redirect()->route('dashboard')->with(
+                'success', 'Login success'
+            );
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Login Error: '. $e->getMessage(),
