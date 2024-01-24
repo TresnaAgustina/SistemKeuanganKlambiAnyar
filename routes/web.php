@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ViewLoginController;
+use App\Http\Controllers\DataTable\DataTableController;
 use App\Http\Controllers\Pemasukan\CreatePemasukanController;
 use App\Http\Controllers\Pemasukan\DeletePemasukanController;
 use App\Http\Controllers\Pemasukan\GetAllPemasukanController;
@@ -41,6 +42,13 @@ use App\Http\Controllers\Master\Pengeluaran\UpdateMasterPengeluaranController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/dataTable/jaritan', [DataTableController::class, 'DataJaritan']);
+Route::get('/dataTable/pemasukan', [DataTableController::class, 'DataPemasukan']);
+Route::get('/dataTable/pengeluaran', [DataTableController::class, 'DataPengeluaran']);
+
+
+
 
 // *** Auth Routes *** //
 Route::prefix('/auth')->group(function () {
@@ -146,7 +154,7 @@ Route::prefix('/pengeluaran')->group(function () {
 // * Routes Untuk Coba Fitur Tambahan Baru Setengah * //
 
 
-Route::get('/dashboard', function () {
+Route::get('/', function () {
     return view('dashboard.index');
 })->name('dashboard');
 
@@ -156,6 +164,12 @@ Route::get('/dashboard', function () {
 
 Route::get('/mstr/jaritan/all', function () {
     return view('master.jaritan.index');
+});
+Route::get('/mstr/pemasukan/all', function () {
+    return view('master.pemasukan.index');
+});
+Route::get('/mstr/pengeluaran/all', function () {
+    return view('master.pengeluaran.index');
 });
 
 Route::get('/login', function () {

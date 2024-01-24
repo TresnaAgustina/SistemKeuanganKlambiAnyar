@@ -20,7 +20,7 @@
             <div class="card-header">
               <h3 class="card-title">
                 {{-- <i class="fas fa-edit"></i> --}}
-                Data Jaritan
+                Data Pengeluaran
               </h3>
             </div>
             
@@ -35,13 +35,12 @@
             <!-- /.card -->
 
             <div class="card-body">
-                <table id="jaritan" class="table table-bordered table-striped">
+                <table id="pengeluaran" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>Nomor</th>
-                    <th>Jenis Jaritan</th>
-                    <th>Harga Dalam</th>
-                    <th>Harga Luar</th>
+                    <th>Nama Atribut</th>
+                    <th>Tipe</th>
                     <th>Aksi</th>
                   </tr>
                   </thead>
@@ -61,7 +60,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Tambah Data Jaritan</h4>
+            <h4 class="modal-title">Tambah Data Pengeluaran</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -70,17 +69,18 @@
           <div class="modal-body">
             <form>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Jenis Jaritan</label>
+                    <label for="exampleInputEmail1">Nama Atribut</label>
                     <input type="text" class="form-control" id="exampleInputEmail1" >
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword1">Harga Dalam</label>
-                    <input type="text" class="form-control" id="exampleInputPassword1" >
-                </div>                          
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Harga Luar</label>
-                    <input type="text" class="form-control" id="exampleInputPassword1" >
-                </div>                          
+                  <label>Tipe</label>
+                  <select class="form-control">
+                    <option>- pilih -</option>
+                    <option>Perusahaan</option>
+                    <option>Pribadi</option>
+                  </select>
+                </div>                         
+                                        
 
                 {{-- <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -109,26 +109,23 @@
 @push('js')
 <script>
     $(document).ready(function(){
-        $('#jaritan').DataTable({
+        $('#pengeluaran').DataTable({
             "responsive": true, 
             "autoWidth": false,
             "processing": true,
             "serverside": true,
-            "ajax": "{{ url('dataTable/jaritan') }}",
+            "ajax": "{{ url('dataTable/pengeluaran') }}",
             "columns": [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
                 orderable: false,
                 searchable: false
             },{
-                data: 'jenis_jaritan',
-                name: 'Jenis Jaritan'
+                data: 'nama_atribut',
+                name: 'Nama Atribut'
             },{
-                data: 'harga_dalam',
-                name: 'Harga Dalam'
-            },{
-                data: 'harga_luar',
-                name: 'Harga Luar'
+                data: 'tipe',
+                name: 'Tipe'
             },{
                 data: 'aksi',
                 name: 'Aksi'

@@ -32,8 +32,8 @@
             </a>
           </li>
 
-          <li class="nav-item {{ Request::is('mstr/jaritan*') ? 'menu-open' : '' }} ">
-            <a href="#" class="nav-link {{ Request::is('mstr/jaritan*') ? 'active' : '' }}">
+          <li class="nav-item {{ Request::is('mstr/jaritan*', 'mstr/pemasukan*', 'mstr/pengeluaran*') ? 'menu-open' : '' }} ">
+            <a href="#" class="nav-link {{ Request::is('mstr/jaritan*', 'mstr/pemasukan*', 'mstr/pengeluaran*') ? 'active' : '' }}">
                 <i class="nav-icon fas fa-file"></i>
               <p>
                 Data Master
@@ -50,14 +50,14 @@
               </li>
 
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="/mstr/pemasukan/all" class="nav-link {{ Request::is('mstr/pemasukan*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Pemasukan</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="/mstr/pengeluaran/all" class="nav-link {{ Request::is('mstr/pengeluaran*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Pengeluaran</p>
                 </a>
