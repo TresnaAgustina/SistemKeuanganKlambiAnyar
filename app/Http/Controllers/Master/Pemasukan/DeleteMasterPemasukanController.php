@@ -22,16 +22,16 @@ class DeleteMasterPemasukanController extends Controller
 
             // if data not found
             if (!$find) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Data not found',
-                    'data' => Null
-                ], 404);
+                // return response()->json([
+                //     'success' => false,
+                //     'message' => 'Data not found',
+                //     'data' => Null
+                // ], 404);
 
                 // for monolith app
-                // return redirect()->back()->with(
-                //     'error', 'Data not found'
-                // );
+                return redirect()->back()->with(
+                    'pesan', 'Error: Data not found'
+                );
             }
 
             // delete data
@@ -39,40 +39,40 @@ class DeleteMasterPemasukanController extends Controller
 
             // if delete data fails
             if (!$delete) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Failed delete data',
-                    'data' => Null
-                ], 400);
+                // return response()->json([
+                //     'success' => false,
+                //     'message' => 'Failed delete data',
+                //     'data' => Null
+                // ], 400);
 
                 // for monolith app
-                // return redirect()->back()->with(
-                //     'error', 'Failed delete data'
-                // );
+                return redirect()->back()->with(
+                    'pesan', 'Error: Failed delete data'
+                );
             }
 
             // return json response
-            return response()->json([
-                'success' => true,
-                'message' => 'Success delete data',
-                'data' => $find
-            ], 200);
+            // return response()->json([
+            //     'success' => true,
+            //     'message' => 'Success delete data',
+            //     'data' => $find
+            // ], 200);
 
             // for monolith app
-            // return redirect()->back()->with(
-            //     'success', 'Success delete data'
-            // );
+            return redirect()->back()->with(
+                'pesan', 'Success delete data'
+            );
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed delete data',
-                'data' => $e->getMessage()
-            ], 500);
+            // return response()->json([
+            //     'success' => false,
+            //     'message' => 'Failed delete data',
+            //     'data' => $e->getMessage()
+            // ], 500);
 
             // for monolith app
-            // return redirect()->back()->with(
-            //     'error', $e->getMessage()
-            // );
+            return redirect()->back()->with(
+                'pesan', $e->getMessage()
+            );
         }
     }
 }

@@ -2,7 +2,7 @@
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
       <img src="{{ asset('template/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">UD Kelambi Anyar</span>
+      <span class="brand-text font-weight-light">UD Klambi Anyar</span>
     </a>
 
     <!-- Sidebar -->
@@ -32,8 +32,8 @@
             </a>
           </li>
 
-          <li class="nav-item {{ Request::is('jaritan*') ? 'menu-open' : '' }} ">
-            <a href="#" class="nav-link {{ Request::is('jaritan*') ? 'active' : '' }}">
+          <li class="nav-item {{ Request::is('mstr/jaritan*', 'mstr/pemasukan*', 'mstr/pengeluaran*') ? 'menu-open' : '' }} ">
+            <a href="#" class="nav-link {{ Request::is('mstr/jaritan*', 'mstr/pemasukan*', 'mstr/pengeluaran*') ? 'active' : '' }}">
                 <i class="nav-icon fas fa-file"></i>
               <p>
                 Data Master
@@ -43,21 +43,21 @@
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/jaritan/all" class="nav-link {{ Request::is('jaritan*') ? 'active' : '' }}">
+                <a href="/mstr/jaritan/all" class="nav-link {{ Request::is('mstr/jaritan*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Jaritan</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="/mstr/pemasukan/all" class="nav-link {{ Request::is('mstr/pemasukan*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Pemasukan</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="/mstr/pengeluaran/all" class="nav-link {{ Request::is('mstr/pengeluaran*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Pengeluaran</p>
                 </a>
@@ -80,21 +80,21 @@
               <li class="nav-item">
                 <a href="/test2" class="nav-link {{ Request::is('test2') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Jaritan</p>
+                  <p>Gaji</p>
                 </a>
               </li>
 
               <li class="nav-item">
                 <a href="/test" class="nav-link {{ Request::is('test') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Pemasukan</p>
+                  <p>Pembelian</p>
                 </a>
               </li>
 
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Pengeluaran</p>
+                  <p>Pembayaran</p>
                 </a>
               </li>
 
@@ -115,24 +115,30 @@
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Jaritan</p>
+                  <p>Laporan Pemasukan</p>
                 </a>
               </li>
 
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Pemasukan</p>
+                  <p>Laporan Pengeluaran</p>
                 </a>
               </li>
 
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Pengeluaran</p>
+                  <p>Laporan Keuntungan</p>
                 </a>
               </li>
-
+              
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Laporan Pajak</p>
+                </a>
+              </li>
             </ul>
           </li>
         </ul>

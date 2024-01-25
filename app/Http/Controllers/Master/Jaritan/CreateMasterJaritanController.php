@@ -29,15 +29,9 @@ class CreateMasterJaritanController extends Controller
 
             // if validation fails
             if (!$validate) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Error: Failed to validate data',
-                ], 400);
-
-                // for monolith app
-                // return redirect()->route('jaritan.all')->with(
-                //     'error', 'Error: ' . $request->errors()
-                // );
+                return back()->with(
+                    'pesan', 'Error: ' . $request->errors()
+                );
             }
 
             //create data to database
@@ -49,38 +43,19 @@ class CreateMasterJaritanController extends Controller
 
             // if create data fails
             if (!$create) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Failed to store data to database',
-                ], 500);
-
-                // for monolith app
-                // return redirect()->route('jaritan.all')->with(
-                //     'error', 'Failed to store data to database'
-                // );
+                return back()->with(
+                    'pesan', 'Error: Failed to store data to database'
+                );
             }
 
             //return data
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Success to store data to database',
-                'data' => $create
-            ], 200);
-
-            // for monolith app
-            // return redirect()->route('jaritan.all')->with(
-            //     'success', 'Success to store data to database'
-            // );
+            return back()->with(
+                'pesan', 'Success to store data to database'
+            );
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Error: ' . $e->getMessage(),
-            ], 500);
-
-            // for monolith app
-            // return redirect()->route('jaritan.all')->with(
-            //     'error', 'Failed to store data to database'
-            // );
+            return back()->with(
+                'pesan', 'Error: ' . $e->getMessage()
+            );
         }
     }
 }

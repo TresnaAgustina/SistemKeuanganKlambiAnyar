@@ -22,16 +22,16 @@ class DeleteMasterJaritanController extends Controller
 
             // if data doesn't exists
             if (!$jaritan) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Data not found',
-                    'data' => Null
-                ], 404);
+                // return response()->json([
+                //     'status' => 'error',
+                //     'message' => 'Data not found',
+                //     'data' => Null
+                // ], 404);
 
                 // for monolith app
-                // return redirect()->route('jaritan.all')->with(
-                //     'error', 'Data not found'
-                // );
+                return back()->with(
+                    'pesan', 'Error: Data not found'
+                );
             }
 
             // delete data from database
@@ -39,40 +39,40 @@ class DeleteMasterJaritanController extends Controller
 
             // if delete data fails
             if (!$delete) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Failed to delete data from database',
-                    'data' => Null
-                ], 500);
+                // return response()->json([
+                //     'status' => 'error',
+                //     'message' => 'Failed to delete data from database',
+                //     'data' => Null
+                // ], 500);
 
                 // for monolith app
-                // return redirect()->route('jaritan.all')->with(
-                //     'error', 'Failed to delete data from database'
-                // );
+                return back()->with(
+                    'pesan', 'Error: Failed to delete data from database'
+                );
             }
 
             // return data
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Success to delete data from database',
-                'data' => $jaritan
-            ], 200);
+            // return response()->json([
+            //     'status' => 'success',
+            //     'message' => 'Success to delete data from database',
+            //     'data' => $jaritan
+            // ], 200);
 
             // for monolith app
-            // return redirect()->route('jaritan.all')->with(
-            //     'success', 'Success to delete data from database'
-            // );
+            return back()->with(
+                'pesan', 'Success to delete data from database'
+            );
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Failed to delete data from database',
-                'error' => $e->getMessage()
-            ], 500);
+            // return response()->json([
+            //     'status' => 'error',
+            //     'message' => 'Failed to delete data from database',
+            //     'error' => $e->getMessage()
+            // ], 500);
 
             // for monolith app
-            // return redirect()->route('jaritan.all')->with(
-            //     'error', 'Failed to delete data from database'
-            // );
+            return back()->with(
+                'pesan', 'Error: ' . $e->getMessage()
+            );
         }
     }
 }

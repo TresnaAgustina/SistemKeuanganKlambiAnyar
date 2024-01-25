@@ -1,6 +1,7 @@
 @extends('layouts.login')
 @section('login')
 <div class="card-body login-card-body">
+    
     <p class="login-box-msg">Sign in to start your session</p>
 
     @if (session('error'))

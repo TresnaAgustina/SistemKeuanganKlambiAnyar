@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ViewLoginController;
+use App\Http\Controllers\DataTable\DataTableController;
 use App\Http\Controllers\Pemasukan\CreatePemasukanController;
 use App\Http\Controllers\Pemasukan\DeletePemasukanController;
 use App\Http\Controllers\Pemasukan\GetAllPemasukanController;
@@ -42,9 +44,20 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 |
 */
 
+Route::get('/dataTable/jaritan', [DataTableController::class, 'DataJaritan']);
+Route::get('/dataTable/pemasukan', [DataTableController::class, 'DataPemasukan']);
+Route::get('/dataTable/pengeluaran', [DataTableController::class, 'DataPengeluaran']);
+
+
+
+
 // *** Auth Routes *** //
+// --View
+Route::get('/login', ViewLoginController::class)->name('login');
 Route::prefix('/auth')->group(function () {
+    // --Login
     Route::post('/login', LoginController::class)->name('login.auth');
+
     Route::post('/register', RegisterController::class)->name('register');
     // --Logout
     Route::middleware('auth:sanctum')->group(function () {
@@ -148,17 +161,28 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 });
 
-Route::get('/jaritan/all', function () {
+
+// Route::get('/', function () {
+//     return view('dashboard.index');
+// });
+
+Route::get('/mstr/jaritan/all', function () {
     return view('master.jaritan.index');
 });
-
-Route::get('/login', function () {
-    return view('sesi.login');
-})->name('login');
-
-Route::get('/register', function () {
-    return view('sesi.register');
+Route::get('/mstr/pemasukan/all', function () {
+    return view('master.pemasukan.index');
 });
+Route::get('/mstr/pengeluaran/all', function () {
+    return view('master.pengeluaran.index');
+});
+
+// Route::get('/login', function () {
+//     return view('sesi.login');
+// })->name('login');
+
+// Route::get('/register', function () {
+//     return view('sesi.register');
+// });
 
 
 

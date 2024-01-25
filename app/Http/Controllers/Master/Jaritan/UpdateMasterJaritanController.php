@@ -25,16 +25,9 @@ class UpdateMasterJaritanController extends Controller
 
             // if data not found
             if (!$check) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Data not found',
-                    'data' => Null
-                ], 404);
-
-                // for monolith app
-                // return redirect()->route('jaritan.all')->with(
-                //     'error', 'Data not found'
-                // );
+                return back()->with(
+                    'pesan', 'Error: Data not found'
+                );
             }
 
             // validation
@@ -46,16 +39,9 @@ class UpdateMasterJaritanController extends Controller
 
             // if validation fails
             if (!$validate) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Error: Failed to validate data',
-                    'data' => Null
-                ], 400);
-
-                // for monolith app
-                // return redirect()->route('jaritan.all')->with(
-                //     'error', 'Error: ' . $request->errors()
-                // );
+                return back()->with(
+                    'pesan', 'Error: ' . $request->errors()
+                );
             }
 
             // update data to database
@@ -66,45 +52,19 @@ class UpdateMasterJaritanController extends Controller
             ]);
             // if update data fails
             if (!$update) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Failed to update data to database',
-                    'data' => Null
-                ], 500);
-
-                // for monolith app
-                // return redirect()->route('jaritan.all')->with(
-                //     'error', 'Failed to update data to database'
-                // );
+                return back()->with(
+                    'pesan', 'Error: Failed to update data to database'
+                );
             }
 
             //return data
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Success to update data to database',
-                'data' => [
-                    'id' => $request->id,
-                    'jenis_jaritan' => $data['jenis_jaritan'],
-                    'harga_dalam' => $data['harga_dalam'],
-                    'harga_luar' => $data['harga_luar'],
-                ]
-            ], 200);
-
-            // for monolith app
-            // return redirect()->route('jaritan.all')->with(
-            //     'success', 'Success to update data to database'
-            // );
+            return back()->with(
+                'pesan', 'Success to update data to database'
+            );
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Error: ' . $e->getMessage(),
-                'data' => Null
-            ], 500);
-
-            // for monolith app
-            // return redirect()->route('jaritan.all')->with(
-            //     'error', 'Failed to update data to database'
-            // );
+            return back()->with(
+                'pesan', 'Error: ' . $e->getMessage()
+            );
         }
     }
 }

@@ -25,16 +25,16 @@ class UpdateMasterPemasukanController extends Controller
 
             // if data not found
             if (!$find) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Data not found',
-                    'data' => Null
-                ], 404);
+                // return response()->json([
+                //     'success' => false,
+                //     'message' => 'Data not found',
+                //     'data' => Null
+                // ], 404);
 
                 // for monolith app
-                // return redirect()->back()->with(
-                //     'error', 'Data not found'
-                // );
+                return redirect()->back()->with(
+                    'pesan', 'Error: Data not found'
+                );
             }
 
             // validation
@@ -44,17 +44,17 @@ class UpdateMasterPemasukanController extends Controller
 
             // if validation fails
             if (!$validate) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Failed update data',
-                    'data' => $find,
-                    'data 2' => $data,
-                ], 400);
+                // return response()->json([
+                //     'success' => false,
+                //     'message' => 'Failed update data',
+                //     'data' => $find,
+                //     'data 2' => $data,
+                // ], 400);
 
                 // for monolith app
-                // return redirect()->back()->with(
-                //     'error', 'Failed update data'
-                // );
+                return redirect()->back()->with(
+                    'error', 'Failed update data'
+                );
             }
 
             // update data
@@ -64,44 +64,44 @@ class UpdateMasterPemasukanController extends Controller
 
             // if update data fails
             if (!$update) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Failed update data',
-                    'data' => Null
-                ], 400);
+                // return response()->json([
+                //     'success' => false,
+                //     'message' => 'Error: Failed update data',
+                //     'data' => Null
+                // ], 400);
 
                 // for monolith app
-                // return redirect()->back()->with(
-                //     'error', 'Failed update data'
-                // );
+                return redirect()->back()->with(
+                    'pesan', 'Error: Failed update data'
+                );
             }
 
             // return json response
-            return response()->json([
-                'success' => true,
-                'message' => 'Success update data',
-                'data' => [
-                    'id' => $request->id,
-                    'nama_atribut' => $data['nama_atribut'],
-                ]
-            ], 200);
+            // return response()->json([
+            //     'success' => true,
+            //     'message' => 'Success update data',
+            //     'data' => [
+            //         'id' => $request->id,
+            //         'nama_atribut' => $data['nama_atribut'],
+            //     ]
+            // ], 200);
 
             // for monolith app
-            // return redirect()->back()->with(
-            //     'success', 'Success update data'
-            // );
+            return redirect()->back()->with(
+                'pesan', 'Success update data'
+            );
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed update data',
-                'data' => $e->getMessage(),
-                'line' => $e->getLine(),
-            ], 500);
+            // return response()->json([
+            //     'success' => false,
+            //     'message' => 'Failed update data',
+            //     'data' => $e->getMessage(),
+            //     'line' => $e->getLine(),
+            // ], 500);
 
             // for monolith app
-            // return redirect()->back()->with(
-            //     'error', $e->getMessage()
-            // );
+            return redirect()->back()->with(
+                'pesan', 'Error: '. $e->getMessage()
+            );
         }
     }
 }

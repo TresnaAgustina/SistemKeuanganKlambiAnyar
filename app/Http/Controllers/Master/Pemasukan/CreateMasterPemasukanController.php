@@ -28,16 +28,16 @@ class CreateMasterPemasukanController extends Controller
 
             // if validation fails
             if (!$validate) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Failed validate data',
-                    'data' => Null
-                ], 400);
+                // return response()->json([
+                //     'success' => false,
+                //     'message' => 'Failed validate data',
+                //     'data' => Null
+                // ], 400);
 
                 // for monolith app
-                // return redirect()->back()->with(
-                //     'error', 'Failed validate data'
-                // );
+                return redirect()->back()->with(
+                    'pesan', 'Error: ' . $request->errors()
+                );
             }
 
             // create data
@@ -47,41 +47,41 @@ class CreateMasterPemasukanController extends Controller
             
             // if create data fails
             if (!$create) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Failed create data',
-                    'data' => Null
-                ], 400);
+                // return response()->json([
+                //     'success' => false,
+                //     'message' => 'Failed create data',
+                //     'data' => Null
+                // ], 400);
 
                 // for monolith app
-                // return redirect()->back()->with(
-                //     'error', 'Failed create data'
-                // );
+                return redirect()->back()->with(
+                    'pesan', 'Error: Failed create data'
+                );
             }
 
             // return json response
-            return response()->json([
-                'success' => true,
-                'message' => 'Success create data',
-                'data' => $create
-            ], 200);
+            // return response()->json([
+            //     'success' => true,
+            //     'message' => 'Success create data',
+            //     'data' => $create
+            // ], 200);
 
             // for monolith app
-            // return redirect()->back()->with(
-            //     'success', 'Success create data'
-            // );
+            return redirect()->back()->with(
+                'pesan', 'Success create data'
+            );
 
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed create data',
-                'data' => $e->getMessage()
-            ], 500);
+            // return response()->json([
+            //     'success' => false,
+            //     'message' => 'Failed create data',
+            //     'data' => $e->getMessage()
+            // ], 500);
 
             // for monolith app
-            // return redirect()->back()->with(
-            //     'error', $e->getMessage()
-            // );
+            return redirect()->back()->with(
+                'pesan','Error: '. $e->getMessage()
+            );
         }
     }
 }
