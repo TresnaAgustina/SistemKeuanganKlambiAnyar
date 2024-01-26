@@ -13,7 +13,7 @@ class Bayaran_Pegawai_Rumahan extends Model
     protected $fillable = [
         'id_pgw_rumahan',
         'id_kasbon_pgw',
-        'id_mstr_jaritan',
+        'id_pgwr_activity',
         'tanggal',
         'banyak_jarit',
         'jumlah',
@@ -30,8 +30,8 @@ class Bayaran_Pegawai_Rumahan extends Model
         return $this->belongsTo(Kasbon_Pegawai::class, 'id_kasbon_pgw', 'id');
     }
 
-    public function master_jaritan()
+    public function pgwr_activity()
     {
-        return $this->belongsTo(Master_Jaritan::class, 'id_mstr_jaritan', 'id');
+        return $this->belongsToMany(Pgwr_Activity::class, 'id_pgwr_activity', 'id');
     }
 }

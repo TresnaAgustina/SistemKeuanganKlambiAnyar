@@ -23,9 +23,8 @@ class Master_Jaritan extends Model
         return $this->hasMany(Penjualan::class);
     }
 
-    // bayaran_pegawai_rumahan
-    public function bayaran_pegawai_rumahan()
+    public function pgwr_activity()
     {
-        return $this->hasMany(Bayaran_Pegawai_Rumahan::class);
+        return $this->hasMany(Pgwr_Activity::class, 'id_mstr_jahitan', 'id');
     }
 }
