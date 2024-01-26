@@ -159,6 +159,15 @@ Route::prefix('/pengeluaran')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function (){
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/mstr/jaritan/all', function () {
+        return view('master.jaritan.index');
+    });
+    Route::get('/mstr/pemasukan/all', function () {
+        return view('master.pemasukan.index');
+    });
+    Route::get('/mstr/pengeluaran/all', function () {
+        return view('master.pengeluaran.index');
+    });
 });
 
 
@@ -166,15 +175,6 @@ Route::middleware('auth:sanctum')->group(function (){
 //     return view('dashboard.index');
 // });
 
-Route::get('/mstr/jaritan/all', function () {
-    return view('master.jaritan.index');
-});
-Route::get('/mstr/pemasukan/all', function () {
-    return view('master.pemasukan.index');
-});
-Route::get('/mstr/pengeluaran/all', function () {
-    return view('master.pengeluaran.index');
-});
 
 // Route::get('/login', function () {
 //     return view('sesi.login');

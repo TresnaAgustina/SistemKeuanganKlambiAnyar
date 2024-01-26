@@ -11,6 +11,17 @@
     </div><!-- /.container-fluid -->
 </div>
 
+{{-- error and success handling --}}
+@if (session('pesan'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session('pesan') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">×</span>
+    </button> 
+</div>
+@endif
+{{-- end --}}
+
 <section class="content">
     <div class="container-fluid">
       <div class="row">
@@ -67,17 +78,18 @@
           </div>
 
           <div class="modal-body">
-            <form>
+            <form action="{{ url('/mstr/pengeluaran/create') }}" method="POST">
+                @csrf
                 <div class="form-group">
                     <label for="exampleInputEmail1">Nama Atribut</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1" >
+                    <input name="nama_atribut" type="text" class="form-control" id="exampleInputEmail1" >
                 </div>
                 <div class="form-group">
                   <label>Tipe</label>
-                  <select class="form-control">
+                  <select name="tipe" class="form-control">
                     <option>- pilih -</option>
-                    <option>Perusahaan</option>
-                    <option>Pribadi</option>
+                    <option value="1">Perusahaan</option>
+                    <option value="2">Pribadi</option>
                   </select>
                 </div>                         
                                         

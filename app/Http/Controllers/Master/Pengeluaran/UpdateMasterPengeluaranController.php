@@ -25,16 +25,16 @@ class UpdateMasterPengeluaranController extends Controller
 
             // if data not found
             if (!$find) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Data tidak ditemukan',
-                    'data' => Null
-                ], 404);
+                // return response()->json([
+                //     'status' => 'error',
+                //     'message' => 'Data tidak ditemukan',
+                //     'data' => Null
+                // ], 404);
 
                 // for monolith app
-                // return redirect()->back()->with(
-                //     'error', 'Data tidak ditemukan'
-                // );
+                return redirect()->back()->with(
+                    'pesan', 'Error: Data tidak ditemukan'
+                );
             }
 
             // validation
@@ -45,16 +45,16 @@ class UpdateMasterPengeluaranController extends Controller
 
             // if validation fails
             if (!$validate) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Data gagal diubah',
-                    'data' => Null
-                ], 400);
+                // return response()->json([
+                //     'status' => 'error',
+                //     'message' => 'Data gagal diubah',
+                //     'data' => Null
+                // ], 400);
 
                 // for monolith app
-                // return redirect()->back()->with(
-                //     'error', 'Data gagal diubah'
-                // );
+                return redirect()->back()->with(
+                    'pesan', 'Error: Data gagal diubah'
+                );
             }
 
             // update data
@@ -65,44 +65,44 @@ class UpdateMasterPengeluaranController extends Controller
 
             // if update fails
             if (!$update) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Data gagal diubah',
-                    'data' => Null
-                ], 400);
+                // return response()->json([
+                //     'status' => 'error',
+                //     'message' => 'Data gagal diubah',
+                //     'data' => Null
+                // ], 400);
 
                 // for monolith app
-                // return redirect()->back()->with(
-                //     'error', 'Data gagal diubah'
-                // );
+                return redirect()->back()->with(
+                    'pesan', 'Error: Data gagal diubah'
+                );
             }
 
             // return data
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Data berhasil diubah',
-                'data' => [
-                    'id' => $find->id,
-                    'nama_atribut' => $data['nama_atribut'],
-                    'tipe' => $data['tipe'],
-                ]
-            ], 200);
+            // return response()->json([
+            //     'status' => 'success',
+            //     'message' => 'Data berhasil diubah',
+            //     'data' => [
+            //         'id' => $find->id,
+            //         'nama_atribut' => $data['nama_atribut'],
+            //         'tipe' => $data['tipe'],
+            //     ]
+            // ], 200);
 
             // for monolith app
-            // return redirect()->back()->with(
-            //     'success', 'Data berhasil diubah'
-            // );
+            return redirect()->back()->with(
+                'pesan', 'Data berhasil diubah'
+            );
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Data gagal diubah',
-                'data' => $e->getMessage()
-            ], 500);
+            // return response()->json([
+            //     'status' => 'error',
+            //     'message' => 'Data gagal diubah',
+            //     'data' => $e->getMessage()
+            // ], 500);
 
             // for monolith app
-            // return redirect()->back()->with(
-            //     'error', $e->getMessage()
-            // );
+            return redirect()->back()->with(
+                'pesan', 'Error: ' .  $e->getMessage()
+            );
         }
     }
 }

@@ -22,16 +22,16 @@ class DeleteMasterPengeluaranController extends Controller
 
             //if data not found
             if (!$find) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Data tidak ditemukan',
-                    'data' => Null
-                ], 404);
+                // return response()->json([
+                //     'status' => 'error',
+                //     'message' => 'Data tidak ditemukan',
+                //     'data' => Null
+                // ], 404);
 
                 // for monolith app
-                // return redirect()->back()->with(
-                //     'error', 'Data tidak ditemukan'
-                // );
+                return redirect()->back()->with(
+                    'pesan', 'Error: Data tidak ditemukan'
+                );
             }
 
             //delete data
@@ -39,31 +39,33 @@ class DeleteMasterPengeluaranController extends Controller
 
             //if delete fails
             if (!$delete) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Data gagal dihapus',
-                    'data' => Null
-                ], 400);
+                // return response()->json([
+                //     'status' => 'error',
+                //     'message' => 'Data gagal dihapus',
+                //     'data' => Null
+                // ], 400);
 
                 // for monolith app
-                // return redirect()->back()->with(
-                //     'error', 'Data gagal dihapus'
-                // );
+                return redirect()->back()->with(
+                    'pesan', 'Error: Data gagal dihapus'
+                );
             }
 
             //return success message
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Data berhasil dihapus',
-                'data' => Null
-            ], 200);
+            // return response()->json([
+            //     'status' => 'success',
+            //     'message' => 'Data berhasil dihapus',
+            //     'data' => Null
+            // ], 200);
 
             // for monolith app
-            // return redirect()->back()->with(
-            //     'success', 'Data berhasil dihapus'
-            // );
-        } catch (\Throwable $th) {
-            //throw $th;
+            return redirect()->back()->with(
+                'pesan', 'Data berhasil dihapus'
+            );
+        } catch (\Exception $e) {
+            return redirect()->back()->with(
+                'pesan', 'Error: ' . $e->getMessage()
+            );
         }
     }
 }

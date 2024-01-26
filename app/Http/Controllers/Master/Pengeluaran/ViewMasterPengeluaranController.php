@@ -21,25 +21,25 @@ class ViewMasterPengeluaranController extends Controller
             $data = Master_Pengeluaran::all();
 
             //return data
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Data berhasil diambil',
-                'data' => $data
-            ], 200);
+            // return response()->json([
+            //     'status' => 'success',
+            //     'message' => 'Data berhasil diambil',
+            //     'data' => $data
+            // ], 200);
 
             // for monolith app
-            // return view('master.pengeluaran.index', compact('data'));
+            return view('master.pengeluaran.index', compact('data'));
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Data gagal diambil',
-                'data' => $e->getMessage()
-            ], 500);
+            // return response()->json([
+            //     'status' => 'error',
+            //     'message' => 'Data gagal diambil',
+            //     'data' => $e->getMessage()
+            // ], 500);
 
             // for monolith app
-            // return view('dashboard')->with(
-            //     'error', $e->getMessage();
-            // );
+            return view('dashboard')->with(
+                'pesan', 'Error: ' . $e->getMessage()
+            );
         }
     }
 }

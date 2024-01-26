@@ -28,16 +28,16 @@ class CreateMasterPengeluaranController extends Controller
 
             // if validation fails
             if (!$validate) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Data gagal ditambahkan',
-                    'data' => Null
-                ], 400);
+                // return response()->json([
+                //     'status' => 'error',
+                //     'message' => 'Data gagal ditambahkan',
+                //     'data' => Null
+                // ], 400);
 
                 // for monolith app
-                // return redirect()->back()->with(
-                //     'error', 'Data gagal ditambahkan'
-                // );
+                return redirect()->back()->with(
+                    'pesan', 'Error: Data gagal ditambahkan'
+                );
             }
 
             // create data
@@ -48,41 +48,41 @@ class CreateMasterPengeluaranController extends Controller
 
             // if create fails
             if (!$create) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Data gagal ditambahkan',
-                    'data' => Null
-                ], 400);
+                // return response()->json([
+                //     'status' => 'error',
+                //     'message' => 'Data gagal ditambahkan',
+                //     'data' => Null
+                // ], 400);
 
                 // for monolith app
-                // return redirect()->back()->with(
-                //     'error', 'Data gagal ditambahkan'
-                // );
+                return redirect()->back()->with(
+                    'pesan', 'Error: Data gagal ditambahkan'
+                );
             }
 
             // return data
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Data berhasil ditambahkan',
-                'data' => $create
-            ], 200);
+            // return response()->json([
+            //     'status' => 'success',
+            //     'message' => 'Data berhasil ditambahkan',
+            //     'data' => $create
+            // ], 200);
 
             // for monolith app
-            // return redirect()->back()->with(
-            //     'success', 'Data berhasil ditambahkan'
-            // );
+            return redirect()->back()->with(
+                'pesan', 'Data berhasil ditambahkan'
+            );
 
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Data gagal ditambahkan',
-                'data' => $e->getMessage()
-            ], 500);
+            // return response()->json([
+            //     'status' => 'error',
+            //     'message' => 'Data gagal ditambahkan',
+            //     'data' => $e->getMessage()
+            // ], 500);
 
             // for monolith app
-            // return redirect()->back()->with(
-            //     'error', $e->getMessage()
-            // );
+            return redirect()->back()->with(
+                'pesan', 'Error: ' . $e->getMessage()
+            );
         }
     }
 }
