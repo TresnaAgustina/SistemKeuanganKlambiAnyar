@@ -42,4 +42,9 @@ class DataTableController extends Controller
         })
         ->make(true);
     }
+
+    // public function test(){
+    //     return 'test';
+    // }
+
 }

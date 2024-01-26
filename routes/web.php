@@ -30,7 +30,7 @@ use App\Http\Controllers\Master\Pengeluaran\ViewMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\CreateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\DeleteMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\UpdateMasterPengeluaranController;
-
+use App\Http\Controllers\OrakOrekController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +47,13 @@ Route::get('/dataTable/jaritan', [DataTableController::class, 'DataJaritan']);
 Route::get('/dataTable/pemasukan', [DataTableController::class, 'DataPemasukan']);
 Route::get('/dataTable/pengeluaran', [DataTableController::class, 'DataPengeluaran']);
 
+Route::get('/mstr/jaritan/update/{id}', [OrakOrekController::class, 'jaritan']);
+Route::post('/mstr/jaritan/update/{id}', [OrakOrekController::class, 'editJaritan']);
+Route::get('/mstr/pemasukan/update/{id}', [OrakOrekController::class, 'pemasukan']);
+Route::post('/mstr/pemasukan/update/{id}', [OrakOrekController::class, 'editPemasukan']);
+Route::get('/mstr/pengeluaran/update/{id}', [OrakOrekController::class, 'pengeluaran']);
+Route::post('/mstr/pengeluaran/update/{id}', [OrakOrekController::class, 'editPengeluaran']);
+
 
 
 
@@ -61,47 +68,47 @@ Route::prefix('/auth')->group(function () {
     });
 });
 
-// *** Master Jaritan Routes *** //
-Route::prefix('/mstr/jaritan')->group(function () {
-    Route::middleware('auth:sanctum')->group(function () {
-        // --View
-        Route::get('/all', ViewMasterJaritanController::class)->name('jaritan.all');
-        // --Create
-        Route::post('/create', CreateMasterJaritanController::class)->name('jaritan.create');
-        // --Update
-        Route::post('/update/{id}', UpdateMasterJaritanController::class)->name('jaritan.update');
-        // --Delete
-        Route::delete('/delete/{id}', DeleteMasterJaritanController::class)->name('jaritan.delete');
-    });
-});
+// // *** Master Jaritan Routes *** //
+// Route::prefix('/mstr/jaritan')->group(function () {
+//     Route::middleware('auth:sanctum')->group(function () {
+//         // --View
+//         Route::get('/all', ViewMasterJaritanController::class)->name('jaritan.all');
+//         // --Create
+//         Route::post('/create', CreateMasterJaritanController::class)->name('jaritan.create');
+//         // --Update
+//         Route::post('/update/{id}', UpdateMasterJaritanController::class)->name('jaritan.update');
+//         // --Delete
+//         Route::delete('/delete/{id}', DeleteMasterJaritanController::class)->name('jaritan.delete');
+//     });
+// });
 
 // *** Master Pemasukan Routes *** //
-Route::prefix('/mstr/pemasukan')->group(function () {
-    Route::middleware('auth:sanctum')->group(function () {
-        // --view
-        Route::get('/all', ViewMasterPemasukanController::class)->name('pemasukan.all');
-        // --create
-        Route::post('/create', CreateMasterPemasukanController::class)->name('pemasukan.create');
-        // --update
-        Route::post('/update/{id}', UpdateMasterPemasukanController::class)->name('pemasukan.update');
-        // --delete
-        Route::delete('/delete/{id}', DeleteMasterPemasukanController::class)->name('pemasukan.delete');
-    });
-});
+// Route::prefix('/mstr/pemasukan')->group(function () {
+//     Route::middleware('auth:sanctum')->group(function () {
+//         // --view
+//         Route::get('/all', ViewMasterPemasukanController::class)->name('pemasukan.all');
+//         // --create
+//         Route::post('/create', CreateMasterPemasukanController::class)->name('pemasukan.create');
+//         // --update
+//         Route::post('/update/{id}', UpdateMasterPemasukanController::class)->name('pemasukan.update');
+//         // --delete
+//         Route::delete('/delete/{id}', DeleteMasterPemasukanController::class)->name('pemasukan.delete');
+//     });
+// });
 
 // *** Master Pengeluaran Routes *** //
-Route::prefix('/mstr/pengeluaran')->group(function () {
-    Route::middleware('auth:sanctum')->group(function () {
-        // --view
-        Route::get('/all', ViewMasterPengeluaranController::class)->name('pengeluaran.all');
-        // --create
-        Route::post('/create', CreateMasterPengeluaranController::class)->name('pengeluaran.create');
-        // --update
-        Route::post('/update/{id}', UpdateMasterPengeluaranController::class)->name('pengeluaran.update');
-        // --delete
-        Route::delete('/delete/{id}', DeleteMasterPengeluaranController::class)->name('pengeluaran.delete');
-    });
-});
+// Route::prefix('/mstr/pengeluaran')->group(function () {
+//     Route::middleware('auth:sanctum')->group(function () {
+//         // --view
+//         Route::get('/all', ViewMasterPengeluaranController::class)->name('pengeluaran.all');
+//         // --create
+//         Route::post('/create', CreateMasterPengeluaranController::class)->name('pengeluaran.create');
+//         // --update
+//         Route::post('/update/{id}', UpdateMasterPengeluaranController::class)->name('pengeluaran.update');
+//         // --delete
+//         Route::delete('/delete/{id}', DeleteMasterPengeluaranController::class)->name('pengeluaran.delete');
+//     });
+// });
 
 // *** Pemasukan Routes *** //
 Route::prefix('/pemasukan')->group(function () {
@@ -164,7 +171,7 @@ Route::get('/', function () {
 
 Route::get('/mstr/jaritan/all', function () {
     return view('master.jaritan.index');
-});
+})->name('jaritan');
 Route::get('/mstr/pemasukan/all', function () {
     return view('master.pemasukan.index');
 });
