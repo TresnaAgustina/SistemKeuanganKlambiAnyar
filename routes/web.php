@@ -5,7 +5,13 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ViewLoginController;
+use App\Http\Controllers\Views\DashboardController;
 use App\Http\Controllers\DataTable\DataTableController;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+use App\Http\Controllers\Keuangan\CreateKeuanganController;
+use App\Http\Controllers\Keuangan\DeleteKeuanganController;
+use App\Http\Controllers\Keuangan\GetAllKeuanganController;
+use App\Http\Controllers\Keuangan\UpdateKeuanganController;
 use App\Http\Controllers\Pemasukan\CreatePemasukanController;
 use App\Http\Controllers\Pemasukan\DeletePemasukanController;
 use App\Http\Controllers\Pemasukan\GetAllPemasukanController;
@@ -17,8 +23,8 @@ use App\Http\Controllers\Pengeluaran\DeletePengeluaranController;
 use App\Http\Controllers\Pengeluaran\GetAllPengeluaranController;
 use App\Http\Controllers\Pengeluaran\SearchPengeluaranController;
 use App\Http\Controllers\Pengeluaran\UpdatePengeluaranController;
-use App\Http\Controllers\Pengeluaran\GetDetailPengeluaranController;
 use App\Http\Controllers\Master\Jaritan\ViewMasterJaritanController;
+use App\Http\Controllers\Pengeluaran\GetDetailPengeluaranController;
 use App\Http\Controllers\Master\Jaritan\CreateMasterJaritanController;
 use App\Http\Controllers\Master\Jaritan\DeleteMasterJaritanController;
 use App\Http\Controllers\Master\Jaritan\UpdateMasterJaritanController;
@@ -30,8 +36,6 @@ use App\Http\Controllers\Master\Pengeluaran\ViewMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\CreateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\DeleteMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\UpdateMasterPengeluaranController;
-use App\Http\Controllers\Views\DashboardController;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -138,6 +142,19 @@ Route::prefix('/pengeluaran')->group(function () {
     // --delete
     Route::delete('/delete/{id}', DeletePengeluaranController::class)->name('pengeluaran.delete');
 });
+
+// *** Keuangan Route *** //
+Route::prefix('/keuangan')->group(function (){
+    // --view
+    Route::get('/all', GetAllKeuanganController::class)->name('keuangan.all');
+    // --create
+    Route::post('/create', CreateKeuanganController::class)->name('keuangan.create');
+    // --update
+    Route::post('/update/{id}', UpdateKeuanganController::class)->name('keuangan.update');
+    // --delete
+    Route::delete('/delete/{id}', DeleteKeuanganController::class)->name('keuangan.delete');
+});
+
 
 
 // Route::get('/auth/login', function () {
