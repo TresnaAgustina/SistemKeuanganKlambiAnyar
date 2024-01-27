@@ -27,6 +27,7 @@ use App\Http\Controllers\Master\Jaritan\ViewMasterJaritanController;
 use App\Http\Controllers\Pengeluaran\GetDetailPengeluaranController;
 use App\Http\Controllers\Master\Jaritan\CreateMasterJaritanController;
 use App\Http\Controllers\Master\Jaritan\DeleteMasterJaritanController;
+use App\Http\Controllers\Master\Jaritan\GetUpdateMasterJaritanController;
 use App\Http\Controllers\Master\Jaritan\UpdateMasterJaritanController;
 use App\Http\Controllers\Master\Pemasukan\ViewMasterPemasukanController;
 use App\Http\Controllers\Master\Pemasukan\CreateMasterPemasukanController;
@@ -52,9 +53,9 @@ use App\Http\Controllers\OrakOrekController;
 Route::get('/dataTable/jaritan', [DataTableController::class, 'DataJaritan']);
 Route::get('/dataTable/pemasukan', [DataTableController::class, 'DataPemasukan']);
 Route::get('/dataTable/pengeluaran', [DataTableController::class, 'DataPengeluaran']);
-
-Route::get('/mstr/jaritan/update/{id}', [OrakOrekController::class, 'jaritan']);
-Route::post('/mstr/jaritan/update/{id}', [OrakOrekController::class, 'editJaritan']);
+// yang di comment, udah tak pindahin ke controller group
+// Route::get('/mstr/jaritan/update/{id}', [OrakOrekController::class, 'jaritan']);
+// Route::post('/mstr/jaritan/update/{id}', [OrakOrekController::class, 'editJaritan']);
 Route::get('/mstr/pemasukan/update/{id}', [OrakOrekController::class, 'pemasukan']);
 Route::post('/mstr/pemasukan/update/{id}', [OrakOrekController::class, 'editPemasukan']);
 Route::get('/mstr/pengeluaran/update/{id}', [OrakOrekController::class, 'pengeluaran']);
@@ -77,47 +78,42 @@ Route::prefix('/auth')->group(function () {
     });
 });
 
-// // *** Master Jaritan Routes *** //
-// Route::prefix('/mstr/jaritan')->group(function () {
-//     Route::middleware('auth:sanctum')->group(function () {
-//         // --View
-//         Route::get('/all', ViewMasterJaritanController::class)->name('jaritan.all');
-//         // --Create
-//         Route::post('/create', CreateMasterJaritanController::class)->name('jaritan.create');
-//         // --Update
-//         Route::post('/update/{id}', UpdateMasterJaritanController::class)->name('jaritan.update');
-//         // --Delete
-//         Route::delete('/delete/{id}', DeleteMasterJaritanController::class)->name('jaritan.delete');
-//     });
-// });
+// *** Master Jaritan Routes *** //
+Route::prefix('/mstr/jaritan')->group(function () {
+        // --View
+        Route::get('/all', ViewMasterJaritanController::class)->name('jaritan.all');
+        Route::get('/update/{id}', GetUpdateMasterJaritanController::class)->name('jaritan.update.index');
+        // --Create
+        Route::post('/create', CreateMasterJaritanController::class)->name('jaritan.create');
+        // --Update
+        Route::post('/update/{id}', UpdateMasterJaritanController::class)->name('jaritan.update');
+        // --Delete
+        Route::delete('/delete/{id}', DeleteMasterJaritanController::class)->name('jaritan.delete');
+});
 
 // *** Master Pemasukan Routes *** //
-// Route::prefix('/mstr/pemasukan')->group(function () {
-//     Route::middleware('auth:sanctum')->group(function () {
-//         // --view
-//         Route::get('/all', ViewMasterPemasukanController::class)->name('pemasukan.all');
-//         // --create
-//         Route::post('/create', CreateMasterPemasukanController::class)->name('pemasukan.create');
-//         // --update
-//         Route::post('/update/{id}', UpdateMasterPemasukanController::class)->name('pemasukan.update');
-//         // --delete
-//         Route::delete('/delete/{id}', DeleteMasterPemasukanController::class)->name('pemasukan.delete');
-//     });
-// });
+Route::prefix('/mstr/pemasukan')->group(function () {
+        // --view
+        Route::get('/all', ViewMasterPemasukanController::class)->name('pemasukan.all');
+        // --create
+        Route::post('/create', CreateMasterPemasukanController::class)->name('pemasukan.create');
+        // --update
+        Route::post('/update/{id}', UpdateMasterPemasukanController::class)->name('pemasukan.update');
+        // --delete
+        Route::delete('/delete/{id}', DeleteMasterPemasukanController::class)->name('pemasukan.delete');
+});
 
 // *** Master Pengeluaran Routes *** //
-// Route::prefix('/mstr/pengeluaran')->group(function () {
-//     Route::middleware('auth:sanctum')->group(function () {
-//         // --view
-//         Route::get('/all', ViewMasterPengeluaranController::class)->name('pengeluaran.all');
-//         // --create
-//         Route::post('/create', CreateMasterPengeluaranController::class)->name('pengeluaran.create');
-//         // --update
-//         Route::post('/update/{id}', UpdateMasterPengeluaranController::class)->name('pengeluaran.update');
-//         // --delete
-//         Route::delete('/delete/{id}', DeleteMasterPengeluaranController::class)->name('pengeluaran.delete');
-//     });
-// });
+Route::prefix('/mstr/pengeluaran')->group(function () {
+        // --view
+        Route::get('/all', ViewMasterPengeluaranController::class)->name('pengeluaran.all');
+        // --create
+        Route::post('/create', CreateMasterPengeluaranController::class)->name('pengeluaran.create');
+        // --update
+        Route::post('/update/{id}', UpdateMasterPengeluaranController::class)->name('pengeluaran.update');
+        // --delete
+        Route::delete('/delete/{id}', DeleteMasterPengeluaranController::class)->name('pengeluaran.delete');
+});
 
 // *** Pemasukan Routes *** //
 Route::prefix('/pemasukan')->group(function () {
@@ -182,7 +178,6 @@ Route::prefix('/keuangan')->group(function (){
 
 // * Routes Untuk Coba Fitur Tambahan Baru Setengah * //
 
-Route::middleware('auth:sanctum')->group(function (){
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/mstr/jaritan/all', function () {
         return view('master.jaritan.index');
@@ -193,7 +188,6 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('/mstr/pengeluaran/all', function () {
         return view('master.pengeluaran.index');
     });
-});
 
 
 // Route::get('/', function () {

@@ -79,16 +79,16 @@
             <form action="{{ url('/mstr/jaritan/create') }}" method="POST">
               @csrf
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Jenis Jaritan</label>
-                    <input name="jenis_jaritan" type="text" class="form-control" id="exampleInputEmail1" >
+                    <label for="jenis">Jenis Jaritan</label>
+                    <input name="jenis_jaritan" type="text" class="form-control" id="jenis" >
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword1">Harga Dalam</label>
-                    <input name="harga_dalam" type="text" class="form-control" id="exampleInputPassword1" >
+                    <label for="hargaDalam">Harga Dalam</label>
+                    <input name="harga_dalam" type="text" class="form-control" id="hargaDalam" >
                 </div>                          
                 <div class="form-group">
-                    <label for="exampleInputPassword1">Harga Luar</label>
-                    <input name="harga_luar" type="text" class="form-control" id="exampleInputPassword1" >
+                    <label for="hargaLuar">Harga Luar</label>
+                    <input name="harga_luar" type="text" class="form-control" id="hargaLuar" >
                 </div>                          
 
                 <div class="modal-footer justify-content-between">

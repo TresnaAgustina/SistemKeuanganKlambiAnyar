@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Master\Jaritan;
 use Illuminate\Http\Request;
 use App\Models\Master_Jaritan;
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\Rules\In;
 
 class UpdateMasterJaritanController extends Controller
 {
@@ -14,14 +15,14 @@ class UpdateMasterJaritanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, Int $id)
     {
         try {
             // get all request data
             $data = $request->all();
 
             // // check if data exists in database
-            $check = Master_Jaritan::where('id', $request->id)->first();
+            $check = Master_Jaritan::where('id', $id)->first();
 
             // if data not found
             if (!$check) {
@@ -32,9 +33,9 @@ class UpdateMasterJaritanController extends Controller
 
             // validation
             $validate = $request->validate([
-               'jenis_jaritan' => 'required|unique:master_jaritan,jenis_jaritan',
-               'harga_dalam' => 'nullable|numeric',
-               'harga_luar' => 'nullable|numeric',
+               'jenis' => 'required|unique:master_jaritan,jenis_jaritan',
+               'hargaDalam' => 'nullable|numeric',
+               'hargaLuar' => 'nullable|numeric',
             ]);
 
             // if validation fails
@@ -45,10 +46,10 @@ class UpdateMasterJaritanController extends Controller
             }
 
             // update data to database
-            $update = Master_Jaritan::where('id', $request->id)->update([
-                'jenis_jaritan' => $data['jenis_jaritan'],
-                'harga_dalam' => $data['harga_dalam'],
-                'harga_luar' => $data['harga_luar'],
+            $update = Master_Jaritan::where('id', $id)->update([
+                'jenis_jaritan' => $data['jenis'],
+                'harga_dalam' => $data['hargaDalam'],
+                'harga_luar' => $data['hargaLuar'],
             ]);
             // if update data fails
             if (!$update) {
