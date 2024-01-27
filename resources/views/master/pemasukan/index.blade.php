@@ -29,15 +29,12 @@
           
           <div class="card card-primary card-outline">
             <div class="card-header">
-              <h3 class="card-title">
-                {{-- <i class="fas fa-edit"></i> --}}
-                Data Pemasukan
-              </h3>
+              <strong><h4 >{{-- <i class="fas fa-edit"></i> --}}Data Pemasukan </h4></strong>
             </div>
             
             <div class="card-body">
               
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#md-pemasukan">
                 <i class="fas fa-plus"></i>
                 Tambah Data
               </button>
@@ -66,11 +63,11 @@
     </div><!-- /.container-fluid -->
 
     
-    <div class="modal fade" id="modal-lg">
+    <div class="modal fade" id="md-pemasukan">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Tambah Data Jaritan</h4>
+            <h4 class="modal-title">Tambah Data Pemasukan</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -81,13 +78,8 @@
               @csrf
                 <div class="form-group">
                     <label for="exampleInputEmail1">Nama Atribut</label>
-                    <input name="nama_atribut" type="text" class="form-control" id="exampleInputEmail1" >
+                    <input name="nama_atribut" type="text" class="nama_atribut" id="nama_atribut" >
                 </div>              
-
-                {{-- <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                </div> --}}
-
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan</button>
@@ -133,42 +125,52 @@
     });
 </script>
 
-
-{{-- <script>
-    $(document).ready(function(){
-        $('#jaritan').DataTable({
-            "responsive": true, 
-            "lengthChange": false, 
-            "autoWidth": false,
-            "buttons": ["excel", "pdf", "print"],
-            "processing": true,
-            "serverside": true,
-            "ajax": "{{ url('dataTable/jaritan') }}",
-            "columns": [{
-                data: 'DT_RowIndex',
-                name: 'DT_RowIndex',
-                orderable: false,
-                searchable: false
-            },{
-                data: 'jenis_jaritan',
-                name: 'Jenis Jaritan'
-            },{
-                data: 'harga_dalam',
-                name: 'Harga Dalam'
-            },{
-                data: 'harga_luar',
-                name: 'Harga Luar'
-            },{
-                data: 'aksi',
-                name: 'Aksi'
-            }],
-            "initComplete": function () {
-                this.api().buttons().container().appendTo('#jaritan_wrapper .col-md-6:eq(0)');
-            }
+<script>
+  $.ajaxSetup({
+      headers:{
+        'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+      }
+  });
+  
+    $('body').on('click', '.edit', function(e){
+        var id = $(this).data('id');
+        $.ajax({
+          url:'/mstr/pemasukan/update/' + id,
+          success:function(response){
+            $('#test').modal('show');
+            $('#nama').val(response.result.nama_atribut);
+            $('.simpan').click(function() {
+              simpan(id);
+            });
+          }
         });
     });
-</script> --}}
-
-
-
+  
+    function simpan(id = ''){
+      if (id == ''){
+        var var_url = '/mstr/pemasukan/create';
+        var var_type = 'POST';
+      }else{
+        var var_url = '/mstr/pemasukan/update/' + id;
+        var var_type = 'POST';
+      }
+      $.ajax({
+        url: var_url,
+        type: var_type,
+        data: {
+            nama: $('#nama').val(),
+        },
+        success: function(response){
+          $('#pemasukan').DataTable().ajax.reload();
+        }
+      });
+    }
+  
+  // hapus data pada form ketika di tutup
+    $(document).ready(function(){
+        $('#md-pemasukan').on('hidden.bs.modal', function(){
+            $(this).find('input').val(''); // Mengosongkan nilai input di dalam modal
+        });
+    });
+  </script>
 @endpush
