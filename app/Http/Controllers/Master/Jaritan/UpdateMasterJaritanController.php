@@ -33,9 +33,10 @@ class UpdateMasterJaritanController extends Controller
 
             // validation
             $validate = $request->validate([
-               'jenis' => 'required|unique:master_jaritan,jenis_jaritan',
-               'hargaDalam' => 'nullable|numeric',
-               'hargaLuar' => 'nullable|numeric',
+            //    'jenis' => 'required|unique:master_jaritan,jenis_jaritan',
+               'jenis_jaritan' => 'required',
+               'harga_dalam' => 'nullable|numeric',
+               'harga_luar' => 'nullable|numeric',
             ]);
 
             // if validation fails
@@ -47,9 +48,9 @@ class UpdateMasterJaritanController extends Controller
 
             // update data to database
             $update = Master_Jaritan::where('id', $id)->update([
-                'jenis_jaritan' => $data['jenis'],
-                'harga_dalam' => $data['hargaDalam'],
-                'harga_luar' => $data['hargaLuar'],
+                'jenis_jaritan' => $data['jenis_jaritan'],
+                'harga_dalam' => $data['harga_dalam'],
+                'harga_luar' => $data['harga_luar'],
             ]);
             // if update data fails
             if (!$update) {
@@ -60,7 +61,7 @@ class UpdateMasterJaritanController extends Controller
 
             //return data
             return back()->with(
-                'pesan', 'Success to update data to database'
+                'success', 'Success to update data to database'
             );
         } catch (\Exception $e) {
             return back()->with(

@@ -11,15 +11,21 @@
     </div><!-- /.container-fluid -->
 </div>
 
+{{-- error and success handling with sweetalert --}}
+<div class="swal" data-swal="{{ session('success') }}">
+</div>
+<div class="error" data-swal="{{ session('pesan') }}">
+</div>
+
 {{-- error and success handling --}}
-@if (session('pesan'))
+{{-- @if (session('pesan'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
     {{ session('pesan') }}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button> 
 </div>
-@endif
+@endif --}}
 {{-- end --}}
 
 <section class="content">
@@ -80,15 +86,15 @@
               @csrf
                 <div class="form-group">
                     <label for="jenis">Jenis Jaritan</label>
-                    <input name="jenis_jaritan" type="text" class="form-control" id="jenis" >
+                    <input name="jenis_jaritan" type="text" class="form-control" id="jenis" required>
                 </div>
                 <div class="form-group">
                     <label for="hargaDalam">Harga Dalam</label>
-                    <input name="harga_dalam" type="text" class="form-control" id="hargaDalam" >
+                    <input name="harga_dalam" type="text" class="form-control" id="hargaDalam" required>
                 </div>                          
                 <div class="form-group">
                     <label for="hargaLuar">Harga Luar</label>
-                    <input name="harga_luar" type="text" class="form-control" id="hargaLuar" >
+                    <input name="harga_luar" type="text" class="form-control" id="hargaLuar" required>
                 </div>                          
 
                 <div class="modal-footer justify-content-between">
@@ -112,6 +118,78 @@
 @endsection
 
 @push('js')
+
+{{-- // sweetalert notification --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  const swal = $('.swal').data('swal');
+  if(swal){
+    Swal.fire({
+      'title': 'success',
+      'text': swal,
+      'icon': 'success',
+      'showConfirmButton': false,
+      'timer': 3500
+    })
+  }
+
+  const swalError = $('.error').data('swal');
+  if(swalError){
+    Swal.fire({
+      'title': 'Error Input',
+      'text': swalError,
+      'icon': 'error',
+      'showConfirmButton': false,
+      'timer': 3500
+    })
+  }
+</script>
+
+<script>
+  $.ajaxSetup({
+    headers:{
+      'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+    }
+  })
+
+  $('.card-body').on('click', '.del', function(e){
+        var id = $(this).data('id');
+
+        Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Anda tidak dapat mengembalikan data yang dihapus!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#007bff',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus!'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: 'DELETE',
+                        url: '/mstr/jaritan/delete/' + id, 
+                        success: function(data) {
+                            Swal.fire({
+                              title: 'berhasil',
+                              text: data.message,
+                              icon: 'success'
+                            }).then((result) => {
+                               window.location.href = '/mstr/jaritan/all';
+                            })
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                          alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+                        }
+                    });
+                }
+            });
+        });
+</script>
+{{-- // End sweetalert notification --}}
+
+
+{{-- //Datatble Config --}}
 <script>
     $(document).ready(function(){
         $('#jaritan').DataTable({
@@ -158,34 +236,9 @@ $.ajaxSetup({
           $('#jenis').val(response.result.jenis_jaritan);
           $('#hargaDalam').val(response.result.harga_dalam);
           $('#hargaLuar').val(response.result.harga_luar);
-          $('.simpan').click(function() {
-            simpan(id);
-          });
         }
       });
   });
-
-  function simpan(id = ''){
-    if (id == ''){
-      var var_url = '/mstr/jaritan/create';
-      var var_type = 'POST';
-    }else{
-      var var_url = '/mstr/jaritan/update/' + id;
-      var var_type = 'POST';
-    }
-    $.ajax({
-      url: var_url,
-      type: var_type,
-      data: {
-          jenis: $('#jenis').val(),
-          hargaDalam: $('#hargaDalam').val(),
-          hargaLuar: $('#hargaLuar').val()
-      },
-      success: function(response){
-        $('#jaritan').DataTable().ajax.reload();
-      }
-    });
-  }
 
 // hapus data pada form ketika di tutup
   $(document).ready(function(){
@@ -194,9 +247,6 @@ $.ajaxSetup({
       });
   });
 </script>
-
-
-
 
 {{-- <script>
     $(document).ready(function(){

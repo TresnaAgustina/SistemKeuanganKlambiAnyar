@@ -11,15 +11,21 @@
     </div><!-- /.container-fluid -->
 </div>
 
+{{-- error and success handling with sweetalert --}}
+<div class="swal" data-swal="{{ session('success') }}">
+</div>
+<div class="error" data-swal="{{ session('pesan') }}">
+</div>
+
 {{-- error and success handling --}}
-@if (session('pesan'))
+{{-- @if (session('pesan'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
     {{ session('pesan') }}
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">×</span>
     </button> 
 </div>
-@endif
+@endif --}}
 {{-- end --}}
 
 <section class="content">
@@ -79,20 +85,19 @@
                 @csrf
                 <div class="form-group">
                     <label for="nama_atribut">Nama Atribut</label>
-                    <input name="nama_atribut" type="text" class="form-control" id="namaAtribut" >
-                </div>
-                <div class="form-group">
-                    <label for="tipe">Tipe</label>
-                    <input type="text" class="form-control" id="tipe" name="tipe" required >
+                    <input name="nama_atribut" type="text" class="form-control" id="nama" required>
                 </div>
                 {{-- <div class="form-group">
+                    <label for="tipe">Tipe</label>
+                    <input type="text" class="form-control" id="tipe" name="tipe" id="tipe" required >
+                </div> --}}
+                <div class="form-group">
                   <label>Tipe</label>
-                  <select name="tipe" class="form-control">
-                    <option>- pilih -</option>
+                  <select name="tipe" id="tipe" class="form-control">
                     <option value="1">Perusahaan</option>
                     <option value="2">Pribadi</option>
                   </select>
-                </div>                          --}}
+                </div>                         
                                         
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -115,6 +120,77 @@
 @endsection
 
 @push('js')
+
+{{-- // sweetalert notification --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  const swal = $('.swal').data('swal');
+  if(swal){
+    Swal.fire({
+      'title': 'success',
+      'text': swal,
+      'icon': 'success',
+      'showConfirmButton': false,
+      'timer': 3500
+    })
+  }
+
+  const swalError = $('.error').data('swal');
+  if(swalError){
+    Swal.fire({
+      'title': 'Error Input',
+      'text': swalError,
+      'icon': 'error',
+      'showConfirmButton': false,
+      'timer': 3500
+    })
+  }
+</script>
+
+<script>
+  $.ajaxSetup({
+    headers:{
+      'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
+    }
+  })
+
+  $('.card-body').on('click', '.del', function(e){
+        var id = $(this).data('id');
+
+        Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Anda tidak dapat mengembalikan data yang dihapus!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#007bff',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus!'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: 'DELETE',
+                        url: '/mstr/pengeluaran/delete/' + id, 
+                        success: function(data) {
+                            Swal.fire({
+                              title: 'berhasil',
+                              text: data.message,
+                              icon: 'success'
+                            }).then((result) => {
+                               window.location.href = '/mstr/pengeluaran/all';
+                            })
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                          alert(xhr.status + "\n" + xhr.responseText + "\n" + thrownError);
+                        }
+                    });
+                }
+            });
+        });
+</script>
+{{-- // End sweetalert notification --}}
+
+
 <script>
     $(document).ready(function(){
         $('#pengeluaran').DataTable({
@@ -156,34 +232,17 @@
           success:function(response){
             $('#test').modal('show');
             $('#nama').val(response.result.nama_atribut);
-            $('#tipe').val(response.result.tipe);
-            $('.simpan').click(function() {
-              simpan(id);
-            });
+            var tipeValue = response.result.tipe;
+            var selectElement = document.getElementById("tipe");
+            for (var i = 0; i < selectElement.options.length; i++) {
+                if (selectElement.options[i].value === tipeValue) {
+                    selectElement.options[i].selected = true;
+                    break;
+                }
+            }
           }
         });
     });
-  
-    function simpan(id = ''){
-      if (id == ''){
-        var var_url = '/mstr/pengeluaran/create';
-        var var_type = 'POST';
-      }else{
-        var var_url = '/mstr/pengeluaran/update/' + id;
-        var var_type = 'POST';
-      }
-      $.ajax({
-        url: var_url,
-        type: var_type,
-        data: {
-            nama: $('#nama').val(),
-            tipe: $('#tipe').val()
-        },
-        success: function(response){
-          $('#pengeluaran').DataTable().ajax.reload();
-        }
-      });
-    }
   
   // hapus data pada form ketika di tutup
     $(document).ready(function(){
@@ -192,5 +251,23 @@
         });
     });
   </script>
+
+<script>
+  // Mendapatkan elemen select
+  var selectElement = document.getElementById("tipe");
+
+  // Mendengarkan perubahan pada elemen select
+  selectElement.addEventListener("change", function() {
+      // Memeriksa apakah nilai yang dipilih adalah "- pilih -"
+      if (selectElement.value === "- pilih -") {
+          // Jika ya, set atribut required pada elemen select
+          selectElement.setAttribute("required", "required");
+      } else {
+          // Jika tidak, hapus atribut required dari elemen select
+          selectElement.removeAttribute("required");
+      }
+  });
+</script>
+
 
 @endpush

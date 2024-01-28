@@ -59,9 +59,8 @@ class DeleteMasterJaritanController extends Controller
             // ], 200);
 
             // for monolith app
-            return back()->with(
-                'pesan', 'Success to delete data from database'
-            );
+            return response()->json(['message' => 'berhasil hapus']);
+            
         } catch (\Exception $e) {
             // return response()->json([
             //     'status' => 'error',

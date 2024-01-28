@@ -16,24 +16,20 @@
           </div>
 
           <div class="modal-body">
-            <form>
+            <form action="{{ url('/mstr/jaritan/update/' . $data->id) }}" method="POST">
+              @csrf
                 <div class="form-group">
                     <label for="jenis">Jenis Jaritan</label>
-                    <input type="text" class="form-control" id="jenis" >
+                    <input type="text" class="form-control" name="jenis_jaritan" id="jenis" required>
                 </div>
                 <div class="form-group">
                     <label for="hargaDalam">Harga Dalam</label>
-                    <input type="text" class="form-control" id="hargaDalam" >
+                    <input type="text" class="form-control" name="harga_dalam" id="hargaDalam" required >
                 </div>                          
                 <div class="form-group">
                     <label for="hargaLuar">Harga Luar</label>
-                    <input type="text" class="form-control" id="hargaLuar" >
+                    <input type="text" class="form-control" name="harga_luar" id="hargaLuar" required>
                 </div>                          
-
-                {{-- <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                </div> --}}
-
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary simpan">Simpan</button>

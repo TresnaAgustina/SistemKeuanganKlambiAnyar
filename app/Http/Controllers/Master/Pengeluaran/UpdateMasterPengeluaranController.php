@@ -14,94 +14,54 @@ class UpdateMasterPengeluaranController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, Int $id)
     {
         try {
-            //get all request
+            // get all request data
             $data = $request->all();
 
-            // find data by id
-            $find = Master_Pengeluaran::where('id', $request->id)->first();
+            // // check if data exists in database
+            $check = Master_Pengeluaran::where('id', $id)->first();
 
             // if data not found
-            if (!$find) {
-                // return response()->json([
-                //     'status' => 'error',
-                //     'message' => 'Data tidak ditemukan',
-                //     'data' => Null
-                // ], 404);
-
-                // for monolith app
-                return redirect()->back()->with(
-                    'pesan', 'Error: Data tidak ditemukan'
+            if (!$check) {
+                return back()->with(
+                    'pesan', 'Error: Data not found'
                 );
             }
 
             // validation
             $validate = $request->validate([
-                'nama_atribut' => 'required|string|max:150|unique:master_pengeluaran,nama_atribut,' . $request->id,
-                'tipe' => 'required|in:1,2',
+                'nama_atribut' => 'required',
+                'tipe' => 'required',
             ]);
 
             // if validation fails
             if (!$validate) {
-                // return response()->json([
-                //     'status' => 'error',
-                //     'message' => 'Data gagal diubah',
-                //     'data' => Null
-                // ], 400);
-
-                // for monolith app
-                return redirect()->back()->with(
-                    'pesan', 'Error: Data gagal diubah'
+                return back()->with(
+                    'pesan', 'Error: ' . $request->errors()
                 );
             }
 
-            // update data
-            $update = $find->update([
+            // update data to database
+            $update = Master_Pengeluaran::where('id', $id)->update([
                 'nama_atribut' => $data['nama_atribut'],
                 'tipe' => $data['tipe'],
             ]);
-
-            // if update fails
+            // if update data fails
             if (!$update) {
-                // return response()->json([
-                //     'status' => 'error',
-                //     'message' => 'Data gagal diubah',
-                //     'data' => Null
-                // ], 400);
-
-                // for monolith app
-                return redirect()->back()->with(
-                    'pesan', 'Error: Data gagal diubah'
+                return back()->with(
+                    'pesan', 'Error: Failed to update data to database'
                 );
             }
 
-            // return data
-            // return response()->json([
-            //     'status' => 'success',
-            //     'message' => 'Data berhasil diubah',
-            //     'data' => [
-            //         'id' => $find->id,
-            //         'nama_atribut' => $data['nama_atribut'],
-            //         'tipe' => $data['tipe'],
-            //     ]
-            // ], 200);
-
-            // for monolith app
-            return redirect()->back()->with(
-                'pesan', 'Data berhasil diubah'
+            //return data
+            return back()->with(
+                'success', 'Success to update data to database'
             );
         } catch (\Exception $e) {
-            // return response()->json([
-            //     'status' => 'error',
-            //     'message' => 'Data gagal diubah',
-            //     'data' => $e->getMessage()
-            // ], 500);
-
-            // for monolith app
-            return redirect()->back()->with(
-                'pesan', 'Error: ' .  $e->getMessage()
+            return back()->with(
+                'pesan', 'Error: ' . $e->getMessage()
             );
         }
     }

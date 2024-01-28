@@ -32,10 +32,12 @@ use App\Http\Controllers\Master\Jaritan\UpdateMasterJaritanController;
 use App\Http\Controllers\Master\Pemasukan\ViewMasterPemasukanController;
 use App\Http\Controllers\Master\Pemasukan\CreateMasterPemasukanController;
 use App\Http\Controllers\Master\Pemasukan\DeleteMasterPemasukanController;
+use App\Http\Controllers\Master\Pemasukan\GetUpdateMasterPemasukanController;
 use App\Http\Controllers\Master\Pemasukan\UpdateMasterPemasukanController;
 use App\Http\Controllers\Master\Pengeluaran\ViewMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\CreateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\DeleteMasterPengeluaranController;
+use App\Http\Controllers\Master\Pengeluaran\GetUpdateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\UpdateMasterPengeluaranController;
 use App\Http\Controllers\OrakOrekController;
 
@@ -50,18 +52,10 @@ use App\Http\Controllers\OrakOrekController;
 |
 */
 
+// -- Data Table Config --
 Route::get('/dataTable/jaritan', [DataTableController::class, 'DataJaritan']);
 Route::get('/dataTable/pemasukan', [DataTableController::class, 'DataPemasukan']);
 Route::get('/dataTable/pengeluaran', [DataTableController::class, 'DataPengeluaran']);
-// yang di comment, udah tak pindahin ke controller group
-// Route::get('/mstr/jaritan/update/{id}', [OrakOrekController::class, 'jaritan']);
-// Route::post('/mstr/jaritan/update/{id}', [OrakOrekController::class, 'editJaritan']);
-Route::get('/mstr/pemasukan/update/{id}', [OrakOrekController::class, 'pemasukan']);
-Route::post('/mstr/pemasukan/update/{id}', [OrakOrekController::class, 'editPemasukan']);
-Route::get('/mstr/pengeluaran/update/{id}', [OrakOrekController::class, 'pengeluaran']);
-Route::post('/mstr/pengeluaran/update/{id}', [OrakOrekController::class, 'editPengeluaran']);
-
-
 
 
 // *** Auth Routes *** //
@@ -95,6 +89,7 @@ Route::prefix('/mstr/jaritan')->group(function () {
 Route::prefix('/mstr/pemasukan')->group(function () {
         // --view
         Route::get('/all', ViewMasterPemasukanController::class)->name('pemasukan.all');
+        Route::get('/update/{id}', GetUpdateMasterPemasukanController::class)->name('pemasukan.update.index');
         // --create
         Route::post('/create', CreateMasterPemasukanController::class)->name('pemasukan.create');
         // --update
@@ -107,6 +102,7 @@ Route::prefix('/mstr/pemasukan')->group(function () {
 Route::prefix('/mstr/pengeluaran')->group(function () {
         // --view
         Route::get('/all', ViewMasterPengeluaranController::class)->name('pengeluaran.all');
+        Route::get('/update/{id}', GetUpdateMasterPengeluaranController::class)->name('pengeluaran.update.index');
         // --create
         Route::post('/create', CreateMasterPengeluaranController::class)->name('pengeluaran.create');
         // --update
@@ -179,24 +175,6 @@ Route::prefix('/keuangan')->group(function (){
 // * Routes Untuk Coba Fitur Tambahan Baru Setengah * //
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/mstr/jaritan/all', function () {
-        return view('master.jaritan.index');
-    })->name('jaritan');
-    Route::get('/mstr/pemasukan/all', function () {
-        return view('master.pemasukan.index');
-    });
-    Route::get('/mstr/pengeluaran/all', function () {
-        return view('master.pengeluaran.index');
-    });
-
-
-// Route::get('/', function () {
-//     return view('dashboard.index');
-// });
-
-// Route::get('/login', function () {
-//     return view('sesi.login');
-// })->name('login');
 
 // Route::get('/register', function () {
 //     return view('sesi.register');

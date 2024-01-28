@@ -59,9 +59,7 @@ class DeleteMasterPengeluaranController extends Controller
             // ], 200);
 
             // for monolith app
-            return redirect()->back()->with(
-                'pesan', 'Data berhasil dihapus'
-            );
+            return response()->json(['message' => 'berhasil hapus']);
         } catch (\Exception $e) {
             return redirect()->back()->with(
                 'pesan', 'Error: ' . $e->getMessage()

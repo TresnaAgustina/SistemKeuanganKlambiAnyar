@@ -14,93 +14,52 @@ class UpdateMasterPemasukanController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, Int $id)
     {
         try {
-            //get all request
+            // get all request data
             $data = $request->all();
 
-            // find data by id
-            $find = Master_Pemasukan::where('id', $request->id)->first();
+            // // check if data exists in database
+            $check = Master_Pemasukan::where('id', $id)->first();
 
             // if data not found
-            if (!$find) {
-                // return response()->json([
-                //     'success' => false,
-                //     'message' => 'Data not found',
-                //     'data' => Null
-                // ], 404);
-
-                // for monolith app
-                return redirect()->back()->with(
+            if (!$check) {
+                return back()->with(
                     'pesan', 'Error: Data not found'
                 );
             }
 
             // validation
             $validate = $request->validate([
-                'nama_atribut' => 'string|max:150|unique:master_pemasukan,nama_atribut',
+               'nama_atribut' => 'required'
             ]);
 
             // if validation fails
             if (!$validate) {
-                // return response()->json([
-                //     'success' => false,
-                //     'message' => 'Failed update data',
-                //     'data' => $find,
-                //     'data 2' => $data,
-                // ], 400);
-
-                // for monolith app
-                return redirect()->back()->with(
-                    'error', 'Failed update data'
+                return back()->with(
+                    'pesan', 'Error: ' . $request->errors()
                 );
             }
 
-            // update data
-            $update = Master_Pemasukan::where('id', $request->id)->update([
-                'nama_atribut' => $data['nama_atribut'],
+            // update data to database
+            $update = Master_Pemasukan::where('id', $id)->update([
+                'nama_atribut' => $data['nama_atribut']
             ]);
-
             // if update data fails
             if (!$update) {
-                // return response()->json([
-                //     'success' => false,
-                //     'message' => 'Error: Failed update data',
-                //     'data' => Null
-                // ], 400);
-
-                // for monolith app
-                return redirect()->back()->with(
-                    'pesan', 'Error: Failed update data'
+                return back()->with(
+                    'pesan', 'Error: Failed to update data to database'
                 );
             }
 
-            // return json response
-            // return response()->json([
-            //     'success' => true,
-            //     'message' => 'Success update data',
-            //     'data' => [
-            //         'id' => $request->id,
-            //         'nama_atribut' => $data['nama_atribut'],
-            //     ]
-            // ], 200);
-
-            // for monolith app
-            return redirect()->back()->with(
-                'pesan', 'Success update data'
+            //return data
+            return back()->with(
+                'success', 'Success to update data to database'
             );
         } catch (\Exception $e) {
-            // return response()->json([
-            //     'success' => false,
-            //     'message' => 'Failed update data',
-            //     'data' => $e->getMessage(),
-            //     'line' => $e->getLine(),
-            // ], 500);
-
-            // for monolith app
-            return redirect()->back()->with(
-                'pesan', 'Error: '. $e->getMessage()
+            return back()->with(
+                'pesan', 'Error: ' . $e->getMessage()
             );
         }
     }

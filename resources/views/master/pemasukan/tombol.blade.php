@@ -15,10 +15,11 @@
             </div>
   
             <div class="modal-body">
-              <form>
+              <form action="{{ url('/mstr/pemasukan/update/' . $data->id) }}" method="POST">
+                @csrf
                   <div class="form-group">
-                      <label for="exampleInputEmail1">Nama Atribut</label>
-                      <input type="text" class="form-control" id="nama" name="nama" required>
+                      <label for="nama_atribut">Nama Atribut</label>
+                      <input type="text" class="form-control" id="nama" name="nama_atribut" required>
                   </div>              
                   <div class="modal-footer justify-content-between">
                       <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
