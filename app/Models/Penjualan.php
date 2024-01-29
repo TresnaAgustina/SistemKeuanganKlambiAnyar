@@ -11,7 +11,7 @@ class Penjualan extends Model
 
     protected $table = 'penjualan';
     protected $fillable = [
-        'id_mstr_pengeluaran',
+        'id_mstr_jaritan',
         'kode_penjualan',
         'tanggal',
         'nama_pembeli',
@@ -23,8 +23,8 @@ class Penjualan extends Model
         'bukti_pembayaran',
     ];
 
-    public function master_pengeluaran()
+    public function master_jaritan()
     {
-        return $this->belongsToMany(Master_Pengeluaran::class, 'id_mstr_pengeluaran', 'id');
+        return $this->belongsToMany(MasterJaritan::class, 'id_mstr_jaritan', 'id');
     }
 }

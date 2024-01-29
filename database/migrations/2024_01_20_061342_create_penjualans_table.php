@@ -15,17 +15,18 @@ return new class extends Migration
     {
         Schema::create('penjualan', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_mstr_pengeluaran');
+            $table->unsignedBigInteger('id_mstr_jaritan');
             $table->date('tanggal');
             $table->string('nama_pembeli');
             $table->string('no_telp');
+            $table->integer('quantity');
             $table->enum('metode_pembayaran', ['tunai', 'kredit']);
             $table->double('jmlh_bayar_awal')->nullable();
             $table->double('subtotal');
             $table->text('keterangan');
             $table->string('bukti_pembayaran')->nullable();
             // relationship
-            $table->foreign('id_mstr_pengeluaran')->references('id')->on('master_pengeluaran')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_mstr_jaritan')->references('id')->on('master_jaritan')->onDelete('cascade');
             $table->timestamps();
         });
     }
