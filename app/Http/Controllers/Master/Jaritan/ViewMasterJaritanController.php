@@ -21,13 +21,15 @@ class ViewMasterJaritanController extends Controller
             $data = Master_Jaritan::all();
 
             //return data
-            return response()->json([
-                'status' => 'success',
-                'data' => $data
-            ], 200);
+            // return response()->json([
+            //     'status' => 'success',
+            //     'data' => $data
+            // ], 200);
 
             // for monolith app
-            // return view('Master.Jaritan', compact('data'));
+            return view('Master.jaritan.index')->with([
+                'data' => $data
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',

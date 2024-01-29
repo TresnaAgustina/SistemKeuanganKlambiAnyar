@@ -21,14 +21,18 @@ class ViewMasterPemasukanController extends Controller
             $data = Master_Pemasukan::all();
 
             // return json response
-            return response()->json([
-                'success' => true,
-                'message' => 'Success fetch all data',
-                'data' => $data
-            ], 200);
+            // return response()->json([
+            //     'success' => true,
+            //     'message' => 'Success fetch all data',
+            //     'data' => $data
+            // ], 200);
 
             // for monolith app
-            // return view('Master.pemasukan.index', compact('data'));
+            return view('Master.pemasukan.index')->with([
+                'data' => $data
+            ]);
+
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,

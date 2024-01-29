@@ -28,7 +28,9 @@ class ViewMasterPengeluaranController extends Controller
             // ], 200);
 
             // for monolith app
-            return view('master.pengeluaran.index', compact('data'));
+            return view('Master.pengeluaran.index')->with([
+                'data' => $data
+            ]);
         } catch (\Exception $e) {
             // return response()->json([
             //     'status' => 'error',

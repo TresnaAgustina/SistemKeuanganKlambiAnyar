@@ -14,23 +14,19 @@
             </div>
   
             <div class="modal-body">
-              <form>
+              <form action="{{ url('/mstr/pengeluaran/update/' . $data->id) }}" method="POST">
+                @csrf
                   <div class="form-group">
                       <label for="nama">Nama Atribut</label>
-                      <input type="text" class="form-control" id="nama" name="nama" required >
+                      <input type="text" class="form-control" id="nama" name="nama_atribut" required >
                   </div>
                   <div class="form-group">
-                      <label for="tipe">Tipe</label>
-                      <input type="text" class="form-control" id="tipe" name="tipe" required >
-                  </div>
-                  {{-- <div class="form-group">
                     <label>Tipe</label>
-                    <select class="form-control">
-                      <option>- pilih -</option>
-                      <option>Perusahaan</option>
-                      <option>Pribadi</option>
+                    <select name="tipe" id="tipe" class="form-control">
+                      <option value="perusahaan">Perusahaan</option>
+                      <option value="pribadi">Pribadi</option>
                     </select>
-                  </div>                          --}}
+                  </div> 
                                           
                   <div class="modal-footer justify-content-between">
                       <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>

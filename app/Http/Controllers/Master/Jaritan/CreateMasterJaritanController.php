@@ -50,7 +50,7 @@ class CreateMasterJaritanController extends Controller
 
             //return data
             return back()->with(
-                'pesan', 'Success to store data to database'
+                'success', 'Success to store data to database'
             );
         } catch (\Exception $e) {
             return back()->with(

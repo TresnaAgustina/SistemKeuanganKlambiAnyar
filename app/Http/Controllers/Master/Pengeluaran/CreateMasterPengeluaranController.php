@@ -69,7 +69,7 @@ class CreateMasterPengeluaranController extends Controller
 
             // for monolith app
             return redirect()->back()->with(
-                'pesan', 'Data berhasil ditambahkan'
+                'success', 'Data berhasil ditambahkan'
             );
 
         } catch (\Exception $e) {
