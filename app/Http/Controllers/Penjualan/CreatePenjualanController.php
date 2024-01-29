@@ -53,10 +53,6 @@ class CreatePenjualanController extends Controller
                 $data['subtotal'] = $data['jmlh_bayar_awal'];
             }
 
-            // 
-
-
-
             // create penjualan
             $penjualan = Penjualan::create([
                 'id_mstr_pengeluaran' => $data['id_mstr_pengeluaran'],
