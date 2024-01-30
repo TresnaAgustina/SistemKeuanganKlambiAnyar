@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Penjualan;
 
-use App\Http\Controllers\Controller;
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Master_Jaritan;
+use Illuminate\Support\Facades\Validator;
 
 class CreatePenjualanController extends Controller
 {
@@ -21,7 +23,7 @@ class CreatePenjualanController extends Controller
             $data = $request->all();
 
             // validate
-            $validator = \Validator::make($data, [
+            $validator = Validator::make($data, [
                 'id_mstr_jaritan' => 'required|exists:master_pengeluaran,id',
                 'tanggal' => 'required|date',
                 'nama_pembeli' => 'required|string',
@@ -47,16 +49,13 @@ class CreatePenjualanController extends Controller
             // check if metode pembayaran is 1 (tunai), then jmlh_bayar_awal is nullable and subtotal get from jenis jaritan - harga_dalam * quantity. get harga_dalam from master jaritan
             if ($data['metode_pembayaran'] == 1) {
                 $data['jmlh_bayar_awal'] = null;
-                $master_jaritan = MasterJaritan::find($data['id_mstr_jaritan']);
+                $master_jaritan = Master_Jaritan::find($data['id_mstr_jaritan']);
                 $data['subtotal'] = $master_jaritan->harga_dalam * $data['quantity'];
             }else{
                 $data['subtotal'] = $data['jmlh_bayar_awal'];
             }
 
-            // 
-
-
-
+            
             // create penjualan
             $penjualan = Penjualan::create([
                 'id_mstr_pengeluaran' => $data['id_mstr_pengeluaran'],

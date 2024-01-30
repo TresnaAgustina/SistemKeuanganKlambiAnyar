@@ -29,17 +29,22 @@ class GetAllPemasukanController extends Controller
                     'pemasukan.keterangan',
                 )
                 ->get();
+            
+            $pemasukan = Master_Pemasukan::all();
 
 
             // return response
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Successfully get all pemasukan',
-                'data' => $data
-            ], 200);
+            // return response()->json([
+            //     'status' => 'success',
+            //     'message' => 'Successfully get all pemasukan',
+            //     'data' => $data
+            // ], 200);
 
             // for monolith app
-            // return view('pemasukan.index', compact('data'));
+            return view('transaksi.pemasukan.index')->with([
+                'data' => $data,
+                'pemasukan' => $pemasukan
+            ]);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',

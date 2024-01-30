@@ -1,9 +1,16 @@
 @extends('layouts.login')
 @section('login')
+
+<div class="swal" data-swal="{{ session('success') }}">
+</div>
+<div class="error" data-swal="{{ session('error') }}">
+</div>
+
 <div class="card-body login-card-body">
     
     <p class="login-box-msg">Sign in to start your session</p>
 
+{{--     
     @if (session('error'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
       {{ session('error') }}
@@ -11,7 +18,7 @@
         <span aria-hidden="true">×</span>
       </button>
     </div>
-    @endif
+    @endif --}}
 
     <form action="{{ route('login.auth') }}" method="post">
       @csrf
@@ -45,3 +52,34 @@
     </p>
   </div>
 @endsection
+
+@push('js')
+
+{{-- // sweetalert notification --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  const swal = $('.swal').data('swal');
+  if(swal){
+    Swal.fire({
+      'title': 'success',
+      'text': swal,
+      'icon': 'success',
+      'showConfirmButton': false,
+      'timer': 3500
+    })
+  }
+
+  const swalError = $('.error').data('swal');
+  if(swalError){
+    Swal.fire({
+      'title': 'Error Input',
+      'text': swalError,
+      'icon': 'error',
+      'showConfirmButton': false,
+      'timer': 3500
+    })
+  }
+</script>
+
+@endpush

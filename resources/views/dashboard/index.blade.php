@@ -1,6 +1,11 @@
 @extends('layouts.main')
 @section('container')
 
+<div class="swal" data-swal="{{ session('success') }}">
+</div>
+<div class="error" data-swal="{{ session('error') }}">
+</div>
+
 <div class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
@@ -77,14 +82,37 @@
     </div>
   </div>
 </section>
+@endsection
 
+@push('js')
+      {{-- // sweetalert notification --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<script>
+  const swal = $('.swal').data('swal');
+  if(swal){
+    Swal.fire({
+      'title': 'success',
+      'text': swal,
+      'icon': 'success',
+      'showConfirmButton': false,
+      'timer': 3500
+    })
+  }
 
+  const swalError = $('.error').data('swal');
+  if(swalError){
+    Swal.fire({
+      'title': 'Error Input',
+      'text': swalError,
+      'icon': 'error',
+      'showConfirmButton': false,
+      'timer': 3500
+    })
+  }
+</script>
 
-
-
-  @endsection
-
+  @endpush
 
 
 

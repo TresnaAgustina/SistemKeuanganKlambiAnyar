@@ -15,6 +15,6 @@ class GetAllPenjualanController extends Controller
      */
     public function __invoke(Request $request)
     {
-        //
+        return view('transaksi.penjualan.index');
     }
 }

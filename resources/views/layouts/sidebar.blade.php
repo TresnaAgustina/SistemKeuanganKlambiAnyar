@@ -13,7 +13,7 @@
           <img src="{{ asset('template/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          {{-- <a href="#" class="d-block">{{ auth()->user()->username }}</a> --}}
+          <a href="#" class="d-block">{{ auth()->user()->username }}</a>
         </div>
       </div>
 
@@ -66,8 +66,8 @@
             </ul>
           </li>
 
-          <li class="nav-item {{ Request::is('test', 'test2') ? 'menu-open' : '' }}">
-            <a href="#" class="nav-link {{ Request::is('test', 'test2') ? 'active' : '' }}">
+          <li class="nav-item {{ Request::is('penjualan*', 'keuangan*', 'pemasukan*', 'pengeluaran*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ Request::is('penjualan*', 'keuangan*', 'pemasukan*', 'pengeluaran*') ? 'active' : '' }}">
                 <i class="nav-icon fas fa-money-bill-alt"></i>
               {{-- <i class="nav-icon fas fa-circle"></i> --}}
               <p>
@@ -78,23 +78,29 @@
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/test2" class="nav-link {{ Request::is('test2') ? 'active' : '' }}">
+                <a href="/pemasukan/all" class="nav-link {{ Request::is('pemasukan*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Gaji</p>
+                  <p>Pemasukan</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="/test" class="nav-link {{ Request::is('test') ? 'active' : '' }}">
+                <a href="/pengeluaran/all" class="nav-link {{ Request::is('pengeluaran*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Pembelian</p>
+                  <p>Pengeluaran</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/penjualan/all" class="nav-link {{ Request::is('penjualan*') ? 'active' : '' }}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Penjualan</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="/keuangan/all" class="nav-link {{ Request::is('keuangan*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Pembayaran</p>
+                  <p>Keuangan</p>
                 </a>
               </li>
 

@@ -21,10 +21,13 @@ class GetAllKeuanganController extends Controller
             $keuangan = Keuangan::all();
 
             // return data
-            return response()->json([
-                'message' => 'Berhasil mendapatkan semua data keuangan',
-                'data' => $keuangan
-            ], 200);
+            // return response()->json([
+            //     'message' => 'Berhasil mendapatkan semua data keuangan',
+            //     'data' => $keuangan
+            // ], 200);
+
+            return view('transaksi.keuangan.index', compact('keuangan'));
+
 
         } catch (\Exception $e) {
             return response()->json([

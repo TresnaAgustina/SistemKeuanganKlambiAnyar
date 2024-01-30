@@ -17,7 +17,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="{{ asset('template/index2.html') }}"><b>UD KELAMBI ANYAR</b></a>
+    <a href="{{ asset('template/index2.html') }}"><b>UD KLAMBI ANYAR</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -34,5 +34,7 @@
 <script src="{{ asset('template/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('template/dist/js/adminlte.min.js') }}"></script>
+
+@stack('js')
 </body>
 </html>

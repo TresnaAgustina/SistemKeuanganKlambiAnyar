@@ -46,16 +46,18 @@ class GetAllPengeluaranController extends Controller
             }
 
             // if data is success
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Data found',
-                'data' => $data
-            ], 200);
+            // return response()->json([
+            //     'status' => 'success',
+            //     'message' => 'Data found',
+            //     'data' => $data
+            // ], 200);
 
             // for monolith app
             // return redirect()->back()->with(
             //     'success', 'Data found'
             // );
+            return view('transaksi.pengeluaran.index', compact('data'));
+
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',

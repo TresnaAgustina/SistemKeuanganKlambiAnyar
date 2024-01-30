@@ -40,6 +40,10 @@ use App\Http\Controllers\Master\Pengeluaran\DeleteMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\GetUpdateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\UpdateMasterPengeluaranController;
 use App\Http\Controllers\OrakOrekController;
+use App\Http\Controllers\Penjualan\CreatePenjualanController;
+use App\Http\Controllers\Penjualan\DeletePenjualanController;
+use App\Http\Controllers\Penjualan\GetAllPenjualanController;
+use App\Http\Controllers\Penjualan\UpdatePenjualanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,10 +60,14 @@ use App\Http\Controllers\OrakOrekController;
 Route::get('/dataTable/jaritan', [DataTableController::class, 'DataJaritan']);
 Route::get('/dataTable/pemasukan', [DataTableController::class, 'DataPemasukan']);
 Route::get('/dataTable/pengeluaran', [DataTableController::class, 'DataPengeluaran']);
+Route::get('/dataTable/DataPemasukan', [DataTableController::class, 'Pemasukan']);
+Route::get('/dataTable/DataPengeluaran', [DataTableController::class, 'Pengeluaran']);
 
 
 // *** Auth Routes *** //
 // --View
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
 Route::get('/login', ViewLoginController::class)->name('login');
 Route::prefix('/auth')->group(function () {
     // --Login
@@ -68,7 +76,7 @@ Route::prefix('/auth')->group(function () {
     Route::post('/register', RegisterController::class)->name('register');
     // --Logout
     Route::middleware('auth:sanctum')->group(function () {
-        Route::post('/logout', LogoutController::class)->name('logout');
+        Route::get('/logout', LogoutController::class)->name('logout');
     });
 });
 
@@ -155,6 +163,17 @@ Route::prefix('/keuangan')->group(function (){
     Route::delete('/delete/{id}', DeleteKeuanganController::class)->name('keuangan.delete');
 });
 
+Route::prefix('/penjualan')->group(function (){
+    // --view
+    Route::get('/all', GetAllPenjualanController::class)->name('penjualan.all');
+    // --create
+    Route::post('/create', CreatePenjualanController::class)->name('penjualan.create');
+    // --update
+    Route::post('/update/{id}', UpdatePenjualanController::class)->name('penjualan.update');
+    // --delete
+    Route::delete('/delete/{id}', DeletePenjualanController::class)->name('penjualan.delete');
+});
+
 
 
 // Route::get('/auth/login', function () {
@@ -174,7 +193,6 @@ Route::prefix('/keuangan')->group(function (){
 
 // * Routes Untuk Coba Fitur Tambahan Baru Setengah * //
 
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 // Route::get('/register', function () {
 //     return view('sesi.register');

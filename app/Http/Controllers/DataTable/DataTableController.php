@@ -8,6 +8,9 @@ use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Models\Master_Pemasukan;
 use App\Models\Master_Pengeluaran;
+use App\Models\Pemasukan;
+use App\Models\Pengeluaran;
+use App\Models\Penjualan;
 
 class DataTableController extends Controller
 {
@@ -42,9 +45,57 @@ class DataTableController extends Controller
         })
         ->make(true);
     }
+    public function Pemasukan()
+    {
+        $coba = Pemasukan::orderBy('id', 'asc');
+        return DataTables::of($coba)
+        ->addIndexColumn()
+        ->addColumn('pemasukan', function($data){
+            return $data->master_pemasukan->nama_atribut;
+        })
+        ->addColumn('tgl', function($data){
+            return  date('d-m-Y', strtotime($data->tanggal));
+        })
+        ->addColumn('aksi', function($data){
+            return view('transaksi.pemasukan.tombol')->with('data', $data);
+        })
+        ->make(true);
+    }
+    public function Pengeluaran()
+    {
+        $coba = Pengeluaran::orderBy('id', 'asc');
+        return DataTables::of($coba)
+        ->addIndexColumn()
+        ->addColumn('pengeluaran', function($data){
+            return $data->master_pengeluaran->nama_atribut;
+        })
+        ->addColumn('tgl', function($data){
+            return  date('d-m-Y', strtotime($data->tanggal));
+        })
+        ->addColumn('aksi', function($data){
+            return view('transaksi.pengeluaran.tombol')->with('data', $data);
+        })
+        ->make(true);
+    }
+    public function Penjualan()
+    {
+        $coba = Penjualan::orderBy('id', 'asc');
+        return DataTables::of($coba)
+        ->addIndexColumn()
+        ->addColumn('penjualan', function($data){
+            return $data->master_pengeluaran->nama_atribut;
+        })
+        ->addColumn('tgl', function($data){
+            return  date('d-m-Y', strtotime($data->tanggal));
+        })
+        ->addColumn('aksi', function($data){
+            return view('transaksi.pengeluaran.tombol')->with('data', $data);
+        })
+        ->make(true);
+    }
 
-    // public function test(){
-    //     return 'test';
-    // }
+    
+
+    
 
 }

@@ -21,14 +21,14 @@ class LogoutController extends Controller
             $request->user()->tokens()->delete();
 
             // return response
-            return response()->json([
-                'message' => 'Logout success',
-            ]);
+            // return response()->json([
+            //     'message' => 'Logout success',
+            // ]);
 
             // return for monolith app
-            // return redirect()->route('login')->with(
-            //     'success', 'Logout success'
-            // );
+            return redirect()->route('login')->with(
+                'success', 'Logout success'
+            );
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Logout Error: '. $e->getMessage(),
