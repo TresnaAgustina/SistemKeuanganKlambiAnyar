@@ -25,6 +25,6 @@ class Master_Jaritan extends Model
 
     public function pgwr_activity()
     {
-        return $this->hasMany(Pgwr_Activity::class, 'id_mstr_jahitan', 'id');
+        return $this->hasMany(Pgwr_Activity::class);
     }
 }

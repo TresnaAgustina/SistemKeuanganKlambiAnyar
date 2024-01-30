@@ -16,8 +16,8 @@ class Master_Barang extends Model
         'harga_jual'
     ];
 
-    public function Penjualan_Lain(){
+    public function penjualan_lain()
+    {
         return $this->hasMany(Penjualan_Lain::class);
     }
-
 }

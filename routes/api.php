@@ -33,11 +33,6 @@ use App\Http\Controllers\Master\Pengeluaran\ViewMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\CreateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\DeleteMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\UpdateMasterPengeluaranController;
-use App\Http\Controllers\Penjualan\GetAllPenjualanController;
-use App\Http\Controllers\Penjualan\GetDetailPenjualanController;
-use App\Http\Controllers\Penjualan\CreatePenjualanController;
-use App\Http\Controllers\Penjualan\UpdatePenjualanController;
-use App\Http\Controllers\Penjualan\DeletePenjualanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -149,20 +144,6 @@ Route::prefix('/keuangan')->group(function (){
     Route::delete('/delete/{id}', DeleteKeuanganController::class)->name('keuangan.delete');
 });
 
-// *** Penjualan Route *** //
-ROute::prefix('/penjualan')->group(function () {
-    // --view All
-    Route::get('/all', GetAllPenjualanController::class)->name('penjualan.all');
-    // --get by id
-    Route::get('/detail/{id}', GetDetailPenjualanController::class)->name('penjualan.detail');
-
-    // --create
-    Route::post('/create', CreatePenjualanController::class)->name('penjualan.create');
-    // --update
-    Route::post('/update/{id}', UpdatePenjualanController::class)->name('penjualan.update');
-    // --delete
-    Route::delete('/delete/{id}', DeletePenjualanController::class)->name('penjualan.delete');
-});
 
 // *** View Routes *** //
 // Route::middleware('auth:sanctum')->group(function () {
