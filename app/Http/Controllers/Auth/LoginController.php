@@ -37,6 +37,16 @@ class LoginController extends Controller
             // generate token
             $token = $user->createToken('auth_token')->plainTextToken;
 
+            // return json response
+            return response()->json([
+                'success' => true,
+                'pesan' => 'Login Success',
+                'data' => [
+                    'user' => $user,
+                    'token' => $token
+                ]
+            ], 200);
+
             return redirect()->route('dashboard')->with('success', 'Login success');
         } catch (\Exception $e) {
             return redirect()->route('login')->with('error', 'Login Error: ' . $e->getMessage());

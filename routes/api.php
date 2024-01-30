@@ -20,6 +20,10 @@ use App\Http\Controllers\Pengeluaran\DeletePengeluaranController;
 use App\Http\Controllers\Pengeluaran\GetAllPengeluaranController;
 use App\Http\Controllers\Pengeluaran\SearchPengeluaranController;
 use App\Http\Controllers\Pengeluaran\UpdatePengeluaranController;
+use App\Http\Controllers\Master\Barang\CreateMasterBarangController;
+use App\Http\Controllers\Master\Barang\DeleteMasterBarangController;
+use App\Http\Controllers\Master\Barang\GetAllMasterBarangController;
+use App\Http\Controllers\Master\Barang\UpdateMasterBarangController;
 use App\Http\Controllers\Master\Jaritan\ViewMasterJaritanController;
 use App\Http\Controllers\Pengeluaran\GetDetailPengeluaranController;
 use App\Http\Controllers\Master\Jaritan\CreateMasterJaritanController;
@@ -104,6 +108,20 @@ Route::prefix('/mstr/pengeluaran')->group(function () {
     });
 });
 
+// *** Master Barang Routes *** //
+Route::prefix('/mstr/barang')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
+        // --view
+        Route::get('/all', GetAllMasterBarangController::class)->name('barang.all');
+        // --create
+        Route::post('/create', CreateMasterBarangController::class)->name('barang.create');
+        // --update
+        Route::post('/update/{id}', UpdateMasterBarangController::class)->name('barang.update');
+        // --delete
+        Route::delete('/delete/{id}', DeleteMasterBarangController::class)->name('barang.delete');
+    });
+});
+
 // *** Pemasukan Routes *** //
 Route::prefix('/pemasukan')->group(function () {
     // --view
@@ -148,7 +166,7 @@ Route::prefix('/keuangan')->group(function (){
     Route::delete('/delete/{id}', DeleteKeuanganController::class)->name('keuangan.delete');
 });
 
-// *** Penjualan_Lain Route *** //
+// *** Penjualan_Lain Route *** // - Belum Selesai
 Route::prefix('/penjualan-lain')->group(function (){
     // --view
     Route::get('/all', GetAllPenjualanLainController::class)->name('penjualan-lain.all');
