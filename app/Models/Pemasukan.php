@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Keuangan;
+use App\Models\Master_Pemasukan;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pemasukan extends Model
 {
@@ -12,13 +14,20 @@ class Pemasukan extends Model
     protected $table = 'pemasukan';
     protected $fillable = [
         'id_mstr_pemasukan',
+        'id_keuangan',
         'tanggal',
         'total',
         'keterangan',
+        'bukti_pembayaran',
     ];
 
     public function master_pemasukan()
     {
         return $this->belongsToMany(Master_Pemasukan::class, 'id_mstr_pemasukan', 'id');
+    }
+
+    public function keuangan()
+    {
+        return $this->belongsTo(Keuangan::class, 'id_keuangan', 'id');
     }
 }

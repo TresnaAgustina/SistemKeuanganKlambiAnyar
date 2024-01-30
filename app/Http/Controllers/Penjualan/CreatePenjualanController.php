@@ -6,6 +6,7 @@ use App\Models\Penjualan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Master_Jaritan;
+use App\Models\Penjualan_Lain;
 use Illuminate\Support\Facades\Validator;
 
 class CreatePenjualanController extends Controller
@@ -57,7 +58,7 @@ class CreatePenjualanController extends Controller
 
             
             // create penjualan
-            $penjualan = Penjualan::create([
+            $penjualan = Penjualan_Lain::create([
                 'id_mstr_pengeluaran' => $data['id_mstr_pengeluaran'],
                 'kode_penjualan' => $kode_penjualan,
                 'tanggal' => $data['tanggal'],

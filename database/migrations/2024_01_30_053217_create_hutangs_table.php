@@ -13,16 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('kasbon_pembeli', function (Blueprint $table) {
+        Schema::create('hutang', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_penjualan');
-            $table->double('jumlah_kasbon');
+            $table->unsignedBigInteger('id_pengeluaran');
+            $table->double('jumlah_hutang');
             $table->date('tgl_jatuh_tempo');
-            $table->double('sisa');
-            $table->enum('status', ['lunas', 'belum lunas']);
+            $table->double('sisa_hutang');
+            $table->enum('status', ['Lunas', 'Belum Lunas']);
 
-            // relationship
-            $table->foreign('id_penjualan')->references('id')->on('penjualan')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_pengeluaran')->references('id')->on('pengeluaran')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kasbon_pembeli');
+        Schema::dropIfExists('hutang');
     }
 };

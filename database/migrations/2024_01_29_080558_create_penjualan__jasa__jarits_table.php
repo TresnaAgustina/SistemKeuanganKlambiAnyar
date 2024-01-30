@@ -13,20 +13,23 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('penjualan', function (Blueprint $table) {
+        Schema::create('penjualan_jasa_jarit', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_mstr_jaritan');
+            $table->unsignedBigInteger('id_keuangan');
+            $table->string('kode_penjualan');
             $table->date('tanggal');
             $table->string('nama_pembeli');
             $table->string('no_telp');
             $table->integer('quantity');
-            $table->enum('metode_pembayaran', ['tunai', 'kredit']);
+            $table->enum('metode_pembayaran', ['cash', 'kredit']);
             $table->double('jmlh_bayar_awal')->nullable();
             $table->double('subtotal');
-            $table->text('keterangan');
+            $table->text('keterangan')->nullable();
             $table->string('bukti_pembayaran')->nullable();
-            // relationship
-            $table->foreign('id_mstr_jaritan')->references('id')->on('master_jaritan')->onDelete('cascade');
+
+            $table->foreign('id_mstr_jaritan')->references('id')->on('master_jaritan')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_keuangan')->references('id')->on('keuangan')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -38,6 +41,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('penjualan');
+        Schema::dropIfExists('penjualan_jasa_jarit');
     }
 };

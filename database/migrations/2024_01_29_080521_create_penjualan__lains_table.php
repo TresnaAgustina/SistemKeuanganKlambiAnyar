@@ -13,17 +13,22 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pemasukan', function (Blueprint $table) {
+        Schema::create('penjualan_lain', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_mstr_pemasukan');
+            $table->unsignedBigInteger('id_mstr_barang');
             $table->unsignedBigInteger('id_keuangan');
+            $table->string('kode_penjualan');
             $table->date('tanggal');
-            $table->double('total');
+            $table->string('nama_pembeli');
+            $table->string('no_telp');
+            $table->integer('quantity');
+            $table->enum('metode_pembayaran', ['cash', 'kredit']);
+            $table->double('jmlh_bayar_awal')->nullable();
+            $table->double('subtotal');
             $table->text('keterangan')->nullable();
             $table->string('bukti_pembayaran')->nullable();
 
-            // relationship
-            $table->foreign('id_mstr_pemasukan')->references('id')->on('master_pemasukan')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_mstr_barang')->references('id')->on('master_barang')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('id_keuangan')->references('id')->on('keuangan')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
@@ -36,6 +41,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pemasukan');
+        Schema::dropIfExists('penjualan_lain');
     }
 };

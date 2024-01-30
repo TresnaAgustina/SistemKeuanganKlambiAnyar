@@ -82,57 +82,57 @@ Route::prefix('/auth')->group(function () {
 
 // *** Master Jaritan Routes *** //
 Route::prefix('/mstr/jaritan')->group(function () {
-        // --View
-        Route::get('/all', ViewMasterJaritanController::class)->name('jaritan.all');
-        Route::get('/update/{id}', GetUpdateMasterJaritanController::class)->name('jaritan.update.index');
-        // --Create
-        Route::post('/create', CreateMasterJaritanController::class)->name('jaritan.create');
-        // --Update
-        Route::post('/update/{id}', UpdateMasterJaritanController::class)->name('jaritan.update');
-        // --Delete
-        Route::delete('/delete/{id}', DeleteMasterJaritanController::class)->name('jaritan.delete');
+    // --View
+    Route::get('/all', ViewMasterJaritanController::class)->name('jaritan.all');
+    Route::get('/update/{id}', GetUpdateMasterJaritanController::class)->name('jaritan.update.index');
+    // --Create
+    Route::post('/create', CreateMasterJaritanController::class)->name('jaritan.create');
+    // --Update
+    Route::post('/update/{id}', UpdateMasterJaritanController::class)->name('jaritan.update');
+    // --Delete
+    Route::delete('/delete/{id}', DeleteMasterJaritanController::class)->name('jaritan.delete');
 });
 
 // *** Master Pemasukan Routes *** //
 Route::prefix('/mstr/pemasukan')->group(function () {
-        // --view
-        Route::get('/all', ViewMasterPemasukanController::class)->name('pemasukan.all');
-        Route::get('/update/{id}', GetUpdateMasterPemasukanController::class)->name('pemasukan.update.index');
-        // --create
-        Route::post('/create', CreateMasterPemasukanController::class)->name('pemasukan.create');
-        // --update
-        Route::post('/update/{id}', UpdateMasterPemasukanController::class)->name('pemasukan.update');
-        // --delete
-        Route::delete('/delete/{id}', DeleteMasterPemasukanController::class)->name('pemasukan.delete');
+    // --view
+    Route::get('/all', ViewMasterPemasukanController::class)->name('pemasukan.all');
+    Route::get('/update/{id}', GetUpdateMasterPemasukanController::class)->name('pemasukan.update.index');
+    // --create
+    Route::post('/create', CreateMasterPemasukanController::class)->name('pemasukan.create');
+    // --update
+    Route::post('/update/{id}', UpdateMasterPemasukanController::class)->name('pemasukan.update');
+    // --delete
+    Route::delete('/delete/{id}', DeleteMasterPemasukanController::class)->name('pemasukan.delete');
 });
 
 // *** Master Pengeluaran Routes *** //
 Route::prefix('/mstr/pengeluaran')->group(function () {
-        // --view
-        Route::get('/all', ViewMasterPengeluaranController::class)->name('pengeluaran.all');
-        Route::get('/update/{id}', GetUpdateMasterPengeluaranController::class)->name('pengeluaran.update.index');
-        // --create
-        Route::post('/create', CreateMasterPengeluaranController::class)->name('pengeluaran.create');
-        // --update
-        Route::post('/update/{id}', UpdateMasterPengeluaranController::class)->name('pengeluaran.update');
-        // --delete
-        Route::delete('/delete/{id}', DeleteMasterPengeluaranController::class)->name('pengeluaran.delete');
+    // --view
+    Route::get('/all', ViewMasterPengeluaranController::class)->name('pengeluaran.all');
+    Route::get('/update/{id}', GetUpdateMasterPengeluaranController::class)->name('pengeluaran.update.index');
+    // --create
+    Route::post('/create', CreateMasterPengeluaranController::class)->name('pengeluaran.create');
+    // --update
+    Route::post('/update/{id}', UpdateMasterPengeluaranController::class)->name('pengeluaran.update');
+    // --delete
+    Route::delete('/delete/{id}', DeleteMasterPengeluaranController::class)->name('pengeluaran.delete');
 });
 
 // *** Pemasukan Routes *** //
 Route::prefix('/pemasukan')->group(function () {
-        // --view
-        Route::get('/all', GetAllPemasukanController::class)->name('pemasukan.all');
-        // --get by id
-        Route::get('/detail/{id}', GetDetailPemasukanController::class)->name('pemasukan.get');
-        // --search
-        Route::get('/search', SearchPemasukanController::class)->name('pemasukan.search');
-        // --create
-        Route::post('/create', CreatePemasukanController::class)->name('pemasukan.create');
-        // --update
-        Route::post('/update/{id}', UpdatePemasukanController::class)->name('pemasukan.update');
-        // --delete
-        Route::delete('/delete/{id}', DeletePemasukanController::class)->name('pemasukan.delete');
+    // --view
+    Route::get('/all', GetAllPemasukanController::class)->name('pemasukan.all');
+    // --get by id
+    Route::get('/detail/{id}', GetDetailPemasukanController::class)->name('pemasukan.get');
+    // --search
+    Route::get('/search', SearchPemasukanController::class)->name('pemasukan.search');
+    // --create
+    Route::post('/create', CreatePemasukanController::class)->name('pemasukan.create');
+    // --update
+    Route::post('/update/{id}', UpdatePemasukanController::class)->name('pemasukan.update');
+    // --delete
+    Route::delete('/delete/{id}', DeletePemasukanController::class)->name('pemasukan.delete');
 });
 
 // *** Pengeluaran Routes *** //

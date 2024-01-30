@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Penjualan;
+namespace App\Http\Controllers\Penjualan_Jasa_Jarit;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class GetDetailPenjualanController extends Controller
+class CreatePenjualanJasaJaritController extends Controller
 {
     /**
      * Handle the incoming request.

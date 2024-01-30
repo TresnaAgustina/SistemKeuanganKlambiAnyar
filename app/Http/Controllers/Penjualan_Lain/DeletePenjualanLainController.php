@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Penjualan;
+namespace App\Http\Controllers\Penjualan_Lain;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class UpdatePenjualanController extends Controller
+class DeletePenjualanLainController extends Controller
 {
     /**
      * Handle the incoming request.

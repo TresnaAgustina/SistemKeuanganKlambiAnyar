@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Penjualan;
+namespace App\Http\Controllers\Penjualan_Jasa_Jarit;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class GetAllPenjualanController extends Controller
+class UpdatePenjualanJasaJaritController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -15,6 +15,6 @@ class GetAllPenjualanController extends Controller
      */
     public function __invoke(Request $request)
     {
-        return view('transaksi.penjualan.index');
+        //
     }
 }
