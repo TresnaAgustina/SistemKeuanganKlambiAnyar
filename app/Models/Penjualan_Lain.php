@@ -21,15 +21,17 @@ class Penjualan_Lain extends Model
         'nama_pembeli',
         'no_telp',
         'quantity',
+        'subtotal',
         'metode_pembayaran',
         'jmlh_bayar_awal',
-        'subtotal',
+        'tgl_jatuh_tempo',
+        'total_harga',
         'keterangan',
         'bukti_pembayaran',
     ];
 
     public function Master_Barang(){
-        return $this->belongsTo(Master_Barang::class, 'id_mstr_barang', 'id');
+        return $this->belongsToMany(Master_Barang::class, 'id_mstr_barang', 'id');
     }
 
     public function keuangan(){

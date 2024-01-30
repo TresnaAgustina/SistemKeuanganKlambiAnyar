@@ -22,9 +22,11 @@ return new class extends Migration
             $table->string('nama_pembeli');
             $table->string('no_telp');
             $table->integer('quantity');
+            $table->double('subtotal');
             $table->enum('metode_pembayaran', ['cash', 'kredit']);
             $table->double('jmlh_bayar_awal')->nullable();
-            $table->double('subtotal');
+            $table->date('tgl_jatuh_tempo')->nullable();
+            $table->double('total_harga');
             $table->text('keterangan')->nullable();
             $table->string('bukti_pembayaran')->nullable();
 

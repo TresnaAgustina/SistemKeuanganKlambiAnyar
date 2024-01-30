@@ -18,6 +18,6 @@ class Master_Barang extends Model
 
     public function penjualan_lain()
     {
-        return $this->hasMany(Penjualan_Lain::class);
+        return $this->belongsToMany(Penjualan_Lain::class);
     }
 }

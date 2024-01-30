@@ -21,9 +21,11 @@ class Penjualan_Jasa_Jarit extends Model
         'nama_pembeli',
         'no_telp',
         'quantity',
+        'subtotal',
         'metode_pembayaran',
         'jmlh_bayar_awal',
-        'subtotal',
+        'tgl_jatuh_tempo',
+        'total_harga',
         'keterangan',
         'bukti_pembayaran',
     ];

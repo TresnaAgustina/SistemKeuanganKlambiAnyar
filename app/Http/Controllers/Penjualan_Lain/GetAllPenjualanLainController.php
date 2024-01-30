@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\Penjualan_Lain;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Penjualan_Lain;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
-class CreatePenjualanLainController extends Controller
+class GetAllPenjualanLainController extends Controller
 {
     /**
      * Handle the incoming request.

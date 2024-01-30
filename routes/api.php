@@ -25,6 +25,10 @@ use App\Http\Controllers\Pengeluaran\GetDetailPengeluaranController;
 use App\Http\Controllers\Master\Jaritan\CreateMasterJaritanController;
 use App\Http\Controllers\Master\Jaritan\DeleteMasterJaritanController;
 use App\Http\Controllers\Master\Jaritan\UpdateMasterJaritanController;
+use App\Http\Controllers\Penjualan_Lain\CreatePenjualanLainController;
+use App\Http\Controllers\Penjualan_Lain\DeletePenjualanLainController;
+use App\Http\Controllers\Penjualan_Lain\GetAllPenjualanLainController;
+use App\Http\Controllers\Penjualan_Lain\UpdatePenjualanLainController;
 use App\Http\Controllers\Master\Pemasukan\ViewMasterPemasukanController;
 use App\Http\Controllers\Master\Pemasukan\CreateMasterPemasukanController;
 use App\Http\Controllers\Master\Pemasukan\DeleteMasterPemasukanController;
@@ -142,6 +146,18 @@ Route::prefix('/keuangan')->group(function (){
     Route::post('/update/{id}', UpdateKeuanganController::class)->name('keuangan.update');
     // --delete
     Route::delete('/delete/{id}', DeleteKeuanganController::class)->name('keuangan.delete');
+});
+
+// *** Penjualan_Lain Route *** //
+Route::prefix('/penjualan-lain')->group(function (){
+    // --view
+    Route::get('/all', GetAllPenjualanLainController::class)->name('penjualan-lain.all');
+    // --create
+    Route::post('/create', CreatePenjualanLainController::class)->name('penjualan-lain.create');
+    // --update
+    Route::post('/update/{id}', UpdatePenjualanLainController::class)->name('penjualan-lain.update');
+    // --delete
+    Route::delete('/delete/{id}', DeletePenjualanLainController::class)->name('penjualan-lain.delete'); 
 });
 
 
