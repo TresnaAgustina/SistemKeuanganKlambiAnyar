@@ -127,6 +127,18 @@ Route::prefix('/mstr/barang')->group(function () {
     Route::delete('/delete/{id}', DeleteMasterBarangController::class)->name('barang.delete');
 });
 
+// *** Master Customer Route *** //
+Route::prefix('/mstr/customer')->group(function () {
+    // --view
+    Route::get('/all', GetAllMasterCustomerController::class)->name('customer.all');
+    // --create
+    Route::post('/create', CreateMasterCustomerController::class)->name('customer.create');
+    // --update
+    Route::post('/update/{id}', UpdateMasterCustomerController::class)->name('customer.update');
+    // --delete
+    Route::delete('/delete/{id}', DeleteMasterCustomerController::class)->name('customer.delete');
+});
+
 
 // *** Pemasukan Routes *** //
 Route::prefix('/pemasukan')->group(function () {
