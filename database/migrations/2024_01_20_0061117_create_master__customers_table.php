@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('master_barang', function (Blueprint $table) {
+        Schema::create('master_customer', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_barang');
-            $table->integer('harga_beli')->nullable();
-            $table->integer('harga_jual');
+            $table->string('nama_customer');
+            $table->text('alamat_customer')->nullable();
+            $table->string('no_telp_customer');
+            $table->enum('status_customer', ['aktif', 'tidak aktif']);
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('master_barang');
+        Schema::dropIfExists('master_customer');
     }
 };

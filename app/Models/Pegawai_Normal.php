@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Kasbon_Pegawai;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pegawai_Normal extends Model
 {
@@ -19,4 +20,9 @@ class Pegawai_Normal extends Model
         'gaji_pokok',
         'status',
     ];
+
+    public function kasbon_Pegawai()
+    {
+        return $this->hasMany(Kasbon_Pegawai::class);
+    }
 }

@@ -20,11 +20,23 @@ use App\Http\Controllers\Pengeluaran\DeletePengeluaranController;
 use App\Http\Controllers\Pengeluaran\GetAllPengeluaranController;
 use App\Http\Controllers\Pengeluaran\SearchPengeluaranController;
 use App\Http\Controllers\Pengeluaran\UpdatePengeluaranController;
+use App\Http\Controllers\Master\Barang\CreateMasterBarangController;
+use App\Http\Controllers\Master\Barang\DeleteMasterBarangController;
+use App\Http\Controllers\Master\Barang\GetAllMasterBarangController;
+use App\Http\Controllers\Master\Barang\UpdateMasterBarangController;
 use App\Http\Controllers\Master\Jaritan\ViewMasterJaritanController;
 use App\Http\Controllers\Pengeluaran\GetDetailPengeluaranController;
 use App\Http\Controllers\Master\Jaritan\CreateMasterJaritanController;
 use App\Http\Controllers\Master\Jaritan\DeleteMasterJaritanController;
 use App\Http\Controllers\Master\Jaritan\UpdateMasterJaritanController;
+use App\Http\Controllers\Penjualan_Lain\CreatePenjualanLainController;
+use App\Http\Controllers\Penjualan_Lain\DeletePenjualanLainController;
+use App\Http\Controllers\Penjualan_Lain\GetAllPenjualanLainController;
+use App\Http\Controllers\Penjualan_Lain\UpdatePenjualanLainController;
+use App\Http\Controllers\Master\Customer\CreateMasterCustomerController;
+use App\Http\Controllers\Master\Customer\DeleteMasterCustomerController;
+use App\Http\Controllers\Master\Customer\GetAllMasterCustomerController;
+use App\Http\Controllers\Master\Customer\UpdateMasterCustomerController;
 use App\Http\Controllers\Master\Pemasukan\ViewMasterPemasukanController;
 use App\Http\Controllers\Master\Pemasukan\CreateMasterPemasukanController;
 use App\Http\Controllers\Master\Pemasukan\DeleteMasterPemasukanController;
@@ -100,6 +112,33 @@ Route::prefix('/mstr/pengeluaran')->group(function () {
     });
 });
 
+// *** Master Barang Routes *** //
+Route::prefix('/mstr/barang')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
+        // --view
+        Route::get('/all', GetAllMasterBarangController::class)->name('barang.all');
+        // --create
+        Route::post('/create', CreateMasterBarangController::class)->name('barang.create');
+        // --update
+        Route::post('/update/{id}', UpdateMasterBarangController::class)->name('barang.update');
+        // --delete
+        Route::delete('/delete/{id}', DeleteMasterBarangController::class)->name('barang.delete');
+    });
+});
+
+// *** Master Customer Route *** //
+Route::prefix('/mstr/customer')->group(function () {
+    // --view
+    Route::get('/all', GetAllMasterCustomerController::class)->name('customer.all');
+    // --create
+    Route::post('/create', CreateMasterCustomerController::class)->name('customer.create');
+    // --update
+    Route::post('/update/{id}', UpdateMasterCustomerController::class)->name('customer.update');
+    // --delete
+    Route::delete('/delete/{id}', DeleteMasterCustomerController::class)->name('customer.delete');
+});
+
+
 // *** Pemasukan Routes *** //
 Route::prefix('/pemasukan')->group(function () {
     // --view
@@ -142,6 +181,18 @@ Route::prefix('/keuangan')->group(function (){
     Route::post('/update/{id}', UpdateKeuanganController::class)->name('keuangan.update');
     // --delete
     Route::delete('/delete/{id}', DeleteKeuanganController::class)->name('keuangan.delete');
+});
+
+// *** Penjualan_Lain Route *** // - Belum Selesai
+Route::prefix('/penjualan-lain')->group(function (){
+    // --view
+    Route::get('/all', GetAllPenjualanLainController::class)->name('penjualan-lain.all');
+    // --create
+    Route::post('/create', CreatePenjualanLainController::class)->name('penjualan-lain.create');
+    // --update
+    Route::post('/update/{id}', UpdatePenjualanLainController::class)->name('penjualan-lain.update');
+    // --delete
+    Route::delete('/delete/{id}', DeletePenjualanLainController::class)->name('penjualan-lain.delete'); 
 });
 
 
