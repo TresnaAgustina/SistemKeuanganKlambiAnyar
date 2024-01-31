@@ -21,11 +21,15 @@ class GetAllMasterCustomerController extends Controller
             $data = Master_Customer::all();
 
             // return json response
-            return response()->json([
-                'success' => true,
-                'pesan' => 'Get All Data Master Customer Success',
+            // return response()->json([
+            //     'success' => true,
+            //     'pesan' => 'Get All Data Master Customer Success',
+            //     'data' => $data
+            // ], 200);
+
+            return view('Master.customer.index')->with([
                 'data' => $data
-            ], 200);
+            ]);
 
         } catch (\Exception $e) {
             return response()->json([

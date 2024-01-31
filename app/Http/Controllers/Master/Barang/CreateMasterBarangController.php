@@ -45,22 +45,22 @@ class CreateMasterBarangController extends Controller
             ]);
 
             // if create data fails
-            if (!$create) {
-                return response()->json([
-                    'success' => false,
-                    'pesan' => 'Create Data Master Barang Failed!',
-                    'data' => ''
-                ], 400);
-            }
+            // if (!$create) {
+            //     return response()->json([
+            //         'success' => false,
+            //         'pesan' => 'Create Data Master Barang Failed!',
+            //         'data' => ''
+            //     ], 400);
+            // }
 
-            // return json response
-            return response()->json([
-                'success' => true,
-                'pesan' => 'Create Data Master Barang Success',
-                'data' => $create
-            ], 200);
+            // // return json response
+            // return response()->json([
+            //     'success' => true,
+            //     'pesan' => 'Create Data Master Barang Success',
+            //     'data' => $create
+            // ], 200);
 
-            return back()->with('pesan', 'Create Data Master Barang Success');
+            return back()->with('success', 'Create Data Master Barang Success');
             
         }catch (\Exception $e) {
             return response()->json([

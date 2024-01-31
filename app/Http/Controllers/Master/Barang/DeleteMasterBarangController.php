@@ -44,7 +44,7 @@ class DeleteMasterBarangController extends Controller
             //return json response
             return response()->json([
                 'success' => true,
-                'pesan' => 'Delete Data Master Barang Success',
+                'message' => 'Delete Data Master Barang Success',
                 'data' => $delete
             ], 200);
         } catch (\Exception $e) {

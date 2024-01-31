@@ -34,20 +34,30 @@ class UpdateMasterCustomerController extends Controller
             }
 
             // validation
-            $validate = Validator::make($data, [
-                'nama_customer' => 'required|unique:master_customer,nama_customer',
+            // $validate = Validator::make($data, [
+            //     // 'nama_customer' => 'required|unique:master_customer,nama_customer',
+            //     'nama_customer' => 'required',
+            //     'alamat_customer' => 'nullable|string',
+            //     // 'no_telp_customer' => 'required|string|size:12|unique:master_customer,no_telp_customer',
+            //     'no_telp_customer' => 'required|string|size:12',
+            //     // 'status_customer' => 'required|in:aktif,tidak aktif',
+            //     'status_customer' => 'required',
+            // ]);
+            $validate = $request->validate([
+                // 'nama_customer' => 'required|unique:master_customer,nama_customer',
+                'nama_customer' => 'required',
                 'alamat_customer' => 'nullable|string',
-                'no_telp_customer' => 'required|string|size:12|unique:master_customer,no_telp_customer',
-                'status_customer' => 'required|in:1,2',
+                // 'no_telp_customer' => 'required|string|size:12|unique:master_customer,no_telp_customer',
+                'no_telp_customer' => 'required|string|size:12',
+                // 'status_customer' => 'required|in:aktif,tidak aktif',
+                'status_customer' => 'required',
             ]);
 
             //if validation fails
-            if ($validate->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'pesan' => 'Create Data Master Customer Failed!',
-                    'data' => $validate->errors()
-                ], 400);
+            if (!$validate) {
+                return back()->with(
+                    'pesan', 'Error: ' . $request->errors()
+                );
             }
 
             //update data 
@@ -60,19 +70,15 @@ class UpdateMasterCustomerController extends Controller
 
             //if update data fails
             if (!$update) {
-                return response()->json([
-                    'success' => false,
-                    'pesan' => 'Update Data Master Customer Failed!',
-                    'data' => ''
-                ], 400);
+                return back()->with(
+                    'pesan', 'Error: Failed to update data to database'
+                );
             }
 
-            //return json response
-            return response()->json([
-                'success' => true,
-                'pesan' => 'Update Data Master Customer Success',
-                'data' => $update
-            ], 200);
+            //return data
+            return back()->with(
+                'success', 'Success to update data to database'
+            );
             
         } catch (\Exception $e) {
             return response()->json([

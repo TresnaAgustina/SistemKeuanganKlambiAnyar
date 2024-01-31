@@ -27,10 +27,12 @@ use App\Http\Controllers\Pengeluaran\UpdatePengeluaranController;
 use App\Http\Controllers\Master\Barang\CreateMasterBarangController;
 use App\Http\Controllers\Master\Barang\DeleteMasterBarangController;
 use App\Http\Controllers\Master\Barang\GetAllMasterBarangController;
+use App\Http\Controllers\Master\Barang\GetUpdateMasterBarangController;
 use App\Http\Controllers\Master\Barang\UpdateMasterBarangController;
 use App\Http\Controllers\Master\Customer\CreateMasterCustomerController;
 use App\Http\Controllers\Master\Customer\DeleteMasterCustomerController;
 use App\Http\Controllers\Master\Customer\GetAllMasterCustomerController;
+use App\Http\Controllers\Master\Customer\GetUpdateMasterCustomerController;
 use App\Http\Controllers\Master\Customer\UpdateMasterCustomerController;
 use App\Http\Controllers\Master\Jaritan\ViewMasterJaritanController;
 use App\Http\Controllers\Pengeluaran\GetDetailPengeluaranController;
@@ -39,6 +41,14 @@ use App\Http\Controllers\Master\Jaritan\DeleteMasterJaritanController;
 use App\Http\Controllers\Master\Jaritan\UpdateMasterJaritanController;
 use App\Http\Controllers\Master\Pemasukan\ViewMasterPemasukanController;
 use App\Http\Controllers\Master\Jaritan\GetUpdateMasterJaritanController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Rumahan\CreatePgwrRumahanController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Rumahan\DeletePgwrRumahanController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Rumahan\GetAllPgwrRumahanController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Rumahan\UpdatePgwrRumahanController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\CreatePgwrTetapController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\DeletePgwrTetapController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\GetAllPgwrTetapController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\UpdatePgwrTetapController;
 use App\Http\Controllers\Master\Pemasukan\CreateMasterPemasukanController;
 use App\Http\Controllers\Master\Pemasukan\DeleteMasterPemasukanController;
 use App\Http\Controllers\Master\Pemasukan\UpdateMasterPemasukanController;
@@ -48,7 +58,6 @@ use App\Http\Controllers\Master\Pengeluaran\CreateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\DeleteMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\UpdateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\GetUpdateMasterPengeluaranController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +76,18 @@ Route::get('/dataTable/pemasukan', [DataTableController::class, 'DataPemasukan']
 Route::get('/dataTable/pengeluaran', [DataTableController::class, 'DataPengeluaran']);
 Route::get('/dataTable/DataPemasukan', [DataTableController::class, 'Pemasukan']);
 Route::get('/dataTable/DataPengeluaran', [DataTableController::class, 'Pengeluaran']);
+Route::get('/dataTable/PegawaiTetap', [DataTableController::class, 'PegawaiTetap']);
+Route::get('/dataTable/PegawaiRumahan', [DataTableController::class, 'PegawaiRumahan']);
+Route::get('/dataTable/customer', [DataTableController::class, 'customer']);
+Route::get('/dataTable/barang', [DataTableController::class, 'barang']);
+
+// Route::prefix('/dataTable')->group(function () {
+//     Route::get('/jaritan', DataTableJaritanController::class)->name('dataTable.jaritan');
+//     Route::get('/pemasukan', DataTablePemasukanController::class)->name('dataTable.pemasukan');
+//     Route::get('/pengeluaran', DataTablePengeluaranController::class)->name('dataTable.pengeluaran');
+//     Route::get('/DataPemasukan', DataPemasukanController::class)->name('dataTable.dataPemasukan');
+//     Route::get('/DataPengeluaran', DataPengeluaranController::class)->name('dataTable.dataPengeluaran');
+// });
 
 
 // *** Auth Routes *** //
@@ -131,9 +152,34 @@ Route::prefix('/mstr/barang')->group(function () {
     // --create
     Route::post('/create', CreateMasterBarangController::class)->name('barang.create');
     // --update
+    Route::get('/update/{id}', GetUpdateMasterBarangController::class)->name('barang.update.index');
     Route::post('/update/{id}', UpdateMasterBarangController::class)->name('barang.update');
     // --delete
     Route::delete('/delete/{id}', DeleteMasterBarangController::class)->name('barang.delete');
+});
+
+// *** Master Pegawai Tetap Route *** //
+Route::prefix('/mstr/pegawai-tetap')->group(function () {
+    // --view
+    Route::get('/all', GetAllPgwrTetapController::class)->name('pegawai-tetap.all');
+    // --create
+    Route::post('/create', CreatePgwrTetapController::class)->name('pegawai-tetap.create');
+    // --update
+    Route::post('/update/{id}', UpdatePgwrTetapController::class)->name('pegawai-tetap.update');
+    // --delete
+    Route::delete('/delete/{id}', DeletePgwrTetapController::class)->name('pegawai-tetap.delete');
+});
+
+// *** Master Pegawai Rumahan Route *** //
+Route::prefix('/mstr/pegawai-rumahan')->group(function () {
+    // --view
+    Route::get('/all', GetAllPgwrRumahanController::class)->name('pegawai-rumahan.all');
+    // --create
+    Route::post('/create', CreatePgwrRumahanController::class)->name('pegawai-rumahan.create');
+    // --update
+    Route::post('/update/{id}', UpdatePgwrRumahanController::class)->name('pegawai-rumahan.update');
+    // --delete
+    Route::delete('/delete/{id}', DeletePgwrRumahanController::class)->name('pegawai-rumahan.delete');
 });
 
 // *** Master Customer Route *** //
@@ -143,6 +189,7 @@ Route::prefix('/mstr/customer')->group(function () {
     // --create
     Route::post('/create', CreateMasterCustomerController::class)->name('customer.create');
     // --update
+    Route::get('/update/{id}', GetUpdateMasterCustomerController::class)->name('customer.update.index');
     Route::post('/update/{id}', UpdateMasterCustomerController::class)->name('customer.update');
     // --delete
     Route::delete('/delete/{id}', DeleteMasterCustomerController::class)->name('customer.delete');
@@ -192,6 +239,18 @@ Route::prefix('/keuangan')->group(function (){
     // --delete
     Route::delete('/delete/{id}', DeleteKeuanganController::class)->name('keuangan.delete');
 });
+
+
+// coba test fitur keuangan 
+
+Route::get('/keuangan/all', function(){
+    return view('keuangan.index');
+});
+
+
+
+
+
 
 
 

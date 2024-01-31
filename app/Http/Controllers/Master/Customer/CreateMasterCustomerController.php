@@ -26,7 +26,7 @@ class CreateMasterCustomerController extends Controller
                 'nama_customer' => 'required|unique:master_customer,nama_customer',
                 'alamat_customer' => 'nullable|string',
                 'no_telp_customer' => 'required|string|size:12|unique:master_customer,no_telp_customer',
-                'status_customer' => 'required|in:1,2',
+                'status_customer' => 'required|in:aktif,tidak aktif',
             ]);
 
             //if validation fails
@@ -46,21 +46,17 @@ class CreateMasterCustomerController extends Controller
                 'status_customer' => $data['status_customer'],
             ]);
 
-            //if create data fails
-            if (!$create) {
-                return response()->json([
-                    'success' => false,
-                    'pesan' => 'Create Data Master Customer Failed!',
-                    'data' => ''
-                ], 400);
+             // if create data fails
+             if (!$create) {
+                return back()->with(
+                    'pesan', 'Error: Failed to store data to database'
+                );
             }
 
-            //return json response
-            return response()->json([
-                'success' => true,
-                'pesan' => 'Create Data Master Customer Success',
-                'data' => $create
-            ], 200);
+            //return data
+            return back()->with(
+                'success', 'Success to store data to database'
+            );
 
         } catch (\Exception $e) {
             return response()->json([

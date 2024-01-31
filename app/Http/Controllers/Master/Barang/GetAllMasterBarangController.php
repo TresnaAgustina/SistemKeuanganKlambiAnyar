@@ -22,11 +22,15 @@ class GetAllMasterBarangController extends Controller
 
 
             // return json response
-            return response()->json([
-                'success' => true,
-                'pesan' => 'Get All Data Master Barang',
+            // return response()->json([
+            //     'success' => true,
+            //     'pesan' => 'Get All Data Master Barang',
+            //     'data' => $data
+            // ], 200);
+
+            return view('Master.barang.index')->with([
                 'data' => $data
-            ], 200);
+            ]);
 
             return view('master.barang.all', compact('data'));
         } catch (\Exception $e) {
