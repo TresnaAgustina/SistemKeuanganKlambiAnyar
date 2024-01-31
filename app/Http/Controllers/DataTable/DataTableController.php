@@ -11,6 +11,7 @@ use App\Models\Master_Pengeluaran;
 use App\Models\Pemasukan;
 use App\Models\Pengeluaran;
 use App\Models\Penjualan;
+use App\Models\Penjualan_Lain;
 
 class DataTableController extends Controller
 {
@@ -79,7 +80,7 @@ class DataTableController extends Controller
     }
     public function Penjualan()
     {
-        $coba = Penjualan::orderBy('id', 'asc');
+        $coba = Penjualan_Lain::orderBy('id', 'asc');
         return DataTables::of($coba)
         ->addIndexColumn()
         ->addColumn('penjualan', function($data){
@@ -94,8 +95,5 @@ class DataTableController extends Controller
         ->make(true);
     }
 
-    
-
-    
 
 }

@@ -163,16 +163,6 @@ Route::prefix('/keuangan')->group(function (){
     Route::delete('/delete/{id}', DeleteKeuanganController::class)->name('keuangan.delete');
 });
 
-Route::prefix('/penjualan')->group(function (){
-    // --view
-    Route::get('/all', GetAllPenjualanController::class)->name('penjualan.all');
-    // --create
-    Route::post('/create', CreatePenjualanController::class)->name('penjualan.create');
-    // --update
-    Route::post('/update/{id}', UpdatePenjualanController::class)->name('penjualan.update');
-    // --delete
-    Route::delete('/delete/{id}', DeletePenjualanController::class)->name('penjualan.delete');
-});
 
 
 
