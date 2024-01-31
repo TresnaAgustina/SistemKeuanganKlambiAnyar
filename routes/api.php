@@ -33,6 +33,10 @@ use App\Http\Controllers\Penjualan_Lain\CreatePenjualanLainController;
 use App\Http\Controllers\Penjualan_Lain\DeletePenjualanLainController;
 use App\Http\Controllers\Penjualan_Lain\GetAllPenjualanLainController;
 use App\Http\Controllers\Penjualan_Lain\UpdatePenjualanLainController;
+use App\Http\Controllers\Master\Customer\CreateMasterCustomerController;
+use App\Http\Controllers\Master\Customer\DeleteMasterCustomerController;
+use App\Http\Controllers\Master\Customer\GetAllMasterCustomerController;
+use App\Http\Controllers\Master\Customer\UpdateMasterCustomerController;
 use App\Http\Controllers\Master\Pemasukan\ViewMasterPemasukanController;
 use App\Http\Controllers\Master\Pemasukan\CreateMasterPemasukanController;
 use App\Http\Controllers\Master\Pemasukan\DeleteMasterPemasukanController;
@@ -121,6 +125,19 @@ Route::prefix('/mstr/barang')->group(function () {
         Route::delete('/delete/{id}', DeleteMasterBarangController::class)->name('barang.delete');
     });
 });
+
+// *** Master Customer Route *** //
+Route::prefix('/mstr/customer')->group(function () {
+    // --view
+    Route::get('/all', GetAllMasterCustomerController::class)->name('customer.all');
+    // --create
+    Route::post('/create', CreateMasterCustomerController::class)->name('customer.create');
+    // --update
+    Route::post('/update/{id}', UpdateMasterCustomerController::class)->name('customer.update');
+    // --delete
+    Route::delete('/delete/{id}', DeleteMasterCustomerController::class)->name('customer.delete');
+});
+
 
 // *** Pemasukan Routes *** //
 Route::prefix('/pemasukan')->group(function () {

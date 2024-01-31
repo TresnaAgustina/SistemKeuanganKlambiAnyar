@@ -17,10 +17,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_mstr_barang');
             $table->unsignedBigInteger('id_keuangan');
+            $table->unsignedBigInteger('id_customer');
             $table->string('kode_penjualan');
             $table->date('tanggal');
-            $table->string('nama_pembeli');
-            $table->string('no_telp');
             $table->integer('quantity');
             $table->double('subtotal');
             $table->enum('metode_pembayaran', ['cash', 'kredit']);
@@ -32,6 +31,7 @@ return new class extends Migration
 
             $table->foreign('id_mstr_barang')->references('id')->on('master_barang')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('id_keuangan')->references('id')->on('keuangan')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_customer')->references('id')->on('master_customer')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

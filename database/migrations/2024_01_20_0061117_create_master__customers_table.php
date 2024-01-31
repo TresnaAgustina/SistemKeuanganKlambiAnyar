@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('master_customer', function (Blueprint $table) {
             $table->id();
+            $table->string('nama_customer');
+            $table->text('alamat_customer')->nullable();
+            $table->string('no_telp_customer');
+            $table->enum('status_customer', ['aktif', 'tidak aktif']);
             $table->timestamps();
         });
     }

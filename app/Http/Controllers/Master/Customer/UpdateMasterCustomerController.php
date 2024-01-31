@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Master\Barang;
+namespace App\Http\Controllers\Master\Customer;
 
 use Illuminate\Http\Request;
-use App\Models\Master_Barang;
+use App\Models\Master_Customer;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
-class UpdateMasterBarangController extends Controller
+class UpdateMasterCustomerController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -18,48 +18,51 @@ class UpdateMasterBarangController extends Controller
     public function __invoke(Request $request, Int $id)
     {
         try {
-            //get all data request
+            // get all data request
             $data = $request->all();
 
-            $check = Master_Barang::where('id', $id)->first();
+            // get data by id
+            $check = Master_Customer::where('id', $id)->first();
 
-            //if data not found
+            // if data not found
             if (!$check) {
                 return response()->json([
                     'success' => false,
-                    'pesan' => 'Data Master Barang Not Found!',
+                    'pesan' => 'Data Master Customer Not Found!',
                     'data' => ''
-                ], 404);
+                ], 400);
             }
 
-            //validate request data
+            // validation
             $validate = Validator::make($data, [
-                'nama_barang' => 'required|string|unique:master_barang,nama_barang',
-                'harga_beli' => 'required|numeric',
-                'harga_jual' => 'required|numeric',
+                'nama_customer' => 'required|unique:master_customer,nama_customer',
+                'alamat_customer' => 'nullable|string',
+                'no_telp_customer' => 'required|string|size:12|unique:master_customer,no_telp_customer',
+                'status_customer' => 'required|in:1,2',
             ]);
 
             //if validation fails
             if ($validate->fails()) {
                 return response()->json([
                     'success' => false,
-                    'pesan' => 'Update Data Master Barang Failed!',
+                    'pesan' => 'Create Data Master Customer Failed!',
                     'data' => $validate->errors()
                 ], 400);
             }
 
-            //update data to database
-            $update = Master_Barang::where('id', $request->id)->update([
-                'nama_barang' => $data['nama_barang'],
-                'harga_beli' => $data['harga_beli'],
-                'harga_jual' => $data['harga_jual'],
+            //update data 
+            $update = Master_Customer::where('id', $id)->update([
+                'nama_customer' => $data['nama_customer'],
+                'alamat_customer' => $data['alamat_customer'],
+                'no_telp_customer' => $data['no_telp_customer'],
+                'status_customer' => $data['status_customer'],
             ]);
 
             //if update data fails
             if (!$update) {
                 return response()->json([
                     'success' => false,
-                    'pesan' => 'Update Data Master Barang Failed!',
+                    'pesan' => 'Update Data Master Customer Failed!',
                     'data' => ''
                 ], 400);
             }
@@ -67,15 +70,14 @@ class UpdateMasterBarangController extends Controller
             //return json response
             return response()->json([
                 'success' => true,
-                'pesan' => 'Update Data Master Barang Success',
+                'pesan' => 'Update Data Master Customer Success',
                 'data' => $update
             ], 200);
-
-            return back()->with('pesan', 'Update Data Master Barang Success');
+            
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'pesan' => 'Update Data Master Barang Failed!'. $e->getMessage(),
+                'pesan' => 'Update Data Master Customer Failed!'. $e->getMessage(),
                 'data' => ''
             ], 400);
         }

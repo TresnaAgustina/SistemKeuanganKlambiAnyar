@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Piutang;
 use App\Models\Keuangan;
 use App\Models\Master_Jaritan;
+use App\Models\Master_Customer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -16,10 +17,9 @@ class Penjualan_Jasa_Jarit extends Model
     protected $fillable = [
         'id_mstr_jaritan',
         'id_keuangan',
+        'id_customer',
         'kode_penjualan',
         'tanggal',
-        'nama_pembeli',
-        'no_telp',
         'quantity',
         'subtotal',
         'metode_pembayaran',
@@ -40,5 +40,9 @@ class Penjualan_Jasa_Jarit extends Model
 
     public function piutang(){
         return $this->hasOne(Piutang::class, 'id_jual_jasa', 'id');
+    }
+
+    public function customer(){
+        return $this->belongsTo(Master_Customer::class, 'id_customer', 'id');
     }
 }
