@@ -40,7 +40,7 @@
             
             <div class="card-body">
               
-              <button type="button" class="btn btn-primary test" data-toggle="modal" data-target="#md-pegawai">
+              <button type="button" class="btn btn-primary test" data-toggle="modal" data-target="#md-pegawaiRumahan">
                 <i class="fas fa-plus"></i>
                 Tambah Data
               </button>
@@ -49,7 +49,7 @@
             <!-- /.card -->
 
             <div class="card-body">
-                <table id="pegawai" class="table table-bordered table-striped">
+                <table id="pegawaiRumahan" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>Nomor</th>
@@ -74,7 +74,7 @@
     </div><!-- /.container-fluid -->
 
     
-    <div class="modal fade" id="md-pegawai">
+    <div class="modal fade" id="md-pegawaiRumahan">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
@@ -90,28 +90,30 @@
                 <div class="form-group">
                     <label for="nama">Nama Pegawai</label>
                     <input name="nama" type="text" class="form-control" id="nama" required>
-                </div>                         
+                </div>                          
                 <div class="form-group">
                     <label for="alamat">Alamat</label>
                     <input name="alamat" type="text" class="form-control" id="alamat" required>
-                </div>                          
+                </div>
+                <div class="form-group">
+                  <label>Jenis Kelamin</label>
+                  <select name="jenis_kelamin" id="jk" class="form-control">
+                    <option>Pilih</option>
+                    <option value="1">Laki-laki</option>
+                    <option value="2">Perempuan</option>
+                  </select>
+                </div>                            
                 <div class="form-group">
                     <label for="no_telp">Nomor Telepon</label>
                     <input name="no_telp" type="text" class="form-control" id="no_telp" required>
                 </div>                          
-                <div class="form-group">
-                    <label for="jenis_kelamin">Jenis Kelamin</label>
-                    <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
-                      <option>Pilih</option>
-                      <option value="1">Perempuan</option>
-                      <option value="2">Laki-laki</option>
-                    </select>
-                </div>                                       
+                                                 
                 <div class="form-group">
                   <label>Status</label>
                   <select name="status" id="status" class="form-control">
-                    <option value="active">Aktif</option>
-                    <option value="inactive">Non-Aktif</option>
+                    <option>Pilih</option>
+                    <option value="1">Aktif</option>
+                    <option value="2">Tidak Aktif</option>
                   </select>
                 </div>    
 
@@ -210,7 +212,7 @@
 {{-- //Datatble Config --}}
 <script>
     $(document).ready(function(){
-        $('#pegawai').DataTable({
+        $('#pegawaiRumahan').DataTable({
             "responsive": true, 
             "autoWidth": false,
             "processing": true,
@@ -236,7 +238,7 @@
             },{
                 data: 'jenis_kelamin',
                 name: 'Jenis Kelamin'
-            },{
+            } ,{
                 data: 'status',
                 name: 'Status'
             },{
@@ -263,12 +265,20 @@ $.ajaxSetup({
           $('#nama').val(response.result.nama);
           $('#alamat').val(response.result.alamat);
           $('#no_telp').val(response.result.no_telp);
-          $('#jenis_kelamin').val(response.result.jenis_kelamin);
           var statusValue = response.result.status;
           var selectElement = document.getElementById("status");
           for (var i = 0; i < selectElement.options.length; i++) {
               if (selectElement.options[i].value === statusValue) {
                   selectElement.options[i].selected = true;
+                  break;
+              }
+          }
+
+          var jkValue = response.result.jenis_kelamin;
+          var selectJK = document.getElementById("jk");
+          for (var i = 0; i < selectJK.options.length; i++) {
+              if (selectJK.options[i].value === jkValue) {
+                  selectJK.options[i].selected = true;
                   break;
               }
           }
@@ -278,7 +288,7 @@ $.ajaxSetup({
 
 // hapus data pada form ketika di tutup
   $(document).ready(function(){
-      $('#md-pegawai').on('hidden.bs.modal', function(){
+      $('#md-pegawaiRumahan').on('hidden.bs.modal', function(){
           $(this).find('input').val(''); // Mengosongkan nilai input di dalam modal
       });
   });

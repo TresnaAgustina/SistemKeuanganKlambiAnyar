@@ -95,20 +95,20 @@
                 <div class="form-group">
                     <label for="alamat">Alamat</label>
                     <input name="alamat" type="text" class="form-control" id="alamat" required>
-                </div>                          
+                </div>
+                <div class="form-group">
+                  <label>Jenis Kelamin</label>
+                  <select name="jenis_kelamin" id="jk" class="form-control">
+                    <option>Pilih</option>
+                    <option value="1">Laki-laki</option>
+                    <option value="2">Perempuan</option>
+                  </select>
+                </div>                            
                 <div class="form-group">
                     <label for="no_telp">Nomor Telepon</label>
                     <input name="no_telp" type="text" class="form-control" id="no_telp" required>
                 </div>                          
-                <div class="form-group">
-                    <label for="jenis_kelamin">Jenis Kelamin</label>
-                    <select name="jenis_kelamin" id="jk" class="form-control">
-                      <option>Pilih</option>
-                      <option value="1">Perempuan</option>
-                      <option value="2">Laki-laki</option>
-                    </select>
-                    {{-- <input name="JK" type="text" class="form-control" id="jk" required> --}}
-                </div>                          
+                                       
                 <div class="form-group">
                     <label for="gaji_pokok">Gaji Pokok</label>
                     <input name="gaji_pokok" type="text" class="form-control" id="gaji" required>
@@ -117,8 +117,9 @@
                 <div class="form-group">
                   <label>Status</label>
                   <select name="status" id="status" class="form-control">
+                    <option>Pilih</option>
                     <option value="1">Aktif</option>
-                    <option value="2">Non-Aktif</option>
+                    <option value="2">Tidak Aktif</option>
                   </select>
                 </div>    
 
@@ -271,16 +272,24 @@ $.ajaxSetup({
         success:function(response){
           $('#test').modal('show');
           $('#nama').val(response.result.nama);
-          $('#nip').val(response.result.nip);
           $('#alamat').val(response.result.alamat);
           $('#no_telp').val(response.result.no_telp);
-          $('#jk').val(response.result.jenis_kelamain);
+          // $('#jk').val(response.result.jenis_kelamain);
           $('#gaji').val(response.result.gaji_pokok);
           var statusValue = response.result.status;
           var selectElement = document.getElementById("status");
           for (var i = 0; i < selectElement.options.length; i++) {
               if (selectElement.options[i].value === statusValue) {
                   selectElement.options[i].selected = true;
+                  break;
+              }
+          }
+
+          var jkValue = response.result.jenis_kelamin;
+          var selectJK = document.getElementById("jk");
+          for (var i = 0; i < selectJK.options.length; i++) {
+              if (selectJK.options[i].value === jkValue) {
+                  selectJK.options[i].selected = true;
                   break;
               }
           }

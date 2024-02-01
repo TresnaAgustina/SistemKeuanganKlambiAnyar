@@ -106,13 +106,13 @@ class DataTableController extends Controller
         ->addColumn('status', function ($data) {
             if ($data->status == "inactive") {
                 // return '<span class="label label-success">Aktif</span>';
-                return '<span class="badge bg-warning" style="font-size: 12px;">Non-Aktif</span>';
+                return '<span class="badge bg-warning" style="font-size: 12px;">Tidak Aktif</span>';
             } else {
                 return '<span class="badge bg-success" style="font-size: 12px;">Aktif</span>';
             }
         }) 
         ->addColumn('aksi', function($data){
-            return view('Master.pegawai-normal.tombol')->with('data', $data);
+            return view('Master.pegawai-tetap.tombol')->with('data', $data);
         })
         ->rawColumns(['status'])
         ->make(true);
@@ -125,7 +125,7 @@ class DataTableController extends Controller
         ->addColumn('status', function ($data) {
             if ($data->status == "inactive") {
                 // return '<span class="label label-success">Aktif</span>';
-                return '<span class="badge bg-warning" style="font-size: 12px;">Non-Aktif</span>';
+                return '<span class="badge bg-warning" style="font-size: 12px;">Tidak Aktif</span>';
             } else {
                 return '<span class="badge bg-success" style="font-size: 12px;">Aktif</span>';
             }

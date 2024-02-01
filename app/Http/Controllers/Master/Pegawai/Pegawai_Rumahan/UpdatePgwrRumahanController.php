@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Master\Pegawai\Pegawai_Rumahan;
 
-use App\Http\Controllers\Controller;
-use App\Models\Pegawai_Rumahan;
 use Illuminate\Http\Request;
+use App\Models\Pegawai_Rumahan;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class UpdatePgwrRumahanController extends Controller
 {
@@ -21,7 +22,7 @@ class UpdatePgwrRumahanController extends Controller
             $data = $request->all();
 
             // get data by id
-            $pegawai = Pegawai_Rumahan::where('id', $id);
+            $pegawai = Pegawai_Rumahan::where('id', $id)->first();
             $nip = $pegawai->nip;
 
             // if data not found
@@ -34,8 +35,8 @@ class UpdatePgwrRumahanController extends Controller
                 'nama' => 'required|string|unique: Pegawai_Normal, nama',
                 'alamat' => 'nullable|string',
                 'no_telp' => 'required|size:12',
-                'jenis_kelamin' => 'required|in:1,2',
-                'status' => 'required|in:1,2'
+                'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                'status' => 'required|in:active,inactive'
             ]);
 
             // if validation fails

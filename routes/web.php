@@ -44,10 +44,12 @@ use App\Http\Controllers\Master\Jaritan\GetUpdateMasterJaritanController;
 use App\Http\Controllers\Master\Pegawai\Pegawai_Rumahan\CreatePgwrRumahanController;
 use App\Http\Controllers\Master\Pegawai\Pegawai_Rumahan\DeletePgwrRumahanController;
 use App\Http\Controllers\Master\Pegawai\Pegawai_Rumahan\GetAllPgwrRumahanController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Rumahan\GetUpdatePgwrRumahanController;
 use App\Http\Controllers\Master\Pegawai\Pegawai_Rumahan\UpdatePgwrRumahanController;
 use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\CreatePgwrTetapController;
 use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\DeletePgwrTetapController;
 use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\GetAllPgwrTetapController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\GetUpdatePgwrTetapController;
 use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\UpdatePgwrTetapController;
 use App\Http\Controllers\Master\Pemasukan\CreateMasterPemasukanController;
 use App\Http\Controllers\Master\Pemasukan\DeleteMasterPemasukanController;
@@ -165,6 +167,7 @@ Route::prefix('/mstr/pegawai-tetap')->group(function () {
     // --create
     Route::post('/create', CreatePgwrTetapController::class)->name('pegawai-tetap.create');
     // --update
+    Route::get('/update/{id}', GetUpdatePgwrTetapController::class)->name('pegawai-tetap.update.index');
     Route::post('/update/{id}', UpdatePgwrTetapController::class)->name('pegawai-tetap.update');
     // --delete
     Route::get('/delete/{id}', DeletePgwrTetapController::class)->name('pegawai-tetap.delete');
@@ -177,6 +180,7 @@ Route::prefix('/mstr/pegawai-rumahan')->group(function () {
     // --create
     Route::post('/create', CreatePgwrRumahanController::class)->name('pegawai-rumahan.create');
     // --update
+    Route::get('/update/{id}', GetUpdatePgwrRumahanController::class)->name('pegawai-rumahan.update.index');
     Route::post('/update/{id}', UpdatePgwrRumahanController::class)->name('pegawai-rumahan.update');
     // --delete
     Route::get('/delete/{id}', DeletePgwrRumahanController::class)->name('pegawai-rumahan.delete');

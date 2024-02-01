@@ -28,7 +28,7 @@ class GetAllPgwrTetapController extends Controller
             // ], 200);
 
             // for monolith app
-            return view('Master.pegawai-normal.index')->with([
+            return view('Master.pegawai-tetap.index')->with([
                 'data' => $data
             ]);
 

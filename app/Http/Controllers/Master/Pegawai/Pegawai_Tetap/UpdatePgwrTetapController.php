@@ -22,7 +22,7 @@ class UpdatePgwrTetapController extends Controller
             $data = $request->all();
 
             // get data by id
-            $pegawai = Pegawai_Normal::where('id', $id);
+            $pegawai = Pegawai_Normal::where('id', $id)->first();
             $nip = $pegawai->nip;
 
             // if data not found
@@ -32,12 +32,12 @@ class UpdatePgwrTetapController extends Controller
 
             // validate data
             $validate = Validator::make($data, [
-                'nama' => 'required|string|unique: Pegawai_Normal, nama',
+                'nama' => 'required|string|unique: Pegawai_Normal, nama' . $pegawai->id,
                 'alamat' => 'nullable|string',
                 'no_telp' => 'required|size:12',
-                'jenis_kelamin' => 'required|in:1,2',
-                'gaiji_pokok' => 'required|double',
-                'status' => 'required|in:1,2'
+                'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                'gaji_pokok' => 'required|double',
+                'status' => 'required|in:active,inactive'
             ]);
 
             // if validation fails
@@ -52,7 +52,7 @@ class UpdatePgwrTetapController extends Controller
                 'alamat' => $data['alamat'],
                 'no_telp' => $data['no_telp'],
                 'jenis_kelamin' => $data['jenis_kelamin'],
-                'gaiji_pokok' => $data['gaji_pokok'],
+                'gaji_pokok' => $data['gaji_pokok'],
                 'status' => $data['status']
             ]);
 
