@@ -91,10 +91,6 @@
                 <div class="form-group">
                     <label for="nama">Nama Pegawai</label>
                     <input name="nama" type="text" class="form-control" id="nama" required>
-                </div>
-                <div class="form-group">
-                    <label for="nip">NIP</label>
-                    <input name="nip" type="text" class="form-control" id="nip" required>
                 </div>                          
                 <div class="form-group">
                     <label for="alamat">Alamat</label>
@@ -102,22 +98,27 @@
                 </div>                          
                 <div class="form-group">
                     <label for="no_telp">Nomor Telepon</label>
-                    <input name="No_telp" type="text" class="form-control" id="no_telp" required>
+                    <input name="no_telp" type="text" class="form-control" id="no_telp" required>
                 </div>                          
                 <div class="form-group">
-                    <label for="jk">Jenis Kelamin</label>
-                    <input name="JK" type="text" class="form-control" id="jk" required>
+                    <label for="jenis_kelamin">Jenis Kelamin</label>
+                    <select name="jenis_kelamin" id="jk" class="form-control">
+                      <option>Pilih</option>
+                      <option value="1">Perempuan</option>
+                      <option value="2">Laki-laki</option>
+                    </select>
+                    {{-- <input name="JK" type="text" class="form-control" id="jk" required> --}}
                 </div>                          
                 <div class="form-group">
-                    <label for="gaji">Gaji Pokok</label>
-                    <input name="gaji" type="text" class="form-control" id="gaji" required>
+                    <label for="gaji_pokok">Gaji Pokok</label>
+                    <input name="gaji_pokok" type="text" class="form-control" id="gaji" required>
                 </div>                          
                                        
                 <div class="form-group">
                   <label>Status</label>
                   <select name="status" id="status" class="form-control">
-                    <option value="active">Aktif</option>
-                    <option value="inactive">Non-Aktif</option>
+                    <option value="1">Aktif</option>
+                    <option value="2">Non-Aktif</option>
                   </select>
                 </div>    
 
@@ -191,7 +192,7 @@
             }).then((result) => {
                 if (result.value) {
                     $.ajax({
-                        type: 'DELETE',
+                        type: 'GET',
                         url: '/mstr/pegawai-tetap/delete/' + id, 
                         success: function(data) {
                             Swal.fire({

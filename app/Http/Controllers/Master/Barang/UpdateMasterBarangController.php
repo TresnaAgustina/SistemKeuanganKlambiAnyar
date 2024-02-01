@@ -34,26 +34,11 @@ class UpdateMasterBarangController extends Controller
 
             // aku komen karena waktu tak coba dia malah tambah data, buka update
             //validate request data
-            // $validate = Validator::make($data, [
-            //     'nama_barang' => 'required|string|unique:master_barang,nama_barang',
-            //     'harga_beli' => 'required|numeric',
-            //     'harga_jual' => 'required|numeric',
-            // ]);
-
-            $validate = $request->validate([
-                'nama_barang' => 'required|string',
+            $validate = Validator::make($data, [
+                'nama_barang' => 'required|string|unique:master_barang,nama_barang',
                 'harga_beli' => 'required|numeric',
                 'harga_jual' => 'required|numeric',
             ]);
-
-            //if validation fails
-            // if ($validate->fails()) {
-            //     return response()->json([
-            //         'success' => false,
-            //         'pesan' => 'Update Data Master Barang Failed!',
-            //         'data' => $validate->errors()
-            //     ], 400);
-            // }
 
             if (!$validate) {
                 return back()->with(
@@ -67,22 +52,6 @@ class UpdateMasterBarangController extends Controller
                 'harga_beli' => $data['harga_beli'],
                 'harga_jual' => $data['harga_jual'],
             ]);
-
-            //if update data fails
-            // if (!$update) {
-            //     return response()->json([
-            //         'success' => false,
-            //         'pesan' => 'Update Data Master Barang Failed!',
-            //         'data' => ''
-            //     ], 400);
-            // }
-
-            // //return json response
-            // return response()->json([
-            //     'success' => true,
-            //     'pesan' => 'Update Data Master Barang Success',
-            //     'data' => $update
-            // ], 200);
 
             if (!$update) {
                 return back()->with(
