@@ -100,12 +100,12 @@
             </ul>
           </li>
 
-          <li class="nav-item ">
+          {{-- <li class="nav-item ">
             <a href="/" class="nav-link {{ Request::is('/', 'dashboard*') ? 'active' : '' }}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
-          </li>
+          </li> --}}
 
           {{-- <li class="nav-item {{ Request::is('mstr/jaritan*', 'mstr/pemasukan*', 'mstr/pengeluaran*') ? 'menu-open' : '' }} ">
             <a href="#" class="nav-link {{ Request::is('mstr/jaritan*', 'mstr/pemasukan*', 'mstr/pengeluaran*') ? 'active' : '' }}">
@@ -167,8 +167,8 @@
 
             </ul>
           </li>
-          <li class="nav-item {{ Request::is('penjualan*', 'pemasukan*', 'pengeluaran*') ? 'menu-open' : '' }}">
-            <a href="#" class="nav-link {{ Request::is('penjualan*','pemasukan*', 'pengeluaran*') ? 'active' : '' }}">
+          <li class="nav-item {{ Request::is('penjualan*','pengeluaran*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ Request::is('penjualan*','pengeluaran*') ? 'active' : '' }}">
                 <i class="nav-icon fas fa-money-bill-alt"></i>
               {{-- <i class="nav-icon fas fa-circle"></i> --}}
               <p>
@@ -176,7 +176,7 @@
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
-
+ 
             <ul class="nav nav-treeview">
               
               <li class="nav-item">

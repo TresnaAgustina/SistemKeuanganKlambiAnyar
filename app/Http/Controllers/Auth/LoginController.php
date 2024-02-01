@@ -38,14 +38,14 @@ class LoginController extends Controller
             $token = $user->createToken('auth_token')->plainTextToken;
 
             // return json response
-            return response()->json([
-                'success' => true,
-                'pesan' => 'Login Success',
-                'data' => [
-                    'user' => $user,
-                    'token' => $token
-                ]
-            ], 200);
+            // return response()->json([
+            //     'success' => true,
+            //     'pesan' => 'Login Success',
+            //     'data' => [
+            //         'user' => $user,
+            //         'token' => $token
+            //     ]
+            // ], 200);
 
             return redirect()->route('dashboard')->with('success', 'Login success');
         } catch (\Exception $e) {
