@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('nip');
-            $table->string('alamat');
+            $table->string('alamat')->nullable();
             $table->string('no_telp');
-            $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
+            $table->enum('jenis_kelamin', ['Perempuan', 'Laki-laki']);
             $table->enum('status', ['active', 'inactive']);
             $table->timestamps();
         });

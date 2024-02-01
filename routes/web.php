@@ -167,7 +167,7 @@ Route::prefix('/mstr/pegawai-tetap')->group(function () {
     // --update
     Route::post('/update/{id}', UpdatePgwrTetapController::class)->name('pegawai-tetap.update');
     // --delete
-    Route::delete('/delete/{id}', DeletePgwrTetapController::class)->name('pegawai-tetap.delete');
+    Route::get('/delete/{id}', DeletePgwrTetapController::class)->name('pegawai-tetap.delete');
 });
 
 // *** Master Pegawai Rumahan Route *** //
@@ -179,7 +179,7 @@ Route::prefix('/mstr/pegawai-rumahan')->group(function () {
     // --update
     Route::post('/update/{id}', UpdatePgwrRumahanController::class)->name('pegawai-rumahan.update');
     // --delete
-    Route::delete('/delete/{id}', DeletePgwrRumahanController::class)->name('pegawai-rumahan.delete');
+    Route::get('/delete/{id}', DeletePgwrRumahanController::class)->name('pegawai-rumahan.delete');
 });
 
 // *** Master Customer Route *** //

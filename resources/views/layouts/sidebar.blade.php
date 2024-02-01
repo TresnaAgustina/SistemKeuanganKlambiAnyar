@@ -13,7 +13,7 @@
           <img src="{{ asset('template/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{ auth()->user()->username }}</a>
+          {{-- <a href="#" class="d-block">{{ auth()->user()->username }}</a> --}}
         </div>
       </div>
 
@@ -100,12 +100,14 @@
             </ul>
           </li>
 
-          <li class="nav-item ">
+          {{-- dashboard duplicate, ku matiin
+             --}}
+          {{-- <li class="nav-item ">
             <a href="/" class="nav-link {{ Request::is('/', 'dashboard*') ? 'active' : '' }}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
-          </li>
+          </li> --}}
 
           {{-- <li class="nav-item {{ Request::is('mstr/jaritan*', 'mstr/pemasukan*', 'mstr/pengeluaran*') ? 'menu-open' : '' }} ">
             <a href="#" class="nav-link {{ Request::is('mstr/jaritan*', 'mstr/pemasukan*', 'mstr/pengeluaran*') ? 'active' : '' }}">

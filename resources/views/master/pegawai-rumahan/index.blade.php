@@ -90,22 +90,22 @@
                 <div class="form-group">
                     <label for="nama">Nama Pegawai</label>
                     <input name="nama" type="text" class="form-control" id="nama" required>
-                </div>
-                <div class="form-group">
-                    <label for="nip">NIP</label>
-                    <input name="nip" type="text" class="form-control" id="nip" required>
-                </div>                          
+                </div>                         
                 <div class="form-group">
                     <label for="alamat">Alamat</label>
                     <input name="alamat" type="text" class="form-control" id="alamat" required>
                 </div>                          
                 <div class="form-group">
                     <label for="no_telp">Nomor Telepon</label>
-                    <input name="No_telp" type="text" class="form-control" id="no_telp" required>
+                    <input name="no_telp" type="text" class="form-control" id="no_telp" required>
                 </div>                          
                 <div class="form-group">
-                    <label for="jk">Jenis Kelamin</label>
-                    <input name="JK" type="text" class="form-control" id="jk" required>
+                    <label for="jenis_kelamin">Jenis Kelamin</label>
+                    <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
+                      <option>Pilih</option>
+                      <option value="1">Perempuan</option>
+                      <option value="2">Laki-laki</option>
+                    </select>
                 </div>                                       
                 <div class="form-group">
                   <label>Status</label>
@@ -185,7 +185,7 @@
             }).then((result) => {
                 if (result.value) {
                     $.ajax({
-                        type: 'DELETE',
+                        type: 'GET',
                         url: '/mstr/pegawai-rumahan/delete/' + id, 
                         success: function(data) {
                             Swal.fire({
@@ -261,10 +261,9 @@ $.ajaxSetup({
         success:function(response){
           $('#test').modal('show');
           $('#nama').val(response.result.nama);
-          $('#nip').val(response.result.nip);
           $('#alamat').val(response.result.alamat);
           $('#no_telp').val(response.result.no_telp);
-          $('#jk').val(response.result.jenis_kelamin);
+          $('#jenis_kelamin').val(response.result.jenis_kelamin);
           var statusValue = response.result.status;
           var selectElement = document.getElementById("status");
           for (var i = 0; i < selectElement.options.length; i++) {

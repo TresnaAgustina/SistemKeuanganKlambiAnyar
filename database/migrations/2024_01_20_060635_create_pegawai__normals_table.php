@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('nip');
             $table->string('alamat');
             $table->string('no_telp');
-            $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
+            $table->enum('jenis_kelamin', ['Perempuan' ,'Laki-laki']);
             $table->double('gaji_pokok');
             $table->enum('status', ['active', 'inactive']);
             $table->timestamps();
