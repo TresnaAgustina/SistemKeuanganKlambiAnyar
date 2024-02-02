@@ -6,8 +6,19 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ViewLoginController;
+use App\Http\Controllers\DataTable\DataTableBarangController;
 use App\Http\Controllers\Views\DashboardController;
 use App\Http\Controllers\DataTable\DataTableController;
+use App\Http\Controllers\DataTable\DataTableCustomerController;
+use App\Http\Controllers\DataTable\DataTableJaritanController;
+use App\Http\Controllers\DataTable\DataTableKeuanganController;
+use App\Http\Controllers\DataTable\DataTablePemasukanController;
+use App\Http\Controllers\DataTable\DataTablePengeluaranController;
+use App\Http\Controllers\DataTable\DataTablePgwrRumahanController;
+use App\Http\Controllers\DataTable\DataTablePgwrTetapController;
+use App\Http\Controllers\DataTable\TableHistoriesController;
+use App\Http\Controllers\DataTable\TablePemasukanController;
+use App\Http\Controllers\DataTable\TablePengeluaranController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Controllers\Keuangan\CreateKeuanganController;
 use App\Http\Controllers\Keuangan\DeleteKeuanganController;
@@ -73,23 +84,29 @@ use App\Http\Controllers\Master\Pengeluaran\GetUpdateMasterPengeluaranController
 */
 
 // -- Data Table Config --
-Route::get('/dataTable/jaritan', [DataTableController::class, 'DataJaritan']);
-Route::get('/dataTable/pemasukan', [DataTableController::class, 'DataPemasukan']);
-Route::get('/dataTable/pengeluaran', [DataTableController::class, 'DataPengeluaran']);
-Route::get('/dataTable/DataPemasukan', [DataTableController::class, 'Pemasukan']);
-Route::get('/dataTable/DataPengeluaran', [DataTableController::class, 'Pengeluaran']);
-Route::get('/dataTable/PegawaiTetap', [DataTableController::class, 'PegawaiTetap']);
-Route::get('/dataTable/PegawaiRumahan', [DataTableController::class, 'PegawaiRumahan']);
-Route::get('/dataTable/customer', [DataTableController::class, 'customer']);
-Route::get('/dataTable/barang', [DataTableController::class, 'barang']);
+// Route::get('/dataTable/jaritan', [DataTableController::class, 'DataJaritan']);
+// Route::get('/dataTable/pemasukan', [DataTableController::class, 'DataPemasukan']);
+// Route::get('/dataTable/pengeluaran', [DataTableController::class, 'DataPengeluaran']);
+// Route::get('/dataTable/DataPemasukan', [DataTableController::class, 'Pemasukan']);
+// Route::get('/dataTable/DataPengeluaran', [DataTableController::class, 'Pengeluaran']);
+// Route::get('/dataTable/PegawaiTetap', [DataTableController::class, 'PegawaiTetap']);
+// Route::get('/dataTable/PegawaiRumahan', [DataTableController::class, 'PegawaiRumahan']);
+// Route::get('/dataTable/customer', [DataTableController::class, 'customer']);
+// Route::get('/dataTable/barang', [DataTableController::class, 'barang']);
 
-// Route::prefix('/dataTable')->group(function () {
-//     Route::get('/jaritan', DataTableJaritanController::class)->name('dataTable.jaritan');
-//     Route::get('/pemasukan', DataTablePemasukanController::class)->name('dataTable.pemasukan');
-//     Route::get('/pengeluaran', DataTablePengeluaranController::class)->name('dataTable.pengeluaran');
-//     Route::get('/DataPemasukan', DataPemasukanController::class)->name('dataTable.dataPemasukan');
-//     Route::get('/DataPengeluaran', DataPengeluaranController::class)->name('dataTable.dataPengeluaran');
-// });
+Route::prefix('/dataTable')->group(function () {
+    Route::get('/jaritan', DataTableJaritanController::class)->name('dataTable.jaritan');
+    Route::get('/pemasukan', DataTablePemasukanController::class)->name('dataTable.pemasukan');
+    Route::get('/pengeluaran', DataTablePengeluaranController::class)->name('dataTable.pengeluaran');
+    Route::get('/DataPemasukan', TablePemasukanController::class)->name('dataTable.dataPemasukan');
+    Route::get('/DataPengeluaran', TablePengeluaranController::class)->name('dataTable.dataPengeluaran');
+    Route::get('/PegawaiTetap', DataTablePgwrTetapController::class)->name('dataTable.pegawaiTetap');
+    Route::get('/PegawaiRumahan', DataTablePgwrRumahanController::class)->name('dataTable.pegawaiRumahan');
+    Route::get('/customer', DataTableCustomerController::class)->name('dataTable.customer');
+    Route::get('/barang', DataTableBarangController::class)->name('dataTable.barang');
+    Route::get('/keuangan', DataTableKeuanganController::class)->name('dataTable.keuangan');
+    Route::get('/histori', TableHistoriesController::class)->name('dataTable.histori');
+});
 
 
 // *** Auth Routes *** //
@@ -247,9 +264,9 @@ Route::prefix('/keuangan')->group(function (){
 
 // coba test fitur keuangan 
 
-Route::get('/keuangan/all', function(){
-    return view('keuangan.index');
-});
+// Route::get('/keuangan/all', function(){
+//     return view('keuangan.index');
+// });
 
 
 

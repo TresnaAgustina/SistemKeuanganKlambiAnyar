@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers\DataTable;
 
-use App\Http\Controllers\Controller;
-use App\Models\Master_Pengeluaran;
 use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
+use Yajra\DataTables\DataTables;
+use App\Models\Master_Pengeluaran;
+use App\Http\Controllers\Controller;
 
 class DataTablePengeluaranController extends Controller
 {
-    public function DataPengeluaran()
+    /**
+     * Handle the incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function __invoke(Request $request)
     {
         $coba = Master_Pengeluaran::orderBy('id', 'asc');
         return DataTables::of($coba)

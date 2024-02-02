@@ -255,6 +255,14 @@ $.ajaxSetup({
                   break;
               }
           }
+            // Menangani klik pada tombol Simpan di dalam modal
+            $('.simpan').click(function(){
+                // Mengubah action dan method form
+                $('form').attr('action', '/mstr/customer/update/' + id);
+                $('form').attr('method', 'POST');
+                // Submit form
+                $('form').submit();
+            });
         }
       });
   });

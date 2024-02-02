@@ -216,6 +216,15 @@
           success:function(response){
             $('#test').modal('show');
             $('#nama').val(response.result.nama_atribut);
+
+            // Menangani klik pada tombol Simpan di dalam modal
+            $('.simpan').click(function(){
+                  // Mengubah action dan method form
+                  $('form').attr('action', '/mstr/pemasukan/update/' + id);
+                  $('form').attr('method', 'POST');
+                  // Submit form
+                  $('form').submit();
+              });
           }
         });
     });
