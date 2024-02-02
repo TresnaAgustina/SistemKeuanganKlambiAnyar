@@ -45,6 +45,11 @@ use App\Http\Controllers\Master\Pengeluaran\ViewMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\CreateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\DeleteMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\UpdateMasterPengeluaranController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\CreatePgwrTetapController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\DeletePgwrTetapController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\GetAllPgwrTetapController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\UpdatePgwrTetapController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\GetUpdatePgwrTetapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -153,6 +158,19 @@ Route::prefix('/pemasukan')->group(function () {
     Route::post('/update/{id}', UpdatePemasukanController::class)->name('pemasukan.update');
     // --delete
     Route::delete('/delete/{id}', DeletePemasukanController::class)->name('pemasukan.delete');
+});
+
+// *** Master Pegawai Tetap Route *** //
+Route::prefix('/mstr/pegawai-tetap')->group(function () {
+    // --view
+    Route::get('/all', GetAllPgwrTetapController::class)->name('pegawai-tetap.all');
+    // --create
+    Route::post('/create', CreatePgwrTetapController::class)->name('pegawai-tetap.create');
+    // --update
+    Route::get('/update/{id}', GetUpdatePgwrTetapController::class)->name('pegawai-tetap.update.index');
+    Route::post('/update/{id}', UpdatePgwrTetapController::class)->name('pegawai-tetap.update');
+    // --delete
+    Route::get('/delete/{id}', DeletePgwrTetapController::class)->name('pegawai-tetap.delete');
 });
 
 // *** Pengeluaran Routes *** //

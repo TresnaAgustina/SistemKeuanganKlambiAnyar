@@ -9,7 +9,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Tambah Data Pegawai Rumahan</h4>
+            <h4 class="modal-title">Update Data Pegawai Rumahan</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -30,8 +30,8 @@
                   <label>Jenis Kelamin</label>
                   <select name="jenis_kelamin" id="jk" class="form-control">
                     <option>Pilih</option>
-                    <option value="Laki-laki">Laki-laki</option>
-                    <option value="Perempuan">Perempuan</option>
+                    <option value="1">Perempuan</option>
+                    <option value="2">Laki-laki</option>
                   </select>
                 </div>                            
                 <div class="form-group">
@@ -43,8 +43,8 @@
                   <label>Status</label>
                   <select name="status" id="status" class="form-control">
                     <option>Pilih</option>
-                    <option value="active">Aktif</option>
-                    <option value="inactive">Tidak Aktif</option>
+                    <option value="1">Aktif</option>
+                    <option value="2">Tidak Aktif</option>
                   </select>
                 </div>    
 

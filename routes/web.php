@@ -160,18 +160,18 @@ Route::prefix('/mstr/barang')->group(function () {
     Route::delete('/delete/{id}', DeleteMasterBarangController::class)->name('barang.delete');
 });
 
-// *** Master Pegawai Tetap Route *** //
-Route::prefix('/mstr/pegawai-tetap')->group(function () {
-    // --view
-    Route::get('/all', GetAllPgwrTetapController::class)->name('pegawai-tetap.all');
-    // --create
-    Route::post('/create', CreatePgwrTetapController::class)->name('pegawai-tetap.create');
-    // --update
-    Route::get('/update/{id}', GetUpdatePgwrTetapController::class)->name('pegawai-tetap.update.index');
-    Route::post('/update/{id}', UpdatePgwrTetapController::class)->name('pegawai-tetap.update');
-    // --delete
-    Route::get('/delete/{id}', DeletePgwrTetapController::class)->name('pegawai-tetap.delete');
-});
+    // *** Master Pegawai Tetap Route *** //
+    Route::prefix('/mstr/pegawai-tetap')->group(function () {
+        // --view
+        Route::get('/all', GetAllPgwrTetapController::class)->name('pegawai-tetap.all');
+        // --create
+        Route::post('/create', CreatePgwrTetapController::class)->name('pegawai-tetap.create');
+        // --update
+        Route::get('/update/{id}', GetUpdatePgwrTetapController::class)->name('pegawai-tetap.update.index');
+        Route::post('/update/{id}', UpdatePgwrTetapController::class)->name('pegawai-tetap.update');
+        // --delete
+        Route::get('/delete/{id}', DeletePgwrTetapController::class)->name('pegawai-tetap.delete');
+    });
 
 // *** Master Pegawai Rumahan Route *** //
 Route::prefix('/mstr/pegawai-rumahan')->group(function () {

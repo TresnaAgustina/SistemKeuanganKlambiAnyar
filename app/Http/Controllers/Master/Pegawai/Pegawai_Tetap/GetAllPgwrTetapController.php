@@ -20,7 +20,7 @@ class GetAllPgwrTetapController extends Controller
             // get data from database
             $data = Pegawai_Normal::all();
 
-            // return json response
+            // // return json response
             // return response()->json([
             //     'success' => true,
             //     'message' => 'Success fetch all data',
