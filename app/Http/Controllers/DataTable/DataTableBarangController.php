@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\DataTable;
 
 use Illuminate\Http\Request;
-use App\Models\Master_Pemasukan;
+use App\Models\Master_Barang;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 
-class DataTablePemasukanController extends Controller
+class DataTableBarangController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -17,11 +17,11 @@ class DataTablePemasukanController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $coba = Master_Pemasukan::orderBy('id', 'asc');
+        $coba = Master_Barang::orderBy('id', 'asc');
         return DataTables::of($coba)
         ->addIndexColumn()
         ->addColumn('aksi', function($data){
-            return view('master.pemasukan.tombol')->with('data', $data);
+            return view('Master.barang.tombol')->with('data', $data);
         })
         ->make(true);
     }

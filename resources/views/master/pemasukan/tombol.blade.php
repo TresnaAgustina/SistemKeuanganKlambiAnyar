@@ -15,7 +15,7 @@
             </div>
   
             <div class="modal-body">
-              <form action="{{ url('/mstr/pemasukan/update/' . $data->id) }}" method="POST">
+              <form action="" method="">
                 @csrf
                   <div class="form-group">
                       <label for="nama_atribut">Nama Atribut</label>

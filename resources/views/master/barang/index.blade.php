@@ -236,6 +236,14 @@ $.ajaxSetup({
           $('#nama').val(response.result.nama_barang);
           $('#harga_beli').val(response.result.harga_beli);
           $('#harga_jual').val(response.result.harga_jual);
+           // Menangani klik pada tombol Simpan di dalam modal
+           $('.simpan').click(function(){
+                // Mengubah action dan method form
+                $('form').attr('action', '/mstr/barang/update/' + id);
+                $('form').attr('method', 'POST');
+                // Submit form
+                $('form').submit();
+            });
         }
       });
   });

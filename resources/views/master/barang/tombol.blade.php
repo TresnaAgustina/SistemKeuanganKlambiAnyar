@@ -16,7 +16,7 @@
           </div>
 
           <div class="modal-body">
-            <form action="{{ url('/mstr/barang/update/' . $data->id) }}" method="POST">
+            <form action="" method="">
               @csrf
                 <div class="form-group">
                     <label for="nama">Nama Barang</label>
@@ -33,7 +33,7 @@
 
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="submit" class="btn btn-primary simpan">Simpan</button>
                 </div>
             </form>
           </div>

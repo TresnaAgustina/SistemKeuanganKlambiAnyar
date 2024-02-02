@@ -236,6 +236,14 @@ $.ajaxSetup({
           $('#jenis').val(response.result.jenis_jaritan);
           $('#hargaDalam').val(response.result.harga_dalam);
           $('#hargaLuar').val(response.result.harga_luar);
+           // Menangani klik pada tombol Simpan di dalam modal
+           $('.simpan').click(function(){
+                // Mengubah action dan method form
+                $('form').attr('action', '/mstr/jaritan/update/' + id);
+                $('form').attr('method', 'POST');
+                // Submit form
+                $('form').submit();
+            });
         }
       });
   });

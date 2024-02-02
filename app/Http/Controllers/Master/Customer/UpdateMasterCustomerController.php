@@ -34,16 +34,7 @@ class UpdateMasterCustomerController extends Controller
             }
 
             // validation
-            // $validate = Validator::make($data, [
-            //     // 'nama_customer' => 'required|unique:master_customer,nama_customer',
-            //     'nama_customer' => 'required',
-            //     'alamat_customer' => 'nullable|string',
-            //     // 'no_telp_customer' => 'required|string|size:12|unique:master_customer,no_telp_customer',
-            //     'no_telp_customer' => 'required|string|size:12',
-            //     // 'status_customer' => 'required|in:aktif,tidak aktif',
-            //     'status_customer' => 'required',
-            // ]);
-            $validate = $request->validate([
+            $validate = Validator::make($data, [
                 // 'nama_customer' => 'required|unique:master_customer,nama_customer',
                 'nama_customer' => 'required',
                 'alamat_customer' => 'nullable|string',
@@ -52,6 +43,15 @@ class UpdateMasterCustomerController extends Controller
                 // 'status_customer' => 'required|in:aktif,tidak aktif',
                 'status_customer' => 'required',
             ]);
+            // $validate = $request->validate([
+            //     // 'nama_customer' => 'required|unique:master_customer,nama_customer',
+            //     'nama_customer' => 'required',
+            //     'alamat_customer' => 'nullable|string',
+            //     // 'no_telp_customer' => 'required|string|size:12|unique:master_customer,no_telp_customer',
+            //     'no_telp_customer' => 'required|string|size:12',
+            //     // 'status_customer' => 'required|in:aktif,tidak aktif',
+            //     'status_customer' => 'required',
+            // ]);
 
             //if validation fails
             if (!$validate) {

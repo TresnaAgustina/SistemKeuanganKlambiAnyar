@@ -16,7 +16,7 @@
           </div>
 
           <div class="modal-body">
-            <form action="{{ url('/mstr/jaritan/update/' . $data->id) }}" method="POST">
+            <form action="" method="">
               @csrf
                 <div class="form-group">
                     <label for="jenis">Jenis Jaritan</label>
