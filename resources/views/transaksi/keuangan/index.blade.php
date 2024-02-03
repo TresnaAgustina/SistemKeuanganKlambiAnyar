@@ -14,7 +14,7 @@
 {{-- error and success handling with sweetalert --}}
 <div class="swal" data-swal="{{ session('success') }}">
 </div>
-<div class="error" data-swal="{{ session('pesan') }}">
+<div class="error" data-swal="{{ session('error') }}">
 </div>
 
 
@@ -26,8 +26,8 @@
             <span class="info-box-icon bg-info"><i class="fas fa-money-check-alt"></i></span>
       
             <div class="info-box-content">
-              <span class="info-box-text">Saldo Bank</span>
-              <span class="info-box-number">Rp. </span>
+              <span class="info-box-text">SALDO BANK</span>
+              <span class="info-box-number">Rp. {{ number_format($bank) }} </span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -39,8 +39,8 @@
             <span class="info-box-icon bg-success"><i class="fas fa-money-check-alt"></i></span>
       
             <div class="info-box-content">
-              <span class="info-box-text">Saldo Kas</span>
-              <span class="info-box-number">Rp. </span>
+              <span class="info-box-text">SALDO KAS</span>
+              <span class="info-box-number">Rp. {{ number_format($kas) }}  </span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -56,18 +56,18 @@
           <div class="card card-primary card-outline">
             <div class="card-body">
               
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#md-keuangan">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#md-isiBank">
                 <i class="fas fa-plus"></i>
                 Isi Saldo Bank
               </button>
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#md-keuangan">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#md-isiKas">
                 <i class="fas fa-plus"></i>
                Isi Saldo Kas
               </button>
-              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#md-keuangan">
+              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#md-trfBank">
                 Transfer Saldo Bank    <i class="fas fa-arrow-right"></i>     Kas
               </button>
-              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#md-keuangan">
+              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#md-trfKas">
                 Transfer Saldo Kas <i class="fas fa-arrow-right"></i> Bank
               </button>
              
@@ -77,24 +77,24 @@
 
           <div class="card card-primary card-outline">
             <div class="card-header">
-              <strong><h4 >{{-- <i class="fas fa-edit"></i> --}}Data Keuangan </h4></strong>
+              <strong><h4 >{{-- <i class="fas fa-edit"></i> --}}Riwayat Transaksi  </h4></strong>
             </div>
 
             <div class="card-body">
-                <table id="keuangan" class="table table-bordered table-striped">
+                <table id="histori" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>Nomor</th>
-                    <th>Nama Atribut</th>
+                    <th>Keterangan</th>
                     <th>Tipe</th>
                     <th>jumlah</th>
-                    <th>Aksi</th>
+                    <th>Tanggal</th>
+                   
                   </tr>
                   </thead>
                 </table>
               </div>
           </div>
-         
 
         </div>
         <!-- /.col -->
@@ -104,42 +104,183 @@
     </div><!-- /.container-fluid -->
 
     
-    <div class="modal fade" id="md-keuangan">
+    <div class="modal fade" id="md-isiBank">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Tambah Data Keuangan</h4>
+            <h4 class="modal-title">Isi Saldo Bank</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
 
           <div class="modal-body">
-            <form action="{{ url('/mstr/keuangan/create') }}" method="POST">
+            <form action="{{ url('/keuangan/saldo-bank') }}" method="POST">
               @csrf
                 <div class="form-group">
-                    <label for="nama_atribut">Nama Atribut</label>
-                    <input name="nama_atribut" type="text" class="form-control" id="nama" required>
+                    <label for="tipe">Tipe</label>
+                    <input value="Isi Saldo Bank" name="tipe" type="text" class="form-control" id="tipe" required>
                 </div>      
-                <div class="form-group">
-                  <label>Tipe</label>
-                  <select name="tipe" id="tipe" class="form-control">
-                    <option>~ Pilih ~ </option>
-                    <option value="1">Bank</option>
-                    <option value="2">Cash</option>
-                  </select>
-                </div>
-                
                 <div class="form-group">
                   <label for="jumlah">Jumlah</label>
                     <div class="input-group mb-3">
                       <div class="input-group-prepend">
                         <span class="input-group-text">Rp. </span>
                       </div>
-                      <input name="jumlah" type="text" class="form-control" id="jumlah" required>
+                      <input name="jumlah" type="text" class="form-control" id="jmlBank" required>
                     </div>
-                </div>         
+                </div>   
+                <div class="form-group">
+                  <label for="tanggal">Tanggal</label>
+                  <input name="tanggal" type="date" class="form-control" id="tglBank" required>
+                </div> 
               
+                <div class="form-group">
+                  <label>Keterangan</label>
+                  <textarea name="keterangan" id="ket" class="form-control" rows="4" placeholder="keterangan"></textarea>
+                </div>
+                
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <div class="modal fade" id="md-isiKas">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Isi Saldo Kas</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <form action="{{ url('/keuangan/saldo-kas') }}" method="POST">
+              @csrf
+                <div class="form-group">
+                    <label for="tipe">Tipe</label>
+                    <input value="Isi Saldo Kas" name="tipe" type="text" class="form-control" id="tipe" required>
+                </div>      
+                <div class="form-group">
+                  <label for="jumlah">Jumlah</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Rp. </span>
+                      </div>
+                      <input name="jumlah" type="text" class="form-control" id="jmlKas" required>
+                    </div>
+                </div>   
+                <div class="form-group">
+                  <label for="tanggal">Tanggal</label>
+                  <input name="tanggal" type="date" class="form-control" id="tglKas" required>
+                </div> 
+              
+                <div class="form-group">
+                  <label>Keterangan</label>
+                  <textarea name="keterangan" id="ket" class="form-control" rows="4" placeholder="keterangan"></textarea>
+                </div>
+                
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <div class="modal fade" id="md-trfBank">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Transfer Saldo Bank Ke Kas</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <form action="{{ url('/keuangan/transfer-bank') }}" method="POST">
+              @csrf
+                <div class="form-group">
+                    <label for="tipe">Tipe</label>
+                    <input value="Transfer Saldo Bank Ke Kas" name="tipe" type="text" class="form-control" id="tipe" required>
+                </div>      
+                <div class="form-group">
+                  <label for="jumlah">Jumlah</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Rp. </span>
+                      </div>
+                      <input name="jumlah" type="text" class="form-control" id="jml_trfBank" required>
+                    </div>
+                </div>   
+                <div class="form-group">
+                  <label for="tanggal">Tanggal</label>
+                  <input name="tanggal" type="date" class="form-control" id="tgl_trfBank" required>
+                </div> 
+              
+                <div class="form-group">
+                  <label>Keterangan</label>
+                  <textarea name="keterangan" id="ket" class="form-control" rows="4" placeholder="keterangan"></textarea>
+                </div>
+                
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <div class="modal fade" id="md-trfKas">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Transfer Saldo Kas Ke Bank</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <form action="{{ url('/keuangan/transfer-kas') }}" method="POST">
+              @csrf
+                <div class="form-group">
+                    <label for="tipe">Tipe</label>
+                    <input value="Transfer Saldo Kas Ke Bank" name="tipe" type="text" class="form-control" id="tipe" required>
+                </div>      
+                <div class="form-group">
+                  <label for="jumlah">Jumlah</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Rp. </span>
+                      </div>
+                      <input name="jumlah" type="text" class="form-control" id="jml_trfKas" required>
+                    </div>
+                </div>   
+                <div class="form-group">
+                  <label for="tanggal">Tanggal</label>
+                  <input name="tanggal" type="date" class="form-control" id="tgl_trfKas" required>
+                </div> 
+              
+                <div class="form-group">
+                  <label>Keterangan</label>
+                  <textarea name="keterangan" id="ket" class="form-control" rows="4" placeholder="keterangan"></textarea>
+                </div>
+                
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan</button>
@@ -231,23 +372,22 @@
 </script>
 {{-- // End sweetalert notification --}}
 
-
 <script>
     $(document).ready(function(){
-        $('#keuangan').DataTable({
+        $('#histori').DataTable({
             "responsive": true, 
             "autoWidth": false,
             "processing": true,
             "serverside": true,
-            "ajax": "{{ url('dataTable/keuangan') }}",
+            "ajax": "{{ url('dataTable/histori') }}",
             "columns": [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
                 orderable: false,
                 searchable: false
             },{
-                data: 'nama_atribut',
-                name: 'Nama Atribut'
+                data: 'keterangan',
+                name: 'Keterangan'
             },{
                 data: 'tipe',
                 name: 'Tipe'
@@ -255,38 +395,68 @@
                 data: 'jml',
                 name: 'Jumlah'
             },{
-                data: 'aksi',
-                name: 'Aksi'
+                data: 'tgl',
+                name: 'Tanggal'
             }]
         });
     });
 </script>
 
-
-
 <script>
-  $.ajaxSetup({
-      headers:{
-        'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-      }
-  });
-  
-    $('body').on('click', '.edit', function(e){
-        var id = $(this).data('id');
-        $.ajax({
-          url:'/mstr/keuangan/update/' + id,
-          success:function(response){
-            $('#test').modal('show');
-            $('#nama').val(response.result.nama_atribut);
-          }
-        });
-    });
-  
   // hapus data pada form ketika di tutup
     $(document).ready(function(){
         $('#md-keuangan').on('hidden.bs.modal', function(){
             $(this).find('input').val(''); // Mengosongkan nilai input di dalam modal
         });
     });
+
+    //set tanggal otomatis
+    $(document).ready(function() {
+      // Mendapatkan tanggal sekarang dalam format YYYY-MM-DD
+      var tanggalSekarang = new Date().toISOString().split('T')[0];
+      $('#tglBank').val(tanggalSekarang);
+      $('#tglKas').val(tanggalSekarang);
+      $('#tgl_trfBank').val(tanggalSekarang);
+      $('#tgl_trfKas').val(tanggalSekarang);
+    });
+
+    //set fotmat angka jumlah
+    function formatRupiah(angka) {
+      var numberString = angka.toString();
+      var splitNumber = numberString.split('.');
+      var sisa = splitNumber[0].length % 3;
+      var rupiah = splitNumber[0].substr(0, sisa);
+      var ribuan = splitNumber[0].substr(sisa).match(/\d{3}/g);
+
+      if (ribuan) {
+          var separator = sisa ? '.' : '';
+          rupiah += separator + ribuan.join('.');
+      }
+
+      if (splitNumber[1] != undefined) {
+          rupiah += ',' + splitNumber[1];
+      }
+
+      return rupiah;
+    }
+
+    $('#jmlKas').on('input', function() {
+        var value = $(this).val().replace(/[^\d]/g, '');
+        $(this).val(formatRupiah(value));
+    });
+    $('#jmlBank').on('input', function() {
+        var value = $(this).val().replace(/[^\d]/g, '');
+        $(this).val(formatRupiah(value));
+    });
+    $('#jml_trfKas').on('input', function() {
+        var value = $(this).val().replace(/[^\d]/g, '');
+        $(this).val(formatRupiah(value));
+    });
+    $('#jml_trfBank').on('input', function() {
+        var value = $(this).val().replace(/[^\d]/g, '');
+        $(this).val(formatRupiah(value));
+    });
   </script>
+
+
 @endpush
