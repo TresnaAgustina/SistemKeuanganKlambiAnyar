@@ -44,6 +44,11 @@ class CreateMasterBarangController extends Controller
                 'harga_jual' => $data['harga_jual'],
             ]);
 
+            // if fails
+            if (!$create) {
+                return redirect()->back()->with('pesan', 'Create Data Master Barang Failed!');
+            }
+
             // if create data fails
             // if (!$create) {
             //     return response()->json([

@@ -50,7 +50,7 @@ class UpdatePgwrTetapController extends Controller
             }
     
             // update data
-            $update = $getPgw->update($request->all($data));
+            $update = $getPgw->update($request->all());
     
             // if update fails
             if (!$update) {
