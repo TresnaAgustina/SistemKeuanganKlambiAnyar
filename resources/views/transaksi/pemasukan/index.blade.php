@@ -17,17 +17,6 @@
 <div class="error" data-swal="{{ session('pesan') }}">
 </div>
 
-{{-- error and success handling --}}
-{{-- @if (session('pesan'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ session('pesan') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">×</span>
-    </button> 
-</div>
-@endif --}}
-{{-- end --}}
-
 <section class="content">
     <div class="container-fluid">
       <div class="row">
@@ -85,10 +74,41 @@
           <div class="modal-body">
             <form action="{{ url('/pemasukan/create') }}" method="POST">
               @csrf
+              <div class="form-group">
+                <label>Jenis Pemasukan</label>
+                <select class="form-control" name='jenis_pemasukan' id="jenis">
+                  <option value="">~ Pilih ~</option>
+                  @foreach ($pemasukan as $item)
+                    @if (old('jenis_pemasukan') == $item->id)
+                      <option value="{{ $item->id }}" selected>{{ $item->nama_atribut }}</option>
+                    @else
+                     <option value="{{ $item->id }}">{{ $item->nama_atribut }}</option>
+                    @endif
+                  @endforeach
+                </select>
+              </div>             
                 <div class="form-group">
-                    <label for="nama_atribut">Nama Atribut</label>
-                    <input name="nama_atribut" type="text" class="form-control" id="nama" required>
+                  <label for="tanggal">Tanggal</label>
+                  <input name="tanggal" type="date" class="form-control" id="tgl" required>
                 </div>              
+                <div class="form-group">
+                  <label for="total">Total</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Rp. </span>
+                      </div>
+                      <input name="total" type="text" class="form-control" id="total" required>
+                    </div>
+                </div>     
+                <div class="form-group ">
+                  <label for="bukti">Bukti Pembayaran</label> <br>
+                  <input type="file" id="bukti" name="bukti">
+                </div>
+                       
+                <div class="form-group">
+                  <label>Keterangan</label>
+                  <textarea name="keterangan" id="ket" class="form-control" rows="4" placeholder="keterangan"></textarea>
+                </div>                          
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan</button>
@@ -235,8 +255,41 @@
   // hapus data pada form ketika di tutup
     $(document).ready(function(){
         $('#md-pemasukan').on('hidden.bs.modal', function(){
-            $(this).find('input').val(''); // Mengosongkan nilai input di dalam modal
+            $(this).find('#jenis').val(''); // Mengosongkan nilai input di dalam modal
+            $(this).find('#total').val(''); // Mengosongkan nilai input di dalam modal
         });
     });
+
+    $(document).ready(function() {
+      // Mendapatkan tanggal sekarang dalam format YYYY-MM-DD
+      var tanggalSekarang = new Date().toISOString().split('T')[0];
+      $('#tgl').val(tanggalSekarang);
+    });
+
+    //set fotmat angka jumlah
+    function formatRupiah(angka) {
+      var numberString = angka.toString();
+      var splitNumber = numberString.split('.');
+      var sisa = splitNumber[0].length % 3;
+      var rupiah = splitNumber[0].substr(0, sisa);
+      var ribuan = splitNumber[0].substr(sisa).match(/\d{3}/g);
+
+      if (ribuan) {
+          var separator = sisa ? '.' : '';
+          rupiah += separator + ribuan.join('.');
+      }
+
+      if (splitNumber[1] != undefined) {
+          rupiah += ',' + splitNumber[1];
+      }
+
+      return rupiah;
+    }
+
+    $('#total').on('input', function() {
+        var value = $(this).val().replace(/[^\d]/g, '');
+        $(this).val(formatRupiah(value));
+    });
+
   </script>
 @endpush

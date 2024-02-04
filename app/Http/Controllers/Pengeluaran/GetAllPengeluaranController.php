@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pengeluaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Master_Pengeluaran;
 use App\Models\Pengeluaran;
 
 class GetAllPengeluaranController extends Controller
@@ -32,6 +33,8 @@ class GetAllPengeluaranController extends Controller
                 )
                 ->get();
 
+            $pengeluaran = Master_Pengeluaran::all();
+
             // if data is empty
             if (!$data) {
                 return response()->json([
@@ -56,7 +59,10 @@ class GetAllPengeluaranController extends Controller
             // return redirect()->back()->with(
             //     'success', 'Data found'
             // );
-            return view('transaksi.pengeluaran.index', compact('data'));
+            return view('transaksi.pengeluaran.index')->with([
+                'data' => $data,
+                'pengeluaran' => $pengeluaran
+            ]);
 
         } catch (\Exception $e) {
             return response()->json([

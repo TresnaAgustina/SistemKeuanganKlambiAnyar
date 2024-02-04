@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('container')
-    
+
 <div class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
@@ -14,51 +14,58 @@
 {{-- error and success handling with sweetalert --}}
 <div class="swal" data-swal="{{ session('success') }}">
 </div>
-<div class="error" data-swal="{{ session('pesan') }}">
+<div class="error" data-swal="{{ session('error') }}">
 </div>
 
-{{-- error and success handling --}}
-{{-- @if (session('pesan'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ session('pesan') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">×</span>
-    </button> 
-</div>
-@endif --}}
-{{-- end --}}
 
 <section class="content">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-12">
-          
-          <div class="card card-success card-outline">
-            <div class="card-header">
-              <strong><h4 >{{-- <i class="fas fa-edit"></i> --}}Data Pengeluaran </h4></strong>
+        <div class="col-md-12 col-sm-6 col-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-info"><i class="fas fa-donate"></i></span>
+      
+            <div class="info-box-content">
+              <span class="info-box-text">HUTANG</span>
+              <span class="info-box-number">Rp.  </span>
+              {{-- <span class="info-box-number">Rp. {{ number_format($bank) }} </span> --}}
             </div>
-            
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <!-- /.col -->
+       
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <strong><h4 >{{-- <i class="fas fa-edit"></i> --}}Data Hutang  </h4></strong>
+            </div>
+
             <div class="card-body">
               
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#md-pemasukan">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#md-isiBank">
                 <i class="fas fa-plus"></i>
-                Tambah Data
+                Tambah
               </button>
              
             </div>
-            <!-- /.card -->
 
             <div class="card-body">
-                <table id="pemasukan" class="table table-bordered table-striped">
+                <table id="histori" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>Nomor</th>
                     <th>Jenis Pengeluaran</th>
-                    <th>Tanggal</th>
-                    <th>Metode Pembayaran</th>
-                    <th>Total</th>
-                    <th>Keterangan</th>
-                    <th>Aksi</th>
+                    <th>Jumlah Hutang</th>
+                    <th>Jatuh Tempo</th>
+                    <th>Sisa</th>
+                    <th>Status</th>
                   </tr>
                   </thead>
                 </table>
@@ -73,58 +80,42 @@
     </div><!-- /.container-fluid -->
 
     
-    <div class="modal fade" id="md-pemasukan">
+    <div class="modal fade" id="md-isiBank">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Tambah Data Pengeluaran</h4>
+            <h4 class="modal-title">Isi Saldo Bank</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
 
           <div class="modal-body">
-            <form action="{{ url('/pengeluaran/create') }}" method="POST">
+            <form action="{{ url('/keuangan/saldo-bank') }}" method="POST">
               @csrf
-              <div class="form-group">
-                <label>Jenis Pengeluaran</label>
-                <select class="form-control" name='jenis_pengeluaran' id="jenis">
-                  <option value="">~ Pilih ~</option>
-                  @foreach ($pengeluaran as $item)
-                    @if (old('jenis_pengeluaran') == $item->id)
-                      <option value="{{ $item->id }}" selected>{{ $item->nama_atribut }}</option>
-                    @else
-                     <option value="{{ $item->id }}">{{ $item->nama_atribut }}</option>
-                    @endif
-                  @endforeach
-                </select>
-              </div>             
                 <div class="form-group">
-                  <label for="metode">Metode Pembayaran</label>
-                  <input name="metode" type="text" class="form-control" id="metode" required>
-                </div>              
+                    <label for="tipe">Tipe</label>
+                    <input value="Isi Saldo Bank" name="tipe" type="text" class="form-control" id="tipe" required>
+                </div>      
                 <div class="form-group">
-                  <label for="tanggal">Tanggal</label>
-                  <input name="tanggal" type="date" class="form-control" id="tgl" required>
-                </div>              
-                <div class="form-group">
-                  <label for="total">Total</label>
+                  <label for="jumlah">Jumlah</label>
                     <div class="input-group mb-3">
                       <div class="input-group-prepend">
                         <span class="input-group-text">Rp. </span>
                       </div>
-                      <input name="total" type="text" class="form-control" id="total" required>
+                      <input name="jumlah" type="text" class="form-control" id="jmlBank" required>
                     </div>
-                </div>     
-                <div class="form-group ">
-                  <label for="bukti">Bukti Pembayaran</label> <br>
-                  <input type="file" id="bukti" name="bukti">
-                </div>
-                       
+                </div>   
+                <div class="form-group">
+                  <label for="tanggal">Tanggal</label>
+                  <input name="tanggal" type="date" class="form-control" id="tglBank" required>
+                </div> 
+              
                 <div class="form-group">
                   <label>Keterangan</label>
                   <textarea name="keterangan" id="ket" class="form-control" rows="4" placeholder="keterangan"></textarea>
-                </div>                          
+                </div>
+                
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan</button>
@@ -136,6 +127,7 @@
       </div>
       <!-- /.modal-dialog -->
     </div>
+   
     <!-- /.modal -->
 
     
@@ -196,14 +188,14 @@
                 if (result.value) {
                     $.ajax({
                         type: 'DELETE',
-                        url: '/mstr/pemasukan/delete/' + id, 
+                        url: '/mstr/keuangan/delete/' + id, 
                         success: function(data) {
                             Swal.fire({
                               title: 'berhasil',
                               text: data.message,
                               icon: 'success'
                             }).then((result) => {
-                               window.location.href = '/mstr/pemasukan/all';
+                               window.location.href = '/mstr/keuangan/all';
                             })
                         },
                         error: function(xhr, ajaxOptions, thrownError) {
@@ -216,74 +208,52 @@
 </script>
 {{-- // End sweetalert notification --}}
 
-
 <script>
     $(document).ready(function(){
-        $('#pemasukan').DataTable({
+        $('#histori').DataTable({
             "responsive": true, 
             "autoWidth": false,
             "processing": true,
             "serverside": true,
-            "ajax": "{{ url('dataTable/DataPengeluaran') }}",
+            "ajax": "{{ url('dataTable/hutang') }}",
             "columns": [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
                 orderable: false,
                 searchable: false
             },{
-                data: 'nama_atribut',
-                name: 'Nama Atribut'
+                data: 'id_pengeluaran',
+                name: 'Jenis Pengeluaran'
             },{
-                data: 'tgl',
-                name: 'Tanggal'
+                data: 'jumlah_hutang',
+                name: 'Jumlah Hutang'
             },{
-                data: 'metode_pembayaran',
-                name: 'Metode Pembayaran'
+                data: 'tgl_jatuh_tempo',
+                name: 'Jatuh Tempo'
             },{
-                data: 'subtotal',
-                name: 'Total'
+                data: 'sisa_hutang',
+                name: 'Sisa'
             },{
-                data: 'keterangan',
-                name: 'Keterangan'
-            },{
-                data: 'aksi',
-                name: 'Aksi'
+                data: 'status',
+                name: 'Status'
             }]
         });
     });
 </script>
 
 <script>
-  $.ajaxSetup({
-      headers:{
-        'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-      }
-  });
-  
-    $('body').on('click', '.edit', function(e){
-        var id = $(this).data('id');
-        $.ajax({
-          url:'/mstr/pemasukan/update/' + id,
-          success:function(response){
-            $('#test').modal('show');
-            $('#nama').val(response.result.nama_atribut);
-          }
-        });
-    });
-  
   // hapus data pada form ketika di tutup
     $(document).ready(function(){
-        $('#md-pemasukan').on('hidden.bs.modal', function(){
-          $(this).find('#jenis').val(''); // Mengosongkan nilai input di dalam modal
-          $(this).find('#total').val(''); // Mengosongkan nilai input di dalam modal
+        $('#md-keuangan').on('hidden.bs.modal', function(){
+            $(this).find('input').val(''); // Mengosongkan nilai input di dalam modal
         });
     });
 
-     //set tanggal otomatis
-     $(document).ready(function() {
+    //set tanggal otomatis
+    $(document).ready(function() {
       // Mendapatkan tanggal sekarang dalam format YYYY-MM-DD
       var tanggalSekarang = new Date().toISOString().split('T')[0];
-      $('#tgl').val(tanggalSekarang);
+      $('#tglBank').val(tanggalSekarang);
     });
 
     //set fotmat angka jumlah
@@ -306,10 +276,12 @@
       return rupiah;
     }
 
-    $('#total').on('input', function() {
+    $('#jmlKas').on('input', function() {
         var value = $(this).val().replace(/[^\d]/g, '');
         $(this).val(formatRupiah(value));
     });
-
+  
   </script>
+
+
 @endpush

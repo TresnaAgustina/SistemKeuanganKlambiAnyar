@@ -15,9 +15,8 @@ return new class extends Migration
     {
         Schema::create('keuangan', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_atribut');
-            $table->enum('tipe', ['bank', 'cash']);
-            $table->double('jumlah');
+            $table->double('saldo_bank');
+            $table->double('saldo_kas');
             $table->timestamps();
         });
     }

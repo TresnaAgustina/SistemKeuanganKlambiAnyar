@@ -6,6 +6,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ViewLoginController;
+use App\Http\Controllers\DataTable\DataHutang;
+use App\Http\Controllers\DataTable\DataPiutang;
 use App\Http\Controllers\DataTable\DataTableBarangController;
 use App\Http\Controllers\Views\DashboardController;
 use App\Http\Controllers\DataTable\DataTableController;
@@ -23,6 +25,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Controllers\Keuangan\CreateKeuanganController;
 use App\Http\Controllers\Keuangan\DeleteKeuanganController;
 use App\Http\Controllers\Keuangan\GetAllKeuanganController;
+use App\Http\Controllers\Keuangan\HitungController;
 use App\Http\Controllers\Keuangan\UpdateKeuanganController;
 use App\Http\Controllers\Pemasukan\CreatePemasukanController;
 use App\Http\Controllers\Pemasukan\DeletePemasukanController;
@@ -106,6 +109,8 @@ Route::prefix('/dataTable')->group(function () {
     Route::get('/barang', DataTableBarangController::class)->name('dataTable.barang');
     Route::get('/keuangan', DataTableKeuanganController::class)->name('dataTable.keuangan');
     Route::get('/histori', TableHistoriesController::class)->name('dataTable.histori');
+    Route::get('/piutang', DataPiutang::class)->name('dataTable.piutang');
+    Route::get('/hutang', DataHutang::class)->name('dataTable.hutang');
 });
 
 
@@ -259,14 +264,21 @@ Route::prefix('/keuangan')->group(function (){
     Route::post('/update/{id}', UpdateKeuanganController::class)->name('keuangan.update');
     // --delete
     Route::delete('/delete/{id}', DeleteKeuanganController::class)->name('keuangan.delete');
+    Route::post('/saldo-bank', [HitungController::class , 'saldoBank']);
+    Route::post('/saldo-kas', [HitungController::class , 'saldoKas']);
+    Route::post('/transfer-bank', [HitungController::class , 'trfBank']);
+    Route::post('/transfer-kas', [HitungController::class , 'trfKas']);
 });
 
 
 // coba test fitur keuangan 
 
-// Route::get('/keuangan/all', function(){
-//     return view('keuangan.index');
-// });
+Route::get('/piutang/all', function(){
+    return view('transaksi.piutang.index');
+});
+Route::get('/hutang/all', function(){
+    return view('transaksi.hutang.index');
+});
 
 
 

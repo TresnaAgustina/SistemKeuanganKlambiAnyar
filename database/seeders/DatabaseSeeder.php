@@ -21,6 +21,11 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('admin'),
         ]);
 
+        \App\Models\Keuangan::create([
+            'saldo_bank' =>0,
+            'saldo_kas' =>0,
+        ]);
+
         // include other seeders
         $this->call([
             master_pemasukan_seeder::class,

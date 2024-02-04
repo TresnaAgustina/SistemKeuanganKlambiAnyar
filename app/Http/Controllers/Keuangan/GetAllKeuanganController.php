@@ -18,7 +18,15 @@ class GetAllKeuanganController extends Controller
     {
         try {
             //get all data keuangan
-            $keuangan = Keuangan::all();
+            $keuangan = Keuangan::find(1);
+
+            if($keuangan){
+                $bank = $keuangan->saldo_bank;
+                $kas = $keuangan->saldo_kas;
+            }else{
+                $bank = 0;
+                $kas = 0;
+            }
 
             // return data
             // return response()->json([
@@ -26,8 +34,11 @@ class GetAllKeuanganController extends Controller
             //     'data' => $keuangan
             // ], 200);
 
-            return view('transaksi.keuangan.index', compact('keuangan'));
-
+            return view('transaksi.keuangan.index')->with([
+                'keuangan' => $keuangan,
+                'bank' => $bank,
+                'kas' => $kas
+            ]);
 
         } catch (\Exception $e) {
             return response()->json([

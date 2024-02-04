@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\DataTable;
 
-use App\Models\Keuangan;
+use App\Models\Piutang;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 
-class DataTableKeuanganController extends Controller
+class DataPiutang extends Controller
 {
     /**
      * Handle the incoming request.
@@ -17,20 +17,12 @@ class DataTableKeuanganController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $coba = Keuangan::orderBy('id', 'asc');
+        $coba = Piutang::orderBy('id', 'asc');
         return DataTables::of($coba)
         ->addIndexColumn()
-        ->addColumn('bank', function($data){
-            if ($data->jumlah) {
-                return 'Rp. '. number_format($data->jumlah) ?? 0;
-            } else {
-                return 'Rp. ' . 0;
-            }
-        })
         ->addColumn('aksi', function($data){
-            return view('transaksi.keuangan.tombol')->with('data', $data);
+            return view('Master.barang.tombol')->with('data', $data);
         })
-        ->rawColumns(['status'])
         ->make(true);
     }
 }
