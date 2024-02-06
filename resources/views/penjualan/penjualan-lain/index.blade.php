@@ -27,17 +27,17 @@
               <strong><h4 >{{-- <i class="fas fa-edit"></i> --}}Data Pemasukan </h4></strong>
             </div>
             
-            <div class="card-body">
+            {{-- <div class="card-body">
               
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#md-pemasukan">
                 <i class="fas fa-plus"></i>
                 Tambah Data
               </button>
              
-            </div>
+            </div> --}}
             <!-- /.card -->
 
-            <div class="card-body">
+            {{-- <div class="card-body">
                 <table id="pemasukan" class="table table-bordered table-striped">
                   <thead>
                   <tr>
@@ -50,7 +50,8 @@
                   </tr>
                   </thead>
                 </table>
-              </div>
+            </div> --}}
+
           </div>
 
         </div>

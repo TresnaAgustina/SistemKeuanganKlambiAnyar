@@ -23,21 +23,113 @@
         <div class="col-md-12">
           
           <div class="card card-success card-outline">
-            <div class="card-header">
-              <strong><h4 >{{-- <i class="fas fa-edit"></i> --}}Data Pemasukan </h4></strong>
-            </div>
             
-            <div class="card-body">
+            <form action="/aktivitas/create" method="POST">
+              @csrf
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="tanggal">Tanggal</label>
+                  <input name="tanggal" type="date" class="form-control" id="tgl" required>
+                </div>          
+                <div class="form-group">
+                  <label>Pelanggan</label>
+                  <select class="form-control" name='pelanggan' id="pelanggan">
+                    <option value="">~ Pilih ~</option>
+                    @foreach ($pelanggan as $item)
+                      @if (old('jenis_pemasukan') == $item->id)
+                        <option value="{{ $item->id }}" selected>{{ $item->nama_customer }}</option>
+                      @else
+                       <option value="{{ $item->id }}">{{ $item->nama_customer }}</option>
+                      @endif
+                    @endforeach
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Metode Pembayaran</label>
+                  <select class="form-control" name='pembayaran' id="pembayaran">
+                    <option value="Pilih">~ Pilih ~</option>                 
+                    <option value="Cash">Cash</option>                 
+                    <option value="Credit">Credit</option>                 
+                  </select>
+                </div> 
+                <div class="card dibayar">
+                  <div class="card-body">
+                    <div class="form-group ">
+                      <label for="total">Pembayaran Awal</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">Rp. </span>
+                          </div>
+                          <input name="total" type="text" class="form-control" id="" required>
+                        </div>
+                    </div> 
+                  </div>
+                </div>  
+                <div class="form-group bayar">
+                  <label for="total">Dibayar</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Rp. </span>
+                      </div>
+                      <input name="total" type="text" class="form-control" id="" required>
+                    </div>
+                </div> 
+                <div class="form-group ">
+                  <label for="bukti">Bukti Pembayaran</label> <br>
+                  <input type="file" id="bukti" name="bukti">
+                </div>
+              </div>
+
+              <div class="card-header">
+                <strong><h4 >Tambah Barang </h4></strong>
+              </div>
+              <div class="card-body">
+                <table id="barang" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Nama Barang</th>
+                    <th>Jumlah Barang</th>
+                    <th>Harga Satuan</th>
+                    <th>Subtotal</th>
+                    <th><a href="javascript:void(0)" class="btn btn-success btn-sm addRow"> <i class="fas fa-plus"></i> </a></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <select class="form-control barangSelect" name="barang[0][id_mstr_barang]">
+                        <option value="">~ Pilih ~</option>
+                        @foreach ($barang as $item)
+                          @if (old('barang[0][id_mstr_barang]') == $item->id)
+                            <option data-id={{ $item->id }} value="{{ $item->id }}" selected>{{ $item->nama_barang }}</option>
+                          @else
+                           <option data-id={{ $item->id }} value="{{ $item->id }}">{{ $item->nama_barang }}</option>
+                          @endif
+                        @endforeach
+                      </select>
+                      </td>
+                      <td><input type="number" name="barang[0][jumlah_barang]" class="form-control jumlah-barang"></td>
+                      <td><input type="text" name="barang[0][harga_satuan]" class="form-control hargaSatuanInput"></td>
+                      <td><input type="text" name="barang[0][subtotal]" class="form-control subtotal"></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <button type="submit" class="btn btn-success mt-4">Simpan</button>
+              </div>
+            </form>
+
+          
+            {{-- <div class="card-body">
               
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#md-pemasukan">
                 <i class="fas fa-plus"></i>
                 Tambah Data
               </button>
              
-            </div>
+            </div> --}}
             <!-- /.card -->
 
-            <div class="card-body">
+            {{-- <div class="card-body">
                 <table id="pemasukan" class="table table-bordered table-striped">
                   <thead>
                   <tr>
@@ -50,7 +142,7 @@
                   </tr>
                   </thead>
                 </table>
-              </div>
+              </div> --}}
           </div>
 
         </div>
@@ -60,76 +152,189 @@
 
     </div><!-- /.container-fluid -->
 
-    
-    <div class="modal fade" id="md-pemasukan">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Tambah Data Pemasukan</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-
-          <div class="modal-body">
-            <form action="{{ url('/pemasukan/create') }}" method="POST">
-              @csrf
-              {{-- <div class="form-group">
-                <label>Jenis Pemasukan</label>
-                <select class="form-control" name='jenis_pemasukan' id="jenis">
-                  <option value="">~ Pilih ~</option>
-                  @foreach ($pemasukan as $item)
-                    @if (old('jenis_pemasukan') == $item->id)
-                      <option value="{{ $item->id }}" selected>{{ $item->nama_atribut }}</option>
-                    @else
-                     <option value="{{ $item->id }}">{{ $item->nama_atribut }}</option>
-                    @endif
-                  @endforeach
-                </select>
-              </div>              --}}
-                <div class="form-group">
-                  <label for="tanggal">Tanggal</label>
-                  <input name="tanggal" type="date" class="form-control" id="tgl" required>
-                </div>              
-                <div class="form-group">
-                  <label for="total">Total</label>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">Rp. </span>
-                      </div>
-                      <input name="total" type="text" class="form-control" id="total" required>
-                    </div>
-                </div>     
-                <div class="form-group ">
-                  <label for="bukti">Bukti Pembayaran</label> <br>
-                  <input type="file" id="bukti" name="bukti">
-                </div>
-                       
-                <div class="form-group">
-                  <label>Keterangan</label>
-                  <textarea name="keterangan" id="ket" class="form-control" rows="4" placeholder="keterangan"></textarea>
-                </div>                          
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-          </div>
-        </div>
-        <!-- /.modal-content -->
-      </div>
-      <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
-
-    
-    <!-- /.modal -->
-
   </section>
 
 @endsection
 
 @push('js')
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+   $('thead').on('click', '.addRow', function(){
+        var tr = `<tr> 
+          <td>
+            <select class="form-control barangSelect" name="barang[0][id_mstr_barang]">
+              <option value="">~ Pilih ~</option>
+              @foreach ($barang as $item)
+                @if (old('barang[0][id_mstr_barang]') == $item->id)
+                  <option data-id={{ $item->id }} value="{{ $item->id }}" selected>{{ $item->nama_barang }}</option>
+                @else
+                  <option data-id={{ $item->id }} value="{{ $item->id }}">{{ $item->nama_barang }}</option>
+                @endif
+              @endforeach
+            </select>
+          </td>
+          <td><input type="number" name="barang[0][jumlah_barang]" class="form-control jumlah-barang"></td>
+          <td><input type="text" name="barang[0][harga_satuan]" class="form-control hargaSatuanInput"></td>
+          <td><input type="text" name="barang[0][subtotal]" class="form-control subtotal"></td>
+          <td><a href="javascript:void(0)" class="btn btn-danger btn-sm deleteRow">
+              <i class="fas fa-minus"></i></a>
+          </td>
+          </tr>`;
+        $('tbody').append(tr);
+    });
+
+    // Menggunakan event delegation untuk menghapus baris
+    $('tbody').on('click', '.deleteRow', function(){
+        $(this).parent().parent().remove();   
+    });
+  </script>
+
+<script>
+  $(document).ready(function() {
+    // Event handler untuk perubahan pada elemen dengan kelas .barangSelect
+    $(document).on('change', '.barangSelect', function() {
+        var selectedOption = $(this).val();
+        var hargaSatuanInput = $(this).closest('tr').find('.hargaSatuanInput');
+
+        if (selectedOption !== '') {                        
+            $.ajax({
+                url: '/penjualan-jasa/update/' + selectedOption, 
+                method: 'GET', 
+                success: function(response) {
+                    hargaSatuanInput.val(response.result.harga_jual);
+                    formatRupiah(hargaSatuanInput);          
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        } else {
+            hargaSatuanInput.val('');
+        }
+    });
+
+    // Event handler untuk perubahan pada elemen dengan kelas .hargaSatuanInput dan .jumlah-barang
+    $(document).on('input', '.hargaSatuanInput, .jumlah-barang', function() {
+        var hargaSatuan = parseFloat($(this).closest('tr').find('.hargaSatuanInput').val()) || 0;
+        var jumlahBarang = parseFloat($(this).closest('tr').find('.jumlah-barang').val()) || 0;
+        var subtotalInput = $(this).closest('tr').find('.subtotal');
+
+        var subtotal = hargaSatuan * jumlahBarang;
+        subtotalInput.val(subtotal.toFixed(3));
+        formatRupiah(subtotalInput);
+    });
+
+    // Fungsi untuk format rupiah
+    function formatRupiah(input) {
+        var value = input.val().replace(/\./g, '');
+        input.val(formatRupiahString(value));
+    }
+
+    function formatRupiahString(angka) {
+        var number_string = angka.toString(),
+            sisa = number_string.length % 3,
+            rupiah = number_string.substr(0, sisa),
+            ribuan = number_string.substr(sisa).match(/\d{3}/g);
+
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        return rupiah;
+    }
+});
+
+</script>
+
+
+
+
+<script>
+  $(document).ready(function() {
+      $('#barangSelect').on('change', function() {
+          var selectedOption = $(this).val();
+  
+          if (selectedOption !== '') {                        
+            $.ajax({
+                url: '/penjualan-jasa/update/' + selectedOption, 
+                method: 'GET', 
+                success: function(response) {
+                    // console.log(response.result.id);
+                    $('#hargaSatuanInput').val(response.result.harga_jual);
+                    formatRupiah($('#hargaSatuanInput'));          
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+          } else {
+              // Kosongkan input jika tidak ada opsi yang dipilih
+              $('#hargaSatuanInput').val('');
+          }
+      });
+  
+      $('.hargaSatuanInput, .jumlah-barang').on('input', function() {
+            // Dapatkan nilai harga satuan dan jumlah barang
+            var hargaSatuan = parseFloat($(this).closest('tr').find('.hargaSatuanInput').val()) || 0;
+            var jumlahBarang = parseFloat($(this).closest('tr').find('.jumlah-barang').val()) || 0;
+            
+            // Hitung subtotal
+            var subtotal = hargaSatuan * jumlahBarang;
+            
+            // Tampilkan subtotal di input subtotal
+            $(this).closest('tr').find('.subtotal').val(subtotal.toFixed(3));
+  
+            formatRupiah($(this).closest('tr').find('.subtotal'));
+        });
+  
+  
+        // Fungsi untuk menambahkan format rupiah
+    function formatRupiah(input) {
+        var value = input.val().replace(/\./g, '');
+        input.val(formatRupiahString(value));
+    }
+  
+    function formatRupiahString(angka) {
+        var number_string = angka.toString(),
+            sisa = number_string.length % 3,
+            rupiah = number_string.substr(0, sisa),
+            ribuan = number_string.substr(sisa).match(/\d{3}/g);
+  
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+  
+        return rupiah;
+    }
+  });
+</script>
+
+
+
+<script>
+  $(document).ready(function() {
+    $('.dibayar').hide();
+    $('.bayar').show();
+
+    $('#pembayaran').change(function() {
+      var pembayaran = $(this).val();
+
+      if (pembayaran === 'Credit') {
+        $('.dibayar').show(); // Tampilkan div dengan class card
+        $('.bayar').hide(); // Sembunyikan div dengan class form-group
+      } else if (pembayaran === 'Pilih') {
+        $('.bayar').show(); // Tampilkan div dengan class form-group
+        $('.dibayar').hide(); // Sembunyikan div dengan class card
+      } else if (pembayaran === 'Cash') {
+        $('.bayar').show(); // Tampilkan div dengan class form-group
+        $('.dibayar').hide(); // Sembunyikan div dengan class card
+      }
+    });
+  });
+</script>
 
 {{-- // sweetalert notification --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -201,7 +406,7 @@
 {{-- // End sweetalert notification --}}
 
 
-<script>
+{{-- <script>
     $(document).ready(function(){
         $('#pemasukan').DataTable({
             "responsive": true, 
@@ -232,7 +437,7 @@
             }]
         });
     });
-</script>
+</script> --}}
 
 <script>
   $.ajaxSetup({

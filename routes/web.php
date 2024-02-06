@@ -74,6 +74,9 @@ use App\Http\Controllers\Master\Pengeluaran\CreateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\DeleteMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\UpdateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\GetUpdateMasterPengeluaranController;
+use App\Http\Controllers\Penjualan_Jasa_Jarit\GetAllPenjualanJasaJaritController;
+use App\Http\Controllers\Penjualan_Jasa_Jarit\GetUpdatePenjualanJasaJaritController;
+use App\Http\Controllers\Penjualan_Lain\GetAllPenjualanLainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -270,8 +273,16 @@ Route::prefix('/keuangan')->group(function (){
     Route::post('/transfer-kas', [HitungController::class , 'trfKas']);
 });
 
+Route::prefix('/penjualan-lain')->group(function(){
+    Route::get('/all', GetAllPenjualanLainController::class)->name('penjualanLain.all');
+});
+Route::prefix('/penjualan-jasa')->group(function(){
+    Route::get('/all', GetAllPenjualanJasaJaritController::class)->name('penjualanJasa.all');
+    Route::get('/update/{id}', GetUpdatePenjualanJasaJaritController::class)->name('penjualanJasa.update.index');
 
-// coba test fitur keuangan 
+});
+
+// coba test fitur keuangan
 
 Route::get('/piutang/all', function(){
     return view('transaksi.piutang.index');
@@ -279,12 +290,7 @@ Route::get('/piutang/all', function(){
 Route::get('/hutang/all', function(){
     return view('transaksi.hutang.index');
 });
-Route::get('/penjualan-lain/all', function(){
-    return view('penjualan.penjualan-lain.index');
-});
-Route::get('/penjualan-jasa/all', function(){
-    return view('penjualan.penjualan-jasa.index');
-});
+
 Route::get('/aktivitas/all', function(){
     return view('aktivitas.index');
 });
