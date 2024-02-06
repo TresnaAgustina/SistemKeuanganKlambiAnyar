@@ -50,6 +50,9 @@ use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\DeletePgwrTetapController;
 use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\GetAllPgwrTetapController;
 use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\UpdatePgwrTetapController;
 use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\GetUpdatePgwrTetapController;
+use App\Http\Controllers\Penjualan_Jasa_Jarit\CreatePenjualanJasaJaritController;
+use App\Http\Controllers\Penjualan_Jasa_Jarit\DeletePenjualanJasaJaritController;
+use App\Http\Controllers\Penjualan_Jasa_Jarit\GetAllPenjualanJasaJaritController;
 
 /*
 |--------------------------------------------------------------------------
@@ -207,12 +210,18 @@ Route::prefix('/penjualan-lain')->group(function (){
     Route::get('/all', GetAllPenjualanLainController::class)->name('penjualan-lain.all');
     // --create
     Route::post('/create', CreatePenjualanLainController::class)->name('penjualan-lain.create');
-    // --update
-    Route::post('/update/{id}', UpdatePenjualanLainController::class)->name('penjualan-lain.update');
     // --delete
     Route::delete('/delete/{id}', DeletePenjualanLainController::class)->name('penjualan-lain.delete'); 
 });
 
+Route::prefix('/penjualan-jasa')->group(function (){
+    // --view
+    Route::get('/all', GetAllPenjualanJasaJaritController::class)->name('penjualan-lain.all');
+    // --create
+    Route::post('/create', CreatePenjualanJasaJaritController::class)->name('penjualan-lain.create');
+    // --delete
+    Route::delete('/delete/{id}', DeletePenjualanJasaJaritController::class)->name('penjualan-lain.delete'); 
+});
 
 // *** View Routes *** //
 // Route::middleware('auth:sanctum')->group(function () {

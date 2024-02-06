@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Penjualan_Lain;
 
+use App\Models\History;
+use App\Models\Keuangan;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Models\Master_Barang;
 use App\Models\Penjualan_Lain;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
 class CreatePenjualanLainController extends Controller
@@ -18,14 +21,14 @@ class CreatePenjualanLainController extends Controller
     public function __invoke(Request $request)
     {
         try {
-            //get all request data
+            // *** get all request data *** //
             $data = $request->all();
 
-            // make validation
+            // *** make validation *** //
             $validate = Validator::make($data, [
                 'id_customer' => 'required|numeric',
                 'tanggal' => 'required|date',
-                'metode_pembayaran' => 'required|in:cash,kredit',
+                'metode_pembayaran' => 'required|in:cash,credit',
                 'jmlh_bayar_awal' => 'nullable|numeric',
                 'tgl_jatuh_tempo' => 'nullable|date',
                 'jmlh_dibayar' => 'nullable|numeric',
@@ -33,8 +36,6 @@ class CreatePenjualanLainController extends Controller
                 'bukti_pembayaran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'barang.*.id_mstr_barang' => 'required|numeric',
                 'barang.*.jumlah_barang' => 'required|numeric',
-                'barang.*.harga_satuan' => 'required|numeric',
-                'barang.*.subtotal' => 'required|numeric',
             ]);
 
             // if validation fails
@@ -46,15 +47,41 @@ class CreatePenjualanLainController extends Controller
                 return redirect()->back()->with('pesan', 'Data gagal divalidasi')->withErrors($validate);
             }
 
+            // *** CONFIGURATION *** //
             // if metode pembayaran is 'cash' : jmlh_bayar_awal and tgl_jatuh_tempo must be null
             if ($data['metode_pembayaran'] == 'cash') {
                 $data['jmlh_bayar_awal'] = null;
                 $data['tgl_jatuh_tempo'] = null;
             }else{
-                // if metode pembayaran is 'kredit' : jmlh_dibayar must be null
+                // if metode pembayaran is 'credit' : jmlh_dibayar must be null
                 $data['jmlh_dibayar'] = null;
                 // set tanggal jatuh tempo 1 week from now
                 $data['tgl_jatuh_tempo'] = date('Y-m-d', strtotime('+1 week'));
+            }
+            
+            // harga_satuan get from master_barang
+            foreach ($data['barang'] as $key => $barang) {
+                $data['barang'][$key]['harga_satuan'] = Master_Barang::find($barang['id_mstr_barang'])->harga_jual;
+            }
+            // subtotal in cart_jual_lain = jumlah_barang * harga_satuan
+            foreach ($data['barang'] as $key => $barang) {
+                $data['barang'][$key]['subtotal'] = $barang['jumlah_barang'] * $barang['harga_satuan'];
+            }
+
+            // chek if metode_pembayaran == 'cash' && jmlh_dibayar < total_harga, show alert
+            if ($data['metode_pembayaran'] == 'cash' && $data['jmlh_dibayar'] < array_sum(array_column($data['barang'], 'subtotal'))) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Jumlah dibayar tidak mencukupi'
+                ], 422);
+                return redirect()->back()->with('pesan', 'Jumlah dibayar tidak mencukupi');
+            }
+            if($data['metode_pembayaran'] == 'credit' && $data['jmlh_bayar_awal'] > array_sum(array_column($data['barang'], 'subtotal'))){
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Jumlah Bayar Awal Melebihi Total Harga'
+                ], 422);
+                return redirect()->back()->with('pesan', 'Jumlah bayar awal melebihi total harga');
             }
 
             // generate kode penjualan (format: PL-<rand(4 anngka)>-<tanggal>)
@@ -71,11 +98,7 @@ class CreatePenjualanLainController extends Controller
                 $data['bukti_pembayaran'] = null;
             }
 
-            // subtotal = jumlah_barang * harga_satuan
-            foreach ($data['barang'] as $key => $barang) {
-                $data['barang'][$key]['subtotal'] = $barang['jumlah_barang'] * $barang['harga_satuan'];
-            }
-
+            // *** STORE PROCESS *** //
             // store data to penjualan_lain
             $penjualan_lain = Penjualan_Lain::create([
                 'id_customer' => $data['id_customer'],
@@ -100,16 +123,31 @@ class CreatePenjualanLainController extends Controller
                 ]);
             }
 
+            // update saldo_kas in keuangan, tambah dengan jmlh_bayar_awal atau jmlh_dibayar
+            $keuangan = Keuangan::first();
+            if ($penjualan_lain->metode_pembayaran == 'cash') {
+                $keuangan->update([
+                    'saldo_kas' => $keuangan->saldo_kas + $penjualan_lain->jmlh_dibayar
+                ]);
+            }else if($penjualan_lain->metode_pembayaran == 'credit'){
+                $keuangan->update([
+                    'saldo_kas' => $keuangan->saldo_kas + $penjualan_lain->jmlh_bayar_awal
+                ]);
+            }
+
             // calculate total harga
             $total_harga = $penjualan_lain->cart_penjualan_lain()->sum('subtotal');
             // if jmlh_bayar_awal < total_harga, store to piutang
-            if ($penjualan_lain->metode_pembayaran == 'kredit' && $penjualan_lain->jmlh_bayar_awal < $total_harga) {
+            if ($penjualan_lain->metode_pembayaran == 'credit' && $penjualan_lain->jmlh_bayar_awal < $total_harga) {
                 $piutang = $penjualan_lain->piutang()->create([
                     'id_jual_lain' => $penjualan_lain->id,
                     'id_jual_jasa' => null,
+                    // jumlah_bayar = untuk update piutang ketika pelunasan
+                    'jumlah_bayar' => null,
                     'jumlah_piutang' => $total_harga - $penjualan_lain->jmlh_bayar_awal,
                     // set tanggal jatuh tempo 1 week from now
                     'tgl_jatuh_tempo' => date('Y-m-d', strtotime('+1 week')),
+                    'sisa_piutang' => $total_harga - $penjualan_lain->jmlh_bayar_awal,
                     'status' => 'Belum Lunas'
                 ]);
 
@@ -123,22 +161,31 @@ class CreatePenjualanLainController extends Controller
                 }
             }
 
+            // insert to histories
+            $history = History::create([
+                'keterangan' => 'Penjualan Lain',
+                'tipe' => 'Pemasukan',
+                'jumlah' => $penjualan_lain->metode_pembayaran == 'cash' ? $penjualan_lain->jmlh_dibayar : $penjualan_lain->jmlh_bayar_awal,
+                'tanggal' => $penjualan_lain->tanggal,
+            ]);
+            
+
             // check if fails
             if (!$penjualan_lain || !$penjualan_lain->cart_penjualan_lain()->exists()) {
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Gagal membuat penjualan lain'
+                    'message' => 'Gagal membuat penjualan'
                 ], 500);
-                return redirect()->back()->with('pesan', 'Gagal membuat penjualan lain');
+                return redirect()->back()->with('pesan', 'Gagal membuat penjualan');
             }
 
             // return success response
             return response()->json([
                 'status' => 'success',
-                'message' => 'Berhasil membuat penjualan lain',
+                'message' => 'Berhasil membuat penjualan',
                 'data' => $penjualan_lain,
             ], 200);
-            return redirect()->back()->with('success', 'Berhasil membuat penjualan lain');
+            return redirect()->back()->with('success', 'Berhasil membuat penjualan');
 
         } catch (\Exception $e) {
             return response()->json([

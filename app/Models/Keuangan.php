@@ -15,9 +15,8 @@ class Keuangan extends Model
 
     protected $table = 'keuangan';
     protected $fillable = [
-        'nama_atribut',
-        'tipe',
-        'jumlah',
+        'saldo_bank',
+        'saldo_kas',
     ];
 
     public function pemasukan()

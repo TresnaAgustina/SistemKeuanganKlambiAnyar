@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_customer');
             $table->string('kode_penjualan');
             $table->date('tanggal');
-            $table->enum('metode_pembayaran', ['cash', 'kredit']);
+            $table->enum('metode_pembayaran', ['cash', 'credit']);
             $table->double('jmlh_bayar_awal')->nullable();
             $table->date('tgl_jatuh_tempo')->nullable();
             $table->double('jmlh_dibayar')->nullable();
