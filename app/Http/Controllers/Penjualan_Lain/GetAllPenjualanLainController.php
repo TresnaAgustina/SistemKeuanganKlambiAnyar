@@ -19,18 +19,26 @@ class GetAllPenjualanLainController extends Controller
         try {
             // get all data from table
             $data = Penjualan_Lain::all();
+             //get all data from Penjualan_Lain and CartPenjualanLain
+             $penjualan_lain = Penjualan_Lain::with('cart_penjualan_lain')->get();
+
 
             return view('penjualan.penjualan-lain.index')->with([
-                'data' => $data
+                'data' => $data,
+                'test' => $penjualan_lain
             ]);
 
+            // return response
+            // return response()->json([
+            //     'status' => 'success',
+            //     'data' => $penjualan_lain
+            // ], 200);
+            
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
-                'pesan' => 'Get All Data Master Barang Failed!'. $e->getMessage(),
-                'data' => ''
-            ], 400);
-
+                'status' => 'error',
+                'pesan' => $e->getMessage()
+            ], 500);
             return back()->with('pesan', $e->getMessage());
         }
     }

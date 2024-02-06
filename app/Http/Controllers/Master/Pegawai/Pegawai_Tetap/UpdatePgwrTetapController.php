@@ -18,51 +18,47 @@ class UpdatePgwrTetapController extends Controller
     public function __invoke(Request $request, Int $id)
     {
         try {
-            //get all data from request
             $data = $request->all();
 
-            // get data by id
-            $pegawai = Pegawai_Normal::where('id', $id)->first();
-            $nip = $pegawai->nip;
+            $getPgw = Pegawai_Normal::findOrfail($id);  
 
+            // ddd($data, $request->all(), $id, $getPgw, $getPgw->id);
+            
             // if data not found
-            if (!$pegawai) {
+            if (!$getPgw) {
                 return redirect()->back()->with('pesan', 'Error: Data pegawai tidak tersedia');
             }
-
-            // validate data
-            $validate = Validator::make($data, [
-                'nama' => 'required|string|unique: Pegawai_Normal, nama' . $pegawai->id,
+    
+            // validate request data
+            $validate = Validator::make($request->all(), [
+                'nama' => 'required|string',
                 'alamat' => 'nullable|string',
                 'no_telp' => 'required|size:12',
-                'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-                'gaji_pokok' => 'required|double',
+                'jenis_kelamin' => 'required|in:Perempuan,Laki-laki',
+                'gaji_pokok' => 'required|numeric',
                 'status' => 'required|in:active,inactive'
             ]);
 
+            // ddd($request->all());
+    
             // if validation fails
-            if (!$validate) {
-                return redirect()->back()->with('pesan', 'Error: Gagal update data pegawai, cek data input');
+            if ($validate->fails()) {
+                // get validaiton error
+                $errors = $validate->errors();
+                return redirect()->back()->with('pesan', 'Error: ' . $errors->first());
+
             }
-
+    
             // update data
-            $update = Pegawai_Normal::where('id', $id)->update([
-                'nama' => $data['nama'],
-                'nip' => $nip,
-                'alamat' => $data['alamat'],
-                'no_telp' => $data['no_telp'],
-                'jenis_kelamin' => $data['jenis_kelamin'],
-                'gaji_pokok' => $data['gaji_pokok'],
-                'status' => $data['status']
-            ]);
-
+            $update = $getPgw->update($request->all());
+    
             // if update fails
             if (!$update) {
                 return redirect()->back()->with('pesan', 'Error: Gagal update data pegawai');
             }
 
-            // return
-            return redirect()->back()->with('success', 'Success: Berhasil update data pegawi');
+            // return success
+            return redirect()->back()->with('success', 'Success: Berhasil update data Pegawai');
         } catch (\Exception $e) {
             return redirect()->back()->with('pesan', 'Error: ' . $e->getMessage());
         }

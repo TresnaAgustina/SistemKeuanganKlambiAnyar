@@ -100,8 +100,8 @@
                   <label>Jenis Kelamin</label>
                   <select name="jenis_kelamin" id="jk" class="form-control">
                     <option>Pilih</option>
-                    <option value="1">Laki-laki</option>
-                    <option value="2">Perempuan</option>
+                    <option value="1">Perempuan</option>
+                    <option value="2">Laki-laki</option>
                   </select>
                 </div>                            
                 <div class="form-group">
@@ -267,15 +267,17 @@ $.ajaxSetup({
 
   $('body').on('click', '.update-btn', function(e){
       var id = $(this).data('id');
+      console.log(id);
       $.ajax({
         url:'/mstr/pegawai-tetap/update/' + id,
         success:function(response){
           $('#test').modal('show');
           $('#nama').val(response.result.nama);
+          $('#jk').val(response.result.jenis_kelamin);
           $('#alamat').val(response.result.alamat);
           $('#no_telp').val(response.result.no_telp);
-          // $('#jk').val(response.result.jenis_kelamain);
           $('#gaji').val(response.result.gaji_pokok);
+          $('#status').val(response.result.status);
           var statusValue = response.result.status;
           var selectElement = document.getElementById("status");
           for (var i = 0; i < selectElement.options.length; i++) {
@@ -284,6 +286,7 @@ $.ajaxSetup({
                   break;
               }
           }
+          console.log(response);
 
           var jkValue = response.result.jenis_kelamin;
           var selectJK = document.getElementById("jk");

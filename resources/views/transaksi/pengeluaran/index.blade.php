@@ -84,7 +84,7 @@
           </div>
 
           <div class="modal-body">
-            <form action="{{ url('/pengeluaran/create') }}" method="POST">
+            <form action="{{ url('/pengeluaran/create') }}" method="POST" enctype="multipart/form-data">
               @csrf
               <div class="form-group">
                 <label>Jenis Pengeluaran</label>

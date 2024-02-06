@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Penjualan_Lain;
+use App\Models\CartPenjualanLain;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -16,8 +16,8 @@ class Master_Barang extends Model
         'harga_jual'
     ];
 
-    public function penjualan_lain()
-    {
-        return $this->belongsToMany(Penjualan_Lain::class);
+    // cart_penjualan_lain
+    public function cart_penjualan_lain(){
+        return $this->hasMany(CartPenjualanLain::class, 'id_mstr_barang', 'id');
     }
 }

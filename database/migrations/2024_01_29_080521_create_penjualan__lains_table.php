@@ -15,22 +15,16 @@ return new class extends Migration
     {
         Schema::create('penjualan_lain', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_mstr_barang');
-            $table->unsignedBigInteger('id_keuangan');
             $table->unsignedBigInteger('id_customer');
             $table->string('kode_penjualan');
             $table->date('tanggal');
-            $table->integer('quantity');
-            $table->double('subtotal');
-            $table->enum('metode_pembayaran', ['cash', 'kredit']);
+            $table->enum('metode_pembayaran', ['cash', 'credit']);
             $table->double('jmlh_bayar_awal')->nullable();
             $table->date('tgl_jatuh_tempo')->nullable();
-            $table->double('total_harga');
+            $table->double('jmlh_dibayar')->nullable();
             $table->text('keterangan')->nullable();
             $table->string('bukti_pembayaran')->nullable();
 
-            $table->foreign('id_mstr_barang')->references('id')->on('master_barang')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('id_keuangan')->references('id')->on('keuangan')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('id_customer')->references('id')->on('master_customer')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_jual_lain')->nullable();
             $table->unsignedBigInteger('id_jual_jasa')->nullable();
+            // jumlah_bayar = untuk update piutang ketika pelunasan
+            $table->double('jumlah_bayar')->nullable();
             $table->double('jumlah_piutang');
             $table->date('tgl_jatuh_tempo');
             $table->double('sisa_piutang');

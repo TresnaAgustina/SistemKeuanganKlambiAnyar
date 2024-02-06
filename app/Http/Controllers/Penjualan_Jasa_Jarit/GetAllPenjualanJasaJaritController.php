@@ -20,6 +20,7 @@ class GetAllPenjualanJasaJaritController extends Controller
     {
         try {
             // get all data from table
+            $penjualan_jasa_jarit = Penjualan_Jasa_Jarit::with('cart_penjualan_jasa')->get();
             $data = Penjualan_Jasa_Jarit::all();
             $customer = Master_Customer::all();
             $barang = Master_Barang::all();
@@ -27,17 +28,22 @@ class GetAllPenjualanJasaJaritController extends Controller
             return view('penjualan.penjualan-jasa.index')->with([
                 'data' => $data,
                 'pelanggan' => $customer,
-                'barang' => $barang
+                'barang' => $barang,
+                'test' => $penjualan_jasa_jarit
             ]);
-
+            // return response
+            // return response()->json([
+            //     'status' => 'success',
+            //     'data' => $penjualan_jasa_jarit
+            // ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
-                'pesan' => 'Get All Data Master Barang Failed!'. $e->getMessage(),
-                'data' => ''
-            ], 400);
-
+                'status' => 'error',
+                'pesan' => $e->getMessage()
+            ], 500);
             return back()->with('pesan', $e->getMessage());
+
         }
+
     }
 }

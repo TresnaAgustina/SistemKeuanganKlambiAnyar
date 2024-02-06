@@ -35,8 +35,8 @@ class UpdatePgwrRumahanController extends Controller
                 'nama' => 'required|string|unique: Pegawai_Normal, nama',
                 'alamat' => 'nullable|string',
                 'no_telp' => 'required|size:12',
-                'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-                'status' => 'required|in:active,inactive'
+                'jenis_kelamin' => 'required|in:1,2',
+                'status' => 'required|in:1,2'
             ]);
 
             // if validation fails

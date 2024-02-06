@@ -45,6 +45,14 @@ use App\Http\Controllers\Master\Pengeluaran\ViewMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\CreateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\DeleteMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\UpdateMasterPengeluaranController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\CreatePgwrTetapController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\DeletePgwrTetapController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\GetAllPgwrTetapController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\UpdatePgwrTetapController;
+use App\Http\Controllers\Master\Pegawai\Pegawai_Tetap\GetUpdatePgwrTetapController;
+use App\Http\Controllers\Penjualan_Jasa_Jarit\CreatePenjualanJasaJaritController;
+use App\Http\Controllers\Penjualan_Jasa_Jarit\DeletePenjualanJasaJaritController;
+use App\Http\Controllers\Penjualan_Jasa_Jarit\GetAllPenjualanJasaJaritController;
 
 /*
 |--------------------------------------------------------------------------
@@ -155,6 +163,19 @@ Route::prefix('/pemasukan')->group(function () {
     Route::delete('/delete/{id}', DeletePemasukanController::class)->name('pemasukan.delete');
 });
 
+// *** Master Pegawai Tetap Route *** //
+Route::prefix('/mstr/pegawai-tetap')->group(function () {
+    // --view
+    Route::get('/all', GetAllPgwrTetapController::class)->name('pegawai-tetap.all');
+    // --create
+    Route::post('/create', CreatePgwrTetapController::class)->name('pegawai-tetap.create');
+    // --update
+    Route::get('/update/{id}', GetUpdatePgwrTetapController::class)->name('pegawai-tetap.update.index');
+    Route::post('/update/{id}', UpdatePgwrTetapController::class)->name('pegawai-tetap.update');
+    // --delete
+    Route::get('/delete/{id}', DeletePgwrTetapController::class)->name('pegawai-tetap.delete');
+});
+
 // *** Pengeluaran Routes *** //
 Route::prefix('/pengeluaran')->group(function () {
     // --view
@@ -189,12 +210,18 @@ Route::prefix('/penjualan-lain')->group(function (){
     Route::get('/all', GetAllPenjualanLainController::class)->name('penjualan-lain.all');
     // --create
     Route::post('/create', CreatePenjualanLainController::class)->name('penjualan-lain.create');
-    // --update
-    Route::post('/update/{id}', UpdatePenjualanLainController::class)->name('penjualan-lain.update');
     // --delete
     Route::delete('/delete/{id}', DeletePenjualanLainController::class)->name('penjualan-lain.delete'); 
 });
 
+Route::prefix('/penjualan-jasa')->group(function (){
+    // --view
+    Route::get('/all', GetAllPenjualanJasaJaritController::class)->name('penjualan-lain.all');
+    // --create
+    Route::post('/create', CreatePenjualanJasaJaritController::class)->name('penjualan-lain.create');
+    // --delete
+    Route::delete('/delete/{id}', DeletePenjualanJasaJaritController::class)->name('penjualan-lain.delete'); 
+});
 
 // *** View Routes *** //
 // Route::middleware('auth:sanctum')->group(function () {

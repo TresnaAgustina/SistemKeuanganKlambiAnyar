@@ -46,16 +46,16 @@ class GetAllPemasukanController extends Controller
                 'pemasukan' => $pemasukan
             ]);
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Error: ' . $e->getMessage(),
-                'data' => Null
-            ], 500);
+            // return response()->json([
+            //     'status' => 'error',
+            //     'message' => 'Error: ' . $e->getMessage(),
+            //     'data' => Null
+            // ], 500);
 
             // for monolith app
-            // return redirect()->back()->with(
-            //     'error', 'Error: ' . $e->getMessage()
-            // );
+            return redirect()->back()->with(
+                'error', 'Error: ' . $e->getMessage()
+            );
         }
     }
 }

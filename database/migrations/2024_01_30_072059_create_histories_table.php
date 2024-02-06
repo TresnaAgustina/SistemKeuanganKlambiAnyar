@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('histories', function (Blueprint $table) {
             $table->id();
-            $table->text('keterangan');
+            $table->text('keterangan')->nullable();
             $table->string('tipe');
             $table->double('jumlah');
             $table->date('tanggal');
