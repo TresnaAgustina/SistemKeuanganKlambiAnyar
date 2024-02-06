@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\History;
 use App\Models\Keuangan;
 use Illuminate\Http\Request;
+use Psy\CodeCleaner\FunctionReturnInWriteContextPass;
 
 class HitungController extends Controller
 {
@@ -183,6 +184,10 @@ class HitungController extends Controller
         }else{
             return redirect()->to('keuangan/all')->with('error', 'Saldo tidak mencukupi untuk transfer');
         }
+    }
+
+    public function test(Request $request){
+        dd($request->all());
     }
 
 }

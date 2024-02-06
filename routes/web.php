@@ -279,6 +279,21 @@ Route::get('/piutang/all', function(){
 Route::get('/hutang/all', function(){
     return view('transaksi.hutang.index');
 });
+Route::get('/penjualan-lain/all', function(){
+    return view('penjualan.penjualan-lain.index');
+});
+Route::get('/penjualan-jasa/all', function(){
+    return view('penjualan.penjualan-jasa.index');
+});
+Route::get('/aktivitas/all', function(){
+    return view('aktivitas.index');
+});
+
+Route::post('/aktivitas/create', [HitungController::class , 'test']);
+
+
+
+
 
 
 
