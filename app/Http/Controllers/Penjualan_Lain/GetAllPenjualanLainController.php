@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Penjualan_Lain;
 
 use App\Http\Controllers\Controller;
+use App\Models\Master_Barang;
+use App\Models\Master_Customer;
 use App\Models\Penjualan_Lain;
 use Illuminate\Http\Request;
 
@@ -21,11 +23,15 @@ class GetAllPenjualanLainController extends Controller
             $data = Penjualan_Lain::all();
              //get all data from Penjualan_Lain and CartPenjualanLain
              $penjualan_lain = Penjualan_Lain::with('cart_penjualan_lain')->get();
-
+             $customer = Master_Customer::all();
+            $barang = Master_Barang::all();
 
             return view('penjualan.penjualan-lain.index')->with([
                 'data' => $data,
-                'test' => $penjualan_lain
+                'test' => $penjualan_lain,
+                'pelanggan' => $customer,
+                'barang' => $barang,
+
             ]);
 
             // return response

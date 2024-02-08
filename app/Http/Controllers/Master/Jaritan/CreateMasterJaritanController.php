@@ -27,6 +27,18 @@ class CreateMasterJaritanController extends Controller
                 'harga_luar' => 'nullable|numeric',
             ]);
 
+            if (!empty($data['harga_dalam'])) {
+                $dalam = str_replace(['.'], '', $data['harga_dalam']);
+            } else {
+                $dalam = null;
+            }
+            
+            if (!empty($data['harga_luar'])) {
+                $luar = str_replace(['.'], '', $data['harga_luar']);
+            } else {
+                $luar = null;
+            }
+
             // if validation fails
             if (!$validate) {
                 return back()->with(
@@ -37,8 +49,8 @@ class CreateMasterJaritanController extends Controller
             //create data to database
             $create = Master_Jaritan::create([
                 'jenis_jaritan' => $data['jenis_jaritan'],
-                'harga_dalam' => $data['harga_dalam'],
-                'harga_luar' => $data['harga_luar'],
+                'harga_dalam' => $dalam,
+                'harga_luar' => $luar,
             ]);
 
             // if create data fails

@@ -20,6 +20,9 @@ class CreatePenjualanJasaJaritController extends Controller
      */
     public function __invoke(Request $request)
     {
+
+        // dd($request->all());
+
         try {
             //get all request data
             $data = $request->all();
@@ -38,12 +41,24 @@ class CreatePenjualanJasaJaritController extends Controller
                 'barang.*.jumlah_barang' => 'required|numeric',
             ]);
 
+            if (!empty($data['jmlh_bayar_awal'])) {
+                $credit = str_replace(['.'], '', $data['jmlh_bayar_awal']);
+            } else {
+                $credit = null;
+            }
+            
+            if (!empty($data['jmlh_dibayar'])) {
+                $cash = str_replace(['.'], '', $data['jmlh_dibayar']);
+            } else {
+                $cash = null;
+            }
+            
             //if validation fails
             if ($validate->fails()) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => $validate->errors()
-                ], 422);
+                // return response()->json([
+                //     'status' => 'error',
+                //     'message' => $validate->errors()
+                // ], 422);
                 return redirect()->back()->with('pesan', 'Data gagal divalidasi')->withErrors($validate);
             }
 
@@ -68,18 +83,18 @@ class CreatePenjualanJasaJaritController extends Controller
             }
 
             // chek if metode_pembayaran == 'cash' && jmlh_dibayar < total_harga, show alert
-            if ($data['metode_pembayaran'] == 'cash' && $data['jmlh_dibayar'] < array_sum(array_column($data['barang'], 'subtotal'))) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Jumlah dibayar tidak mencukupi'
-                ], 422);
+            if ($data['metode_pembayaran'] == 'cash' && $cash < array_sum(array_column($data['barang'], 'subtotal'))) {
+                // return response()->json([
+                //     'status' => 'error',
+                //     'message' => 'Jumlah dibayar tidak mencukupi'
+                // ], 422);
                 return redirect()->back()->with('pesan', 'Jumlah dibayar tidak mencukupi');
             }
-            if($data['metode_pembayaran'] == 'credit' && $data['jmlh_bayar_awal'] > array_sum(array_column($data['barang'], 'subtotal'))){
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Jumlah Bayar Awal Melebihi Total Harga'
-                ], 422);
+            if($data['metode_pembayaran'] == 'credit' && $credit > array_sum(array_column($data['barang'], 'subtotal'))){
+                // return response()->json([
+                //     'status' => 'error',
+                //     'message' => 'Jumlah Bayar Awal Melebihi Total Harga'
+                // ], 422);
                 return redirect()->back()->with('pesan', 'Jumlah bayar awal melebihi total harga');
             }
 
@@ -104,9 +119,9 @@ class CreatePenjualanJasaJaritController extends Controller
                 'kode_penjualan' => $kode_penjualan,
                 'tanggal' => $data['tanggal'],
                 'metode_pembayaran' => $data['metode_pembayaran'],
-                'jmlh_bayar_awal' => $data['jmlh_bayar_awal'],
+                'jmlh_bayar_awal' => $credit,
                 'tgl_jatuh_tempo' => $data['tgl_jatuh_tempo'],
-                'jmlh_dibayar' => $data['jmlh_dibayar'],
+                'jmlh_dibayar' =>$cash,
                 'keterangan' => $data['keterangan'],
                 'bukti_pembayaran' => $data['bukti_pembayaran'],
             ]);
@@ -150,10 +165,10 @@ class CreatePenjualanJasaJaritController extends Controller
 
                 // if fails
                 if (!$piutang) {
-                    return response()->json([
-                        'status' => 'error',
-                        'message' => 'Gagal menyimpan data piutang'
-                    ], 500);
+                    // return response()->json([
+                    //     'status' => 'error',
+                    //     'message' => 'Gagal menyimpan data piutang'
+                    // ], 500);
                     return redirect()->back()->with('pesan', 'Gagal menyimpan data piutang');
                 }
             }
@@ -169,29 +184,29 @@ class CreatePenjualanJasaJaritController extends Controller
             // check if fails
             // check if fails
             if (!$penjualan_jasa || !$penjualan_jasa->cart_penjualan_jasa()->exists()) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Gagal membuat penjualan'
-                ], 500);
+                // return response()->json([
+                //     'status' => 'error',
+                //     'message' => 'Gagal membuat penjualan'
+                // ], 500);
                 return redirect()->back()->with('pesan', 'Gagal membuat penjualan');
             }
 
 
             // return success response
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Berhasil membuat penjualan',
-                'data' => $penjualan_jasa
-            ], 200);
+            // return response()->json([
+            //     'status' => 'success',
+            //     'message' => 'Berhasil membuat penjualan',
+            //     'data' => $penjualan_jasa
+            // ], 200);
 
             return redirect()->back()->with('success', 'Berhasil membuat penjualan');
 
             //harga_satuan get from master_jaritan->harga_dalam
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 500);
+            // return response()->json([
+            //     'status' => 'error',
+            //     'message' => $e->getMessage()
+            // ], 500);
 
             return redirect()->back()->with('pesan', $e->getMessage());
         }

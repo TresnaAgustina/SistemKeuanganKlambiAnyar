@@ -21,6 +21,7 @@ use App\Http\Controllers\DataTable\DataTablePgwrTetapController;
 use App\Http\Controllers\DataTable\TableHistoriesController;
 use App\Http\Controllers\DataTable\TablePemasukanController;
 use App\Http\Controllers\DataTable\TablePengeluaranController;
+use App\Http\Controllers\DataTable\TablePenjualanController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Controllers\Keuangan\CreateKeuanganController;
 use App\Http\Controllers\Keuangan\DeleteKeuanganController;
@@ -74,9 +75,12 @@ use App\Http\Controllers\Master\Pengeluaran\CreateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\DeleteMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\UpdateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\GetUpdateMasterPengeluaranController;
+use App\Http\Controllers\Penjualan_Jasa_Jarit\CreatePenjualanJasaJaritController;
 use App\Http\Controllers\Penjualan_Jasa_Jarit\GetAllPenjualanJasaJaritController;
 use App\Http\Controllers\Penjualan_Jasa_Jarit\GetUpdatePenjualanJasaJaritController;
+use App\Http\Controllers\Penjualan_Lain\CreatePenjualanLainController;
 use App\Http\Controllers\Penjualan_Lain\GetAllPenjualanLainController;
+use App\Http\Controllers\Penjualan_Lain\GetUpdatePenjualanLainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -114,6 +118,8 @@ Route::prefix('/dataTable')->group(function () {
     Route::get('/histori', TableHistoriesController::class)->name('dataTable.histori');
     Route::get('/piutang', DataPiutang::class)->name('dataTable.piutang');
     Route::get('/hutang', DataHutang::class)->name('dataTable.hutang');
+    Route::get('/penjualan-jasa', [TablePenjualanController::class, 'penjualanJasa'])->name('dataTable.penjualan-jasa');
+    Route::get('/penjualan-lain', [TablePenjualanController::class, 'penjualanLain'])->name('dataTable.penjualan-lain');
 });
 
 
@@ -275,9 +281,13 @@ Route::prefix('/keuangan')->group(function (){
 
 Route::prefix('/penjualan-lain')->group(function(){
     Route::get('/all', GetAllPenjualanLainController::class)->name('penjualanLain.all');
+    Route::post('/create', CreatePenjualanLainController::class)->name('penjualanLain.create');
+    Route::get('/update/{id}', GetUpdatePenjualanLainController::class)->name('penjualanLain.update.index');
+
 });
 Route::prefix('/penjualan-jasa')->group(function(){
     Route::get('/all', GetAllPenjualanJasaJaritController::class)->name('penjualanJasa.all');
+    Route::post('/create', CreatePenjualanJasaJaritController::class)->name('penjualanJasa.create');
     Route::get('/update/{id}', GetUpdatePenjualanJasaJaritController::class)->name('penjualanJasa.update.index');
 
 });

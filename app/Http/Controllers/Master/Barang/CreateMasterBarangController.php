@@ -28,6 +28,18 @@ class CreateMasterBarangController extends Controller
                 'harga_jual' => 'required|numeric',
             ]);
 
+            if (!empty($data['harga_beli'])) {
+                $beli = str_replace(['.'], '', $data['harga_beli']);
+            } else {
+                $beli = null;
+            }
+            
+            if (!empty($data['harga_jual'])) {
+                $jual = str_replace(['.'], '', $data['harga_jual']);
+            } else {
+                $jual = null;
+            }
+
             // if validation fails
             if ($validate->fails()) {
                 return response()->json([
@@ -40,8 +52,8 @@ class CreateMasterBarangController extends Controller
             // create data to database
             $create = Master_Barang::create([
                 'nama_barang' => $data['nama_barang'],
-                'harga_beli' => $data['harga_beli'],
-                'harga_jual' => $data['harga_jual'],
+                'harga_beli' => $beli,
+                'harga_jual' => $jual,
             ]);
 
             // if fails

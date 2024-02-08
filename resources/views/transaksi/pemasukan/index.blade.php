@@ -76,10 +76,10 @@
               @csrf
               <div class="form-group">
                 <label>Jenis Pemasukan</label>
-                <select class="form-control" name='jenis_pemasukan' id="jenis">
+                <select class="form-control" name='id_mstr_pemasukan' id="jenis">
                   <option value="">~ Pilih ~</option>
                   @foreach ($pemasukan as $item)
-                    @if (old('jenis_pemasukan') == $item->id)
+                    @if (old('id_mstr_pemasukan') == $item->id)
                       <option value="{{ $item->id }}" selected>{{ $item->nama_atribut }}</option>
                     @else
                      <option value="{{ $item->id }}">{{ $item->nama_atribut }}</option>
@@ -180,14 +180,14 @@
                 if (result.value) {
                     $.ajax({
                         type: 'DELETE',
-                        url: '/mstr/pemasukan/delete/' + id, 
+                        url: '/pemasukan/delete/' + id, 
                         success: function(data) {
                             Swal.fire({
                               title: 'berhasil',
                               text: data.message,
                               icon: 'success'
                             }).then((result) => {
-                               window.location.href = '/mstr/pemasukan/all';
+                               window.location.href = '/pemasukan/all';
                             })
                         },
                         error: function(xhr, ajaxOptions, thrownError) {
@@ -215,7 +215,7 @@
                 orderable: false,
                 searchable: false
             },{
-                data: 'pemasukan',
+                data: 'id_mstr_pemasukan',
                 name: 'Jenis Pemasukan'
             },{
                 data: 'tgl',

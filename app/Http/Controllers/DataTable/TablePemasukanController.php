@@ -20,9 +20,7 @@ class TablePemasukanController extends Controller
         $coba = Pemasukan::orderBy('id', 'asc');
         return DataTables::of($coba)
         ->addIndexColumn()
-        ->addColumn('pemasukan', function($data){
-            return $data->master_pemasukan->nama_atribut;
-        })
+      
         ->addColumn('tgl', function($data){
             return  date('d-m-Y', strtotime($data->tanggal));
         })

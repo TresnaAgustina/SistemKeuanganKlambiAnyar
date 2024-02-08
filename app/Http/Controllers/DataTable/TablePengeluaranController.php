@@ -20,9 +20,9 @@ class TablePengeluaranController extends Controller
         $coba = Pengeluaran::orderBy('id', 'asc');
         return DataTables::of($coba)
         ->addIndexColumn()
-        ->addColumn('pengeluaran', function($data){
-            return $data->master_pengeluaran->nama_atribut;
-        })
+        // ->addColumn('pengeluaran', function($data){
+        //     return $data->master_pengeluaran->nama_atribut;
+        // })
         ->addColumn('tgl', function($data){
             return  date('d-m-Y', strtotime($data->tanggal));
         })

@@ -49,7 +49,7 @@
             <!-- /.card -->
 
             <div class="card-body">
-                <table id="pemasukan" class="table table-bordered table-striped">
+                <table id="pengeluaran" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>Nomor</th>
@@ -88,10 +88,10 @@
               @csrf
               <div class="form-group">
                 <label>Jenis Pengeluaran</label>
-                <select class="form-control" name='jenis_pengeluaran' id="jenis">
+                <select class="form-control" name='id_mstr_pengeluaran' id="jenis">
                   <option value="">~ Pilih ~</option>
                   @foreach ($pengeluaran as $item)
-                    @if (old('jenis_pengeluaran') == $item->id)
+                    @if (old('id_mstr_pengeluaran') == $item->id)
                       <option value="{{ $item->id }}" selected>{{ $item->nama_atribut }}</option>
                     @else
                      <option value="{{ $item->id }}">{{ $item->nama_atribut }}</option>
@@ -100,9 +100,12 @@
                 </select>
               </div>             
                 <div class="form-group">
-                  <label for="metode">Metode Pembayaran</label>
-                  <input name="metode" type="text" class="form-control" id="metode" required>
-                </div>              
+                  <label>Metode Pembayaran</label>
+                  <select name="metode_pembayaran" id="metode" class="form-control">
+                    <option value="cash">Cash</option>
+                    <option value="credit">Credit</option>
+                  </select>
+                </div>             
                 <div class="form-group">
                   <label for="tanggal">Tanggal</label>
                   <input name="tanggal" type="date" class="form-control" id="tgl" required>
@@ -196,14 +199,14 @@
                 if (result.value) {
                     $.ajax({
                         type: 'DELETE',
-                        url: '/mstr/pemasukan/delete/' + id, 
+                        url: '/pengeluaran/delete/' + id, 
                         success: function(data) {
                             Swal.fire({
                               title: 'berhasil',
                               text: data.message,
                               icon: 'success'
                             }).then((result) => {
-                               window.location.href = '/mstr/pemasukan/all';
+                               window.location.href = '/pengeluaran/all';
                             })
                         },
                         error: function(xhr, ajaxOptions, thrownError) {
@@ -219,7 +222,7 @@
 
 <script>
     $(document).ready(function(){
-        $('#pemasukan').DataTable({
+        $('#pengeluaran').DataTable({
             "responsive": true, 
             "autoWidth": false,
             "processing": true,
@@ -231,7 +234,7 @@
                 orderable: false,
                 searchable: false
             },{
-                data: 'nama_atribut',
+                data: 'id_mstr_pengeluaran',
                 name: 'Nama Atribut'
             },{
                 data: 'tgl',

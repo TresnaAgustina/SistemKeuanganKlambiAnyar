@@ -207,10 +207,10 @@
                 data: 'jenis_jaritan',
                 name: 'Jenis Jaritan'
             },{
-                data: 'harga_dalam',
+                data: 'harga dalam',
                 name: 'Harga Dalam'
             },{
-                data: 'harga_luar',
+                data: 'harga luar',
                 name: 'Harga Luar'
             },{
                 data: 'aksi',
@@ -254,6 +254,36 @@ $.ajaxSetup({
           $(this).find('input').val(''); // Mengosongkan nilai input di dalam modal
       });
   });
+
+
+  //set fotmat angka jumlah
+  function formatRupiah(angka) {
+      var numberString = angka.toString();
+      var splitNumber = numberString.split('.');
+      var sisa = splitNumber[0].length % 3;
+      var rupiah = splitNumber[0].substr(0, sisa);
+      var ribuan = splitNumber[0].substr(sisa).match(/\d{3}/g);
+
+      if (ribuan) {
+          var separator = sisa ? '.' : '';
+          rupiah += separator + ribuan.join('.');
+      }
+
+      if (splitNumber[1] != undefined) {
+          rupiah += ',' + splitNumber[1];
+      }
+
+      return rupiah;
+    }
+
+    $('#hargaDalam').on('input', function() {
+        var value = $(this).val().replace(/[^\d]/g, '');
+        $(this).val(formatRupiah(value));
+    });
+    $('#hargaLuar').on('input', function() {
+        var value = $(this).val().replace(/[^\d]/g, '');
+        $(this).val(formatRupiah(value));
+    });
 </script>
 
 {{-- <script>

@@ -23,15 +23,15 @@ class CreatePemasukanController extends Controller
 
             // check if request data is empty
             if (!$data) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Request data is empty',
-                ], 400);
+                // return response()->json([
+                //     'status' => 'error',
+                //     'message' => 'Request data is empty',
+                // ], 400);
 
                 // for monolith app
-                // return redirect()->back()->with(
-                //     'error', 'Request data is empty'
-                // );
+                return redirect()->back()->with(
+                    'pesan', 'Request data is empty'
+                );
             }
 
             // get data master_pemasukan by id_mstr_pemasukan
@@ -39,14 +39,14 @@ class CreatePemasukanController extends Controller
 
             // check if data_mstr is null
             if ($data_mstr == null) {
-                return response()->json([
-                    'message' => 'Data pemasukan tidak ditemukan'
-                ], 404);
+                // return response()->json([
+                //     'message' => 'Data pemasukan tidak ditemukan'
+                // ], 404);
 
                 // for monolith app
-                // return redirect()->back()->with(
-                //     'error', 'Data pemasukan tidak ditemukan'
-                // );
+                return redirect()->back()->with(
+                    'pesan', 'Data pemasukan tidak ditemukan'
+                );
             }
 
             // validation
@@ -59,20 +59,21 @@ class CreatePemasukanController extends Controller
 
             // if validation is fails
             if (!$validate) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => $request->errors(),
-                ], 400);
+                // return response()->json([
+                //     'status' => 'error',
+                //     'message' => $request->errors(),
+                // ], 400);
 
                 // for monolith app
-                // return redirect()->back()->with(
-                //     'error', 'Failed validate data'
-                // );
+                return redirect()->back()->with(
+                    'pesan', 'Failed validate data'
+                );
             }
 
             // create pemasukan
             $pemasukan = Pemasukan::create([
                 'id_mstr_pemasukan' => $data['id_mstr_pemasukan'],
+                'id_keuangan' => 1,
                 'tanggal' => $data['tanggal'],
                 'total' => $data['total'],
                 'keterangan' => $data['keterangan'],
@@ -80,45 +81,45 @@ class CreatePemasukanController extends Controller
 
             // if create pemasukan is fails
             if (!$pemasukan) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => $pemasukan->errors(),
-                ], 400);
+                // return response()->json([
+                //     'status' => 'error',
+                //     'message' => $pemasukan->errors(),
+                // ], 400);
 
                 // for monolith app
-                // return redirect()->back()->with(
-                //     'error', 'Failed create data'
-                // );
+                return redirect()->back()->with(
+                    'pesan', $pemasukan->errors()
+                );
             }
 
             // return json response
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Success: Success to create pemasukan',
-                'data' => [
-                        'id' => $pemasukan->id,
-                        'id_mstr_pemasukan' => $pemasukan->id_mstr_pemasukan,
-                        'nama_atribut' => $data_mstr->nama_atribut,
-                        'tanggal' => $pemasukan->tanggal,
-                        'total' => $pemasukan->total,
-                        'keterangan' => $pemasukan->keterangan,
-                    ],
-            ], 200);
+            // return response()->json([
+            //     'status' => 'success',
+            //     'message' => 'Success: Success to create pemasukan',
+            //     'data' => [
+            //             'id' => $pemasukan->id,
+            //             'id_mstr_pemasukan' => $pemasukan->id_mstr_pemasukan,
+            //             'nama_atribut' => $data_mstr->nama_atribut,
+            //             'tanggal' => $pemasukan->tanggal,
+            //             'total' => $pemasukan->total,
+            //             'keterangan' => $pemasukan->keterangan,
+            //         ],
+            // ], 200);
 
             // for monolith app
-            // return redirect()->back()->with(
-            //     'success', 'Success create data'
-            // );
+            return redirect()->back()->with(
+                'success', 'Success create data'
+            );
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Error: '.$e->getMessage(),
-            ], 400);
+            // return response()->json([
+            //     'status' => 'error',
+            //     'message' => 'Error: '.$e->getMessage(),
+            // ], 400);
 
             // for monolith app
-            // return redirect()->back()->with(
-            //     'error', 'Error:' . $e->getMessage()
-            // );
+            return redirect()->back()->with(
+                'error', 'Error:' . $e->getMessage()
+            );
         }
     }
 }

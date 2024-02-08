@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Penjualan_Jasa_Jarit;
+namespace App\Http\Controllers\Penjualan_Lain;
 
 use App\Http\Controllers\Controller;
 use App\Models\Master_Barang;
-use App\Models\Master_Jaritan;
-use App\Models\Penjualan_Jasa_Jarit;
 use Illuminate\Http\Request;
 
-class GetUpdatePenjualanJasaJaritController extends Controller
+class GetUpdatePenjualanLainController extends Controller
 {
     /**
      * Handle the incoming request.
@@ -20,7 +18,7 @@ class GetUpdatePenjualanJasaJaritController extends Controller
     {
         try {
             // get data id
-            $data = Master_Jaritan::where('id', $id)->first();
+            $data = Master_Barang::where('id', $id)->first();
             
             // if data empty
             if (!$data) {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Penjualan_Jasa_Jarit;
 use App\Http\Controllers\Controller;
 use App\Models\Master_Barang;
 use App\Models\Master_Customer;
+use App\Models\Master_Jaritan;
 use App\Models\Penjualan_Jasa_Jarit;
 use Illuminate\Http\Request;
 
@@ -24,12 +25,14 @@ class GetAllPenjualanJasaJaritController extends Controller
             $data = Penjualan_Jasa_Jarit::all();
             $customer = Master_Customer::all();
             $barang = Master_Barang::all();
+            $jaritan = Master_Jaritan::all();
 
             return view('penjualan.penjualan-jasa.index')->with([
                 'data' => $data,
                 'pelanggan' => $customer,
                 'barang' => $barang,
-                'test' => $penjualan_jasa_jarit
+                'test' => $penjualan_jasa_jarit,
+                'jaritan' => $jaritan
             ]);
             // return response
             // return response()->json([
