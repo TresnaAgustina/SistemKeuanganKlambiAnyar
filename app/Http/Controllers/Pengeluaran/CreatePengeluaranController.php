@@ -50,6 +50,12 @@ class CreatePengeluaranController extends Controller
                 'bukti' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
             ]);
 
+            if (!empty($data['total'])) {
+                $total = str_replace(['.'], '', $data['total']);
+            } else {
+                $total = null;
+            }
+        
             // if validation is fails
             if (!$validator) {
                 return redirect()->back()->with(
@@ -98,7 +104,7 @@ class CreatePengeluaranController extends Controller
                 'id_mstr_pengeluaran' => $data['id_mstr_pengeluaran'],
                 'tanggal' => $data['tanggal'],
                 'metode_pembayaran' => $data['metode_pembayaran'],
-                'subtotal' => $data['total'],
+                'subtotal' =>$total,
                 'keterangan' => $data['keterangan'],
                 'bukti_pembayaran' => $data['bukti']
             ]);

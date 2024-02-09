@@ -243,7 +243,7 @@
                 data: 'metode_pembayaran',
                 name: 'Metode Pembayaran'
             },{
-                data: 'subtotal',
+                data: 'total',
                 name: 'Total'
             },{
                 data: 'keterangan',
