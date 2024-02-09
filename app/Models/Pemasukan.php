@@ -23,7 +23,7 @@ class Pemasukan extends Model
 
     public function master_pemasukan()
     {
-        return $this->belongsToMany(Master_Pemasukan::class, 'id_mstr_pemasukan', 'id');
+        return $this->belongsTo(Master_Pemasukan::class, 'id_mstr_pemasukan', 'id');
     }
 
     public function keuangan()

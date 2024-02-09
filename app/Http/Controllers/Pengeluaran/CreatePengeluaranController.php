@@ -57,18 +57,33 @@ class CreatePengeluaranController extends Controller
                 );
             }
 
-            // upload image
-            $image = $request->file('bukti');
-            // make image name with timestamp format with detail time like year, month, day, hour, minute, and second
-            $image_name = 'pengeluaran_'. time() . '_' . date('YmdHis') . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('storage/pengeluaran'), $image_name);
+            // if request has file bukti, simpan ke public storage - pengeluaran
+            if ($request->hasFile('bukti')) {
+                $file = $request->file('bukti');
+                // create file name (format: bukti_pembayaran_<kode_penjualan>_<tanggal>.<ext>)
+                $filename = 'pengeluaran'.'_'.date('Ymd').'_'.time().'.'.$file->getClientOriginalExtension();
+                $file->storeAs('public/pengeluaran', $filename);
+                $data['bukti_pembayaran'] = $filename;
+            }else{
+                $data['bukti_pembayaran'] = null;
+            }
+            
+
+
+            // if ($request->hasFile('bukti')) {
+            //     $image = $request->file('bukti');
+            //     $image_name = time() . '.' . $image->getClientOriginalExtension();
+            //     $image->move(public_path('images'), $image_name);
+            // }else{
+            //     $image_name = null;
+            // }
 
             // if upload image is fails
-            if (!$image) {
-                return redirect()->back()->with(
-                    'pesan', 'Failed upload image'
-                );
-            }
+            // if (!$image) {
+            //     return redirect()->back()->with(
+            //         'pesan', 'Failed upload image'
+            //     );
+            // }
 
             // check if total > saldo_kas in keuangan
             $keuangan = Keuangan::first();
@@ -85,7 +100,7 @@ class CreatePengeluaranController extends Controller
                 'metode_pembayaran' => $data['metode_pembayaran'],
                 'subtotal' => $data['total'],
                 'keterangan' => $data['keterangan'],
-                'bukti_pembayaran' => $image_name
+                'bukti_pembayaran' => $data['bukti']
             ]);
 
             // update saldo_kas in keuangan
