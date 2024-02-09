@@ -27,7 +27,7 @@
       
             <div class="info-box-content">
               <span class="info-box-text">PIUTANG</span>
-              <span class="info-box-number">Rp.  </span>
+              <span class="info-box-number">Rp. {{ number_format($piutang) }}   </span>
               {{-- <span class="info-box-number">Rp. {{ number_format($bank) }} </span> --}}
             </div>
             <!-- /.info-box-content -->
@@ -46,16 +46,6 @@
             <div class="card-header">
               <strong><h4 >{{-- <i class="fas fa-edit"></i> --}}Data Piutang  </h4></strong>
             </div>
-
-            <div class="card-body">
-              
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#md-isiBank">
-                <i class="fas fa-plus"></i>
-                Tambah
-              </button>
-             
-            </div>
-
             <div class="card-body">
                 <table id="histori" class="table table-bordered table-striped">
                   <thead>
@@ -65,6 +55,7 @@
                     <th>Jatuh Tempo</th>
                     <th>Sisa</th>
                     <th>Status</th>
+                    <th>Aksi</th>
                    
                   </tr>
                   </thead>
@@ -78,56 +69,6 @@
       <!-- ./row -->
 
     </div><!-- /.container-fluid -->
-
-    
-    <div class="modal fade" id="md-isiBank">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Isi Saldo Bank</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-
-          <div class="modal-body">
-            <form action="{{ url('/keuangan/saldo-bank') }}" method="POST">
-              @csrf
-                <div class="form-group">
-                    <label for="tipe">Tipe</label>
-                    <input value="Isi Saldo Bank" name="tipe" type="text" class="form-control" id="tipe" required>
-                </div>      
-                <div class="form-group">
-                  <label for="jumlah">Jumlah</label>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text">Rp. </span>
-                      </div>
-                      <input name="jumlah" type="text" class="form-control" id="jmlBank" required>
-                    </div>
-                </div>   
-                <div class="form-group">
-                  <label for="tanggal">Tanggal</label>
-                  <input name="tanggal" type="date" class="form-control" id="tglBank" required>
-                </div> 
-              
-                <div class="form-group">
-                  <label>Keterangan</label>
-                  <textarea name="keterangan" id="ket" class="form-control" rows="4" placeholder="keterangan"></textarea>
-                </div>
-                
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-          </div>
-        </div>
-        <!-- /.modal-content -->
-      </div>
-      <!-- /.modal-dialog -->
-    </div>
-   
     <!-- /.modal -->
 
     
@@ -222,17 +163,20 @@
                 orderable: false,
                 searchable: false
             },{
-                data: 'jumlah_piutang',
+                data: 'jumlah',
                 name: 'Jumlah Piutang'
             },{
                 data: 'tgl_jatuh_tempo',
                 name: 'Jatuh Tempo'
             },{
-                data: 'sisa_piutang',
+                data: 'sisa',
                 name: 'Sisa'
             },{
                 data: 'status',
                 name: 'Status'
+            },{
+                data: 'aksi',
+                name: 'Aksi'
             }]
         });
     });

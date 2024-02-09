@@ -57,6 +57,12 @@ class CreatePemasukanController extends Controller
                 'keterangan' => 'nullable|string'
             ]);
 
+            if (!empty($data['total'])) {
+                $total = str_replace(['.'], '', $data['total']);
+            } else {
+                $total = null;
+            }
+
             // if validation is fails
             if (!$validate) {
                 // return response()->json([
@@ -75,7 +81,7 @@ class CreatePemasukanController extends Controller
                 'id_mstr_pemasukan' => $data['id_mstr_pemasukan'],
                 'id_keuangan' => 1,
                 'tanggal' => $data['tanggal'],
-                'total' => $data['total'],
+                'total' => $total,
                 'keterangan' => $data['keterangan'],
             ]);
 
