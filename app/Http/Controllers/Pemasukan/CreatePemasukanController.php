@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Pemasukan;
 
+use App\Models\History;
 use App\Models\Keuangan;
 use App\Models\Pemasukan;
 use Illuminate\Http\Request;
@@ -65,7 +66,7 @@ class CreatePemasukanController extends Controller
 
             //if request has file bukti_pembayaran
             if ($request->hasFile('bukti_pembayaran')) {
-                $file = $request->file('bukti');
+                $file = $request->file('bukti_pembayaran');
                 // create file name (format: bukti_pembayaran_<kode_penjualan>_<tanggal>.<ext>)
                 $filename = 'pemasukan'.'_'.date('Ymd').'_'.time().'.'.$file->getClientOriginalExtension();
                 $file->storeAs('public/pemasukan', $filename);
@@ -86,7 +87,19 @@ class CreatePemasukanController extends Controller
 
             // update saldo_kas in keuangan
             $keuangan = Keuangan::first();
-            $keuangan->saldo_kas = $keuangan->saldo_kas + $pemasukan->total;
+            $keuangan->update([
+                'saldo_kas' => $keuangan->saldo_kas + $total
+            ]);
+
+            // store to history
+            History::create([
+                'keterangan' => $pemasukan->master_pemasukan->nama_atribut,
+                'tipe' => 'Pemasukan',
+                'jumlah' => $total,
+                // set tanggan to today
+                'tanggal' => date('Y-m-d')
+            ]);
+
 
             // if create fails
             if (!$pemasukan) {
@@ -97,7 +110,7 @@ class CreatePemasukanController extends Controller
 
             // redirect to pemasukan index
 
-            return redirect()->route('pemasukan.index')->with(
+            return redirect()->back()->with(
                 'success', 'Success create pemasukan'
             );
             

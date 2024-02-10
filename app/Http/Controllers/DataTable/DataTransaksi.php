@@ -38,6 +38,9 @@ class DataTransaksi extends Controller
         ->addColumn('nama', function($data){
             return $data->master_pemasukan->nama_atribut;
          })
+        ->addColumn('metode_pembayaran', function($data){
+            return $data->metode_pembayaran;
+         })
         ->addColumn('total', function($data){
             if ($data->total) {
                 return 'Rp. '. number_format($data->total) ?? 0;

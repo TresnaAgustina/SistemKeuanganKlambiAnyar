@@ -44,6 +44,7 @@
                     <th>Nomor</th>
                     <th>Jenis Pemasukan</th>
                     <th>Tanggal</th>
+                    <th>Metode Pembayaran</th>
                     <th>Total</th>
                     <th>Keterangan</th>
                     <th>Aksi</th>
@@ -72,7 +73,7 @@
           </div>
 
           <div class="modal-body">
-            <form action="{{ url('/pemasukan/create') }}" method="POST">
+            <form action="{{ url('/pemasukan/create') }}" method="POST" enctype="multipart/form-data">
               @csrf
               <div class="form-group">
                 <label>Jenis Pemasukan</label>
@@ -86,7 +87,14 @@
                     @endif
                   @endforeach
                 </select>
-              </div>             
+              </div> 
+                <div class="form-group">
+                  <label>Metode Pembayaran</label>
+                  <select name="metode_pembayaran" id="metode" class="form-control">
+                    <option value="cash">Cash</option>
+                    <option value="credit">Credit</option>
+                  </select>
+                </div>            
                 <div class="form-group">
                   <label for="tanggal">Tanggal</label>
                   <input name="tanggal" type="date" class="form-control" id="tgl" required>
@@ -102,7 +110,7 @@
                 </div>     
                 <div class="form-group ">
                   <label for="bukti">Bukti Pembayaran</label> <br>
-                  <input type="file" id="bukti" name="bukti">
+                  <input type="file" id="bukti" name="bukti_pembayaran">
                 </div>
                        
                 <div class="form-group">
@@ -220,6 +228,9 @@
             },{
                 data: 'tgl',
                 name: 'Tanggal'
+            },{
+                data: 'metode_pembayaran',
+                name: 'Metode Pembayaran'
             },{
                 data: 'total',
                 name: 'Total'

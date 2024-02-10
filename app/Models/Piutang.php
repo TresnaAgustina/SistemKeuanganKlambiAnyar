@@ -15,9 +15,9 @@ class Piutang extends Model
     protected $fillable = [
         'id_jual_lain',
         'id_jual_jasa',
-        'jumlah_bayar', // untuk update piutang ketika pelunasan
         'jumlah_piutang',
         'tgl_jatuh_tempo',
+        'jumlah_bayar', // untuk update piutang ketika pelunasan
         'sisa_piutang',
         'status',
     ];

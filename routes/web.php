@@ -10,7 +10,6 @@ use App\Http\Controllers\Views\DashboardController;
 use App\Http\Controllers\DataTable\DataTransaksi;
 use App\Http\Controllers\DataTable\TableHistoriesController;
 use App\Http\Controllers\DataTable\TablePenjualanController;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 use App\Http\Controllers\Keuangan\CreateKeuanganController;
 use App\Http\Controllers\Keuangan\DeleteKeuanganController;
 use App\Http\Controllers\Keuangan\GetAllKeuanganController;
@@ -19,13 +18,11 @@ use App\Http\Controllers\Keuangan\UpdateKeuanganController;
 use App\Http\Controllers\Pemasukan\CreatePemasukanController;
 use App\Http\Controllers\Pemasukan\DeletePemasukanController;
 use App\Http\Controllers\Pemasukan\GetAllPemasukanController;
-use App\Http\Controllers\Pemasukan\SearchPemasukanController;
 use App\Http\Controllers\Pemasukan\UpdatePemasukanController;
 use App\Http\Controllers\Pemasukan\GetDetailPemasukanController;
 use App\Http\Controllers\Pengeluaran\CreatePengeluaranController;
 use App\Http\Controllers\Pengeluaran\DeletePengeluaranController;
 use App\Http\Controllers\Pengeluaran\GetAllPengeluaranController;
-use App\Http\Controllers\Pengeluaran\SearchPengeluaranController;
 use App\Http\Controllers\Pengeluaran\UpdatePengeluaranController;
 use App\Http\Controllers\Master\Barang\CreateMasterBarangController;
 use App\Http\Controllers\Master\Barang\DeleteMasterBarangController;
@@ -69,7 +66,6 @@ use App\Http\Controllers\Penjualan_Jasa_Jarit\GetUpdatePenjualanJasaJaritControl
 use App\Http\Controllers\Penjualan_Lain\CreatePenjualanLainController;
 use App\Http\Controllers\Penjualan_Lain\GetAllPenjualanLainController;
 use App\Http\Controllers\Penjualan_Lain\GetUpdatePenjualanLainController;
-use App\Http\Controllers\Piutang\CreatePiutangController;
 use App\Http\Controllers\Piutang\GetAllPiutangController;
 use App\Http\Controllers\Piutang\GetUpdatePiutangController;
 use App\Http\Controllers\Piutang\UpdatePiutangController;
@@ -220,8 +216,6 @@ Route::prefix('/pemasukan')->group(function () {
     Route::get('/all', GetAllPemasukanController::class)->name('pemasukan.all');
     // --get by id
     Route::get('/detail/{id}', GetDetailPemasukanController::class)->name('pemasukan.get');
-    // --search
-    Route::get('/search', SearchPemasukanController::class)->name('pemasukan.search');
     // --create
     Route::post('/create', CreatePemasukanController::class)->name('pemasukan.create');
     // --update
@@ -236,8 +230,6 @@ Route::prefix('/pengeluaran')->group(function () {
     Route::get('/all', GetAllPengeluaranController::class)->name('pengeluaran.all');
     // --get by id
     Route::get('/detail/{id}', GetDetailPengeluaranController::class)->name('pengeluaran.detail');
-    // --search
-    Route::post('/search', SearchPengeluaranController::class)->name('pengeluaran.search');
     // --create
     Route::post('/create', CreatePengeluaranController::class)->name('pengeluaran.create');
     // --update
@@ -276,7 +268,6 @@ Route::prefix('/penjualan-jasa')->group(function(){
 });
 Route::prefix('/piutang')->group(function(){
     Route::get('/all', GetAllPiutangController::class)->name('piutang.all');
-    Route::post('/create', CreatePiutangController::class)->name('piutang.create');
     Route::get('/bayar/{id}', GetUpdatePiutangController::class)->name('piutang.update.index');
     Route::post('/bayar/{id}', UpdatePiutangController::class)->name('piutang.update');
 

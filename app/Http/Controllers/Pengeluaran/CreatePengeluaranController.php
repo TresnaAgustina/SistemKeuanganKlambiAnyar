@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Pengeluaran;
 
+use App\Models\Hutang;
+use App\Models\History;
 use App\Models\Keuangan;
 use App\Models\Pengeluaran;
 use Illuminate\Http\Request;
@@ -101,6 +103,26 @@ class CreatePengeluaranController extends Controller
             }else if($pengeluaran->metode_pembayaran == 'credit'){
                 $keuangan->update([
                     'saldo_kas' => $keuangan->saldo_kas - $pengeluaran->subtotal
+                ]);
+            }
+
+            // store to history
+            $history = \App\Models\History::create([
+                'keterangan' => $pengeluaran->master_pengeluaran->nama_atritut,
+                'tipe' => 'pengeluaran',
+                'jumlah' => $pengeluaran->subtotal,
+                'tanggal' => date('Y-m-d'),
+            ]);
+
+            // if metode_pembayaran is 'credit' then store data to Hutang
+            if ($pengeluaran->metode_pembayaran == 'credit') {
+                $hutang = Hutang::create([
+                    'id_pengeluaran' => $pengeluaran->id,
+                    'jumlah_hutang' => $pengeluaran->subtotal,
+                    'tgl_jatuh_tempo' => $pengeluaran->tanggal,
+                    'jumlah_bayar' => null,
+                    'sisa_hutang' => $pengeluaran->subtotal,
+                    'status' => 'Belum Lunas',
                 ]);
             }
 

@@ -15,6 +15,7 @@ class Hutang extends Model
         'id_pengeluaran',
         'jumlah_hutang',
         'tgl_jatuh_tempo',
+        'jumlah_bayar',
         'sisa_hutang',
         'status',
     ];

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_pengeluaran');
             $table->double('jumlah_hutang');
             $table->date('tgl_jatuh_tempo');
+            $table->double('jumlah_bayar')->nullable();
             $table->double('sisa_hutang');
             $table->enum('status', ['Lunas', 'Belum Lunas']);
 
