@@ -51,6 +51,7 @@
                   <thead>
                   <tr>
                     <th>Nomor</th>
+                    <th>Nama Customer</th>
                     <th>Jumlah Piutang</th>
                     <th>Jatuh Tempo</th>
                     <th>Sisa</th>
@@ -162,6 +163,9 @@
                 name: 'DT_RowIndex',
                 orderable: false,
                 searchable: false
+            },{
+                data: 'nama',
+                name: 'Nama Customer'
             },{
                 data: 'jumlah',
                 name: 'Jumlah Piutang'

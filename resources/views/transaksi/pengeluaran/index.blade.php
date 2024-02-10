@@ -234,7 +234,7 @@
                 orderable: false,
                 searchable: false
             },{
-                data: 'id_mstr_pengeluaran',
+                data: 'nama',
                 name: 'Nama Atribut'
             },{
                 data: 'tgl',

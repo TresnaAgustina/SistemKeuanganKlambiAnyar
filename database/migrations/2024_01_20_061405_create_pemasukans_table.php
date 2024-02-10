@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('pemasukan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_mstr_pemasukan');
-            $table->unsignedBigInteger('id_keuangan');
             $table->date('tanggal');
             $table->double('total');
             $table->text('keterangan')->nullable();
@@ -24,7 +23,6 @@ return new class extends Migration
 
             // relationship
             $table->foreign('id_mstr_pemasukan')->references('id')->on('master_pemasukan')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('id_keuangan')->references('id')->on('keuangan')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

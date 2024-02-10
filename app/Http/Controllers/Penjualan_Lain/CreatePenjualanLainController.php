@@ -88,16 +88,16 @@ class CreatePenjualanLainController extends Controller
             // generate kode penjualan (format: PL-<rand(4 anngka)>-<tanggal>)
             $kode_penjualan = 'PL-'.rand(1000, 9999).'-'.date('Ymd');
 
-            // store bukti pembayaran to storage
-            if ($request->hasFile('bukti_pembayaran')) {
-                $file = $request->file('bukti_pembayaran');
-                // create file name (format: bukti_pembayaran_<kode_penjualan>_<tanggal>.<ext>)
-                $filename = 'bukti_pembayaran_'.$kode_penjualan.'_'.date('Ymd').'_'.time().'.'.$file->getClientOriginalExtension();
-                $file->storeAs('public/bukti_pembayaran', $filename);
-                $data['bukti_pembayaran'] = $filename;
-            }else{
-                $data['bukti_pembayaran'] = null;
-            }
+           // store bukti pembayaran to storage
+           if ($request->hasFile('bukti_pembayaran')) {
+            $file = $request->file('bukti_pembayaran');
+            // create file name (format: bukti_pembayaran_<kode_penjualan>_<tanggal>.<ext>)
+            $filename = 'bukti_pembayaran_'.$kode_penjualan.'_'.date('Ymd').'_'.time().'.'.$file->getClientOriginalExtension();
+            $file->storeAs('public/Penjualan_Lain', $filename);
+            $data['bukti_pembayaran'] = $filename;
+        }else{
+            $data['bukti_pembayaran'] = null;
+        }
 
             // *** STORE PROCESS *** //
             // store data to penjualan_lain

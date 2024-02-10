@@ -15,7 +15,7 @@ class Master_Pemasukan extends Model
     ];
 
 
-    public function pemasukan()
+    public function master_pemasukan()
     {
         return $this->hasMany(Pemasukan::class);
     }

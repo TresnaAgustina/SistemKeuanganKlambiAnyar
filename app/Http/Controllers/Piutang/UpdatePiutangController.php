@@ -35,7 +35,6 @@ class UpdatePiutangController extends Controller
             // validate request
            $request->validate([
                 'jumlah_bayar' => 'nullable|numeric',
-                'status' => 'required'
             ]);
 
             if (!empty($request->jumlah_bayar)) {
@@ -64,9 +63,15 @@ class UpdatePiutangController extends Controller
                     'saldo_kas' => $keuangan->saldo_kas + $jumlah
                 ]);
 
+                if ($piutang->id_jual_lain){
+                    $keterangan = 'Pelunasan piutang - ' . $piutang->penjualan_lain->customer->nama_customer;
+                }else{
+                    $keterangan = 'Pelunasan piutang - ' . $piutang->penjualan_jasa_jarit->customer->nama_customer;
+                }
+
                 // store to history
                 History::create([
-                    'keterangan' => 'Pelunasan piutang',
+                    'keterangan' => $keterangan,
                     'tipe' => 'Pemasukan',
                     'jumlah' => $jumlah,
                     // set tanggan to today

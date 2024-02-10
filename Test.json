@@ -1,0 +1,41 @@
+[
+    {
+        "id": 1,
+        "name": "John Doe",
+        "email": "email@email.com",
+        "aktivitas": [
+            {
+                "id": 1,
+                "tanggal": "2020-01-01",
+                "aktivitas": [
+                    {
+                        "id": 1,
+                        "nama": "Mandi",
+                        "waktu": "07:00"
+                    },
+                    {
+                        "id": 2,
+                        "nama": "Sarapan",
+                        "waktu": "08:00"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "tanggal": "2020-01-02",
+                "aktivitas": [
+                    {
+                        "id": 1,
+                        "nama": "Mandi",
+                        "waktu": "07:00"
+                    },
+                    {
+                        "id": 2,
+                        "nama": "Sarapan",
+                        "waktu": "08:00"
+                    }
+                ]
+            }
+        ]
+    }
+]

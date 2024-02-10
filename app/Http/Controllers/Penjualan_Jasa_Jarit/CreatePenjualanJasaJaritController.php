@@ -27,8 +27,6 @@ class CreatePenjualanJasaJaritController extends Controller
             //get all request data
             $data = $request->all();
 
-            ddd($data);
-
             //make validation
             $validate = Validator::make($data, [
                 'id_customer' => 'required|numeric',
@@ -98,7 +96,7 @@ class CreatePenjualanJasaJaritController extends Controller
                 $file = $request->file('bukti_pembayaran');
                 // create file name (format: bukti_pembayaran_<kode_penjualan>_<tanggal>.<ext>)
                 $filename = 'bukti_pembayaran_'.$kode_penjualan.'_'.date('Ymd').'_'.time().'.'.$file->getClientOriginalExtension();
-                $file->storeAs('public/bukti_pembayaran', $filename);
+                $file->storeAs('public/Penjualan_Jasa', $filename);
                 $data['bukti_pembayaran'] = $filename;
             }else{
                 $data['bukti_pembayaran'] = null;

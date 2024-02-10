@@ -44,7 +44,7 @@ class CreatePengeluaranController extends Controller
             $validator = Validator::make($data, [
                 'id_mstr_pengeluaran' => 'required|numeric|exists:master_pengeluaran,id',
                 'tanggal' => 'required|date',
-                'metode_pembayaran' => 'required|enum:cash,transfer|in:cash,credit',
+                'metode_pembayaran' => 'required|in:cash,credit',
                 'total' => 'required|numeric',
                 'keterangan' => 'nullable|string',
                 'bukti' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
@@ -74,22 +74,6 @@ class CreatePengeluaranController extends Controller
                 $data['bukti_pembayaran'] = null;
             }
             
-
-
-            // if ($request->hasFile('bukti')) {
-            //     $image = $request->file('bukti');
-            //     $image_name = time() . '.' . $image->getClientOriginalExtension();
-            //     $image->move(public_path('images'), $image_name);
-            // }else{
-            //     $image_name = null;
-            // }
-
-            // if upload image is fails
-            // if (!$image) {
-            //     return redirect()->back()->with(
-            //         'pesan', 'Failed upload image'
-            //     );
-            // }
 
             // check if total > saldo_kas in keuangan
             $keuangan = Keuangan::first();
@@ -127,23 +111,6 @@ class CreatePengeluaranController extends Controller
                 );
             }
 
-            // return response
-            // return response()->json([
-            //     'status' => 'success',
-            //     'message' => 'Success create pengeluaran',
-            //     'data' => [
-            //         'id' => $pengeluaran->id,
-            //         'id_mstr_pengeluaran' => $pengeluaran->id_mstr_pengeluaran,
-            //         'nama_atribut' => $mstr_pengeluaran->nama_atribut,
-            //         'tanggal' => $pengeluaran->tanggal,
-            //         'metode_pembayaran' => $pengeluaran->metode_pembayaran,
-            //         'subtotal' => $pengeluaran->subtotal,
-            //         'keterangan' => $pengeluaran->keterangan,
-            //         'bukti_pembayaran' => $pengeluaran->bukti_pembayaran,
-            //     ]
-            // ], 200);
-
-            // for monolith app
             return redirect()->back()->with(
                 'success', 'Success create pengeluaran'
             );

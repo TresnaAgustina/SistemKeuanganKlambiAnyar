@@ -20,11 +20,32 @@ class GetAllPiutangController extends Controller
             // get all data from table
 
             $piutang = Piutang::all();
+
+            // get nama customer from penjualan_lain
+            // $piutang = Piutang::join('penjualan_lain', 'piutang.id_jualan_lain', '=', 'penjualan_lain.id')
+            //     ->join('customer', 'penjualan_lain.id_customer', '=', 'customer.id')
+            //     ->select(
+            //         'piutang.id',
+            //         'piutang.id_jualan_lain',
+            //         'penjualan_lain.id_customer',
+            //         'customer.nama as nama_customer',
+            //         'piutang.tanggal',
+            //         'piutang.total',
+            //         'piutang.sisa_piutang',
+            //         'piutang.keterangan',
+            //     )
+            //     ->get();
+
             if($piutang){
                 $totalPiutang = $piutang->sum('sisa_piutang');
             }else{
                 $totalPiutang = 0;
             }
+
+            // return response()->json([
+            //     'status' => 'success',
+            //     'data' => $piutang1
+            // ], 200);
 
             return view('transaksi.piutang.index')->with([
                 'piutang' => $totalPiutang,

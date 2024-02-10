@@ -23,7 +23,7 @@ class GetAllPemasukanController extends Controller
                 ->select(
                     'pemasukan.id',
                     'pemasukan.id_mstr_pemasukan',
-                    'master_pemasukan.nama_atribut',
+                    'master_pemasukan.nama_atribut as nama_pemasukan',
                     'pemasukan.tanggal',
                     'pemasukan.total',
                     'pemasukan.keterangan',
@@ -32,27 +32,17 @@ class GetAllPemasukanController extends Controller
             
             $pemasukan = Master_Pemasukan::all();
 
-
-            // return response
             // return response()->json([
             //     'status' => 'success',
-            //     'message' => 'Successfully get all pemasukan',
-            //     'data' => $data
-            // ], 200);
+            //     'data' => $data,
+            //     'pemasukan' => $pemasukan
+            // ]);
 
-            // for monolith app
             return view('transaksi.pemasukan.index')->with([
                 'data' => $data,
                 'pemasukan' => $pemasukan
             ]);
         } catch (\Exception $e) {
-            // return response()->json([
-            //     'status' => 'error',
-            //     'message' => 'Error: ' . $e->getMessage(),
-            //     'data' => Null
-            // ], 500);
-
-            // for monolith app
             return redirect()->back()->with(
                 'error', 'Error: ' . $e->getMessage()
             );

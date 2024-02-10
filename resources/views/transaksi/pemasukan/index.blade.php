@@ -215,7 +215,7 @@
                 orderable: false,
                 searchable: false
             },{
-                data: 'id_mstr_pemasukan',
+                data: 'nama',
                 name: 'Jenis Pemasukan'
             },{
                 data: 'tgl',

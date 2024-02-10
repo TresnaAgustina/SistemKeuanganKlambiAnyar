@@ -35,6 +35,9 @@ class DataTransaksi extends Controller
         $coba = Pemasukan::orderBy('id', 'asc');
         return DataTables::of($coba)
         ->addIndexColumn()
+        ->addColumn('nama', function($data){
+            return $data->master_pemasukan->nama_atribut;
+         })
         ->addColumn('total', function($data){
             if ($data->total) {
                 return 'Rp. '. number_format($data->total) ?? 0;
@@ -56,9 +59,9 @@ class DataTransaksi extends Controller
         $coba = Pengeluaran::orderBy('id', 'asc');
         return DataTables::of($coba)
         ->addIndexColumn()
-        // ->addColumn('pengeluaran', function($data){
-        //     return $data->master_pengeluaran->nama_atribut;
-        // })
+        ->addColumn('nama', function($data){
+            return $data->master_pengeluaran->nama_atribut;
+         })
         ->addColumn('total', function($data){
             if ($data->subtotal) {
                 return 'Rp. '. number_format($data->subtotal) ?? 0;
@@ -91,6 +94,13 @@ class DataTransaksi extends Controller
         $coba = Piutang::orderBy('id', 'asc');
         return DataTables::of($coba)
         ->addIndexColumn()
+        ->addColumn('nama', function($data){
+            if ($data->id_jual_lain) {
+                return $data->penjualan_lain->customer->nama_customer;
+            } else {
+                return $data->penjualan_jasa_jarit->customer->nama_customer;
+            }
+        })
         ->addColumn('status', function ($data) {
             if ($data->status == 'Belum Lunas') {
                 // return '<span class="label label-success">Aktif</span>';
