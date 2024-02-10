@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('pemasukan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_mstr_pemasukan');
+            $table->enum('metode_pembayaran', ['cash', 'credit']);
             $table->date('tanggal');
             $table->double('total');
             $table->text('keterangan')->nullable();

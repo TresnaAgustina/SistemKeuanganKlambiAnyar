@@ -69,9 +69,9 @@ class CreatePengeluaranController extends Controller
                 // create file name (format: bukti_pembayaran_<kode_penjualan>_<tanggal>.<ext>)
                 $filename = 'pengeluaran'.'_'.date('Ymd').'_'.time().'.'.$file->getClientOriginalExtension();
                 $file->storeAs('public/pengeluaran', $filename);
-                $data['bukti_pembayaran'] = $filename;
+                $data['bukti'] = $filename;
             }else{
-                $data['bukti_pembayaran'] = null;
+                $data['bukti'] = null;
             }
             
 
