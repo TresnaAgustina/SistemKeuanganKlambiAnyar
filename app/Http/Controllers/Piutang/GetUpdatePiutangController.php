@@ -30,11 +30,6 @@ class GetUpdatePiutangController extends Controller
             return view('transaksi.piutang.bayar')->with([
                 'data' => $data,
             ]);
-
-            // // return data
-            // return response()->json([
-            //     'result' => $data
-            // ], 200);
         } catch (\Exception $e) {
             return back()->with(
                 'pesan', 'Error: ' . $e->getMessage()

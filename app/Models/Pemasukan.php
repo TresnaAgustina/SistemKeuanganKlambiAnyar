@@ -14,7 +14,6 @@ class Pemasukan extends Model
     protected $table = 'pemasukan';
     protected $fillable = [
         'id_mstr_pemasukan',
-        'id_keuangan',
         'tanggal',
         'total',
         'keterangan',
@@ -23,11 +22,6 @@ class Pemasukan extends Model
 
     public function master_pemasukan()
     {
-        return $this->belongsToMany(Master_Pemasukan::class, 'id_mstr_pemasukan', 'id');
-    }
-
-    public function keuangan()
-    {
-        return $this->belongsTo(Keuangan::class, 'id_keuangan', 'id');
+        return $this->belongsTo(Master_Pemasukan::class, 'id_mstr_pemasukan', 'id');
     }
 }

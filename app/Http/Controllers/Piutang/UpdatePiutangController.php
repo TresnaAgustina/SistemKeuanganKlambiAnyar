@@ -24,18 +24,12 @@ class UpdatePiutangController extends Controller
 
             // if not found, return error
             if (!$piutang) {
-                // return response()->json([
-                //     'status' => 'error',
-                //     'message' => 'Piutang not found'
-                // ], 404);
-
                 return redirect()->back()->with('pesan', 'Data piutang tidak ditemukan');
             }
 
             // validate request
            $request->validate([
                 'jumlah_bayar' => 'nullable|numeric',
-                'status' => 'required'
             ]);
 
             if (!empty($request->jumlah_bayar)) {
@@ -44,14 +38,14 @@ class UpdatePiutangController extends Controller
                 $jumlah = null;
             }
 
+            // if jumlah bayar > sisa piutang, return error
+            if ($jumlah > $piutang->sisa_piutang) {
+                return redirect()->back()->with('pesan', 'Jumlah bayar melebihi sisa piutang');
+            }
+
             // jika jumlah bayar tidak kosong, maka update sisa piutang, jika kosong maka tidak perlu update sisa piutang
             if ($jumlah) {
                 if ($jumlah > $piutang->sisa_piutang) {
-                    // return response()->json([
-                    //     'status' => 'error',
-                    //     'message' => 'Jumlah bayar melebihi sisa piutang'
-                    // ], 422);
-
                     return redirect()->back()->with('pesan', 'Jumlah bayar melebihi sisa piutang');
                 }
 
@@ -64,9 +58,15 @@ class UpdatePiutangController extends Controller
                     'saldo_kas' => $keuangan->saldo_kas + $jumlah
                 ]);
 
+                if ($piutang->id_jual_lain){
+                    $keterangan = 'Pelunasan piutang - ' . $piutang->penjualan_lain->customer->nama_customer;
+                }else{
+                    $keterangan = 'Pelunasan piutang - ' . $piutang->penjualan_jasa_jarit->customer->nama_customer;
+                }
+
                 // store to history
                 History::create([
-                    'keterangan' => 'Pelunasan piutang',
+                    'keterangan' => $keterangan,
                     'tipe' => 'Pemasukan',
                     'jumlah' => $jumlah,
                     // set tanggan to today
@@ -95,20 +95,8 @@ class UpdatePiutangController extends Controller
 
             // if fails
             if (!$piutang) {
-                // return response()->json([
-                //     'status' => 'error',
-                //     'message' => 'Gagal update piutang'
-                // ], 500);
-
                 return redirect()->back()->with('pesan', 'Gagal update piutang');
             }
-
-            // return success response
-            // return response()->json([
-            //     'status' => 'success',
-            //     'message' => 'Berhasil update piutang',
-            //     'data' => $piutang
-            // ]);
 
             return redirect()->back()->with('pesan', 'Berhasil update piutang');
         } catch (\Exception $e) {

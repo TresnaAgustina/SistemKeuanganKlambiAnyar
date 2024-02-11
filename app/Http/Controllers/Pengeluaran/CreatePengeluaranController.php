@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Pengeluaran;
 
+use App\Models\Hutang;
+use App\Models\History;
 use App\Models\Keuangan;
 use App\Models\Pengeluaran;
 use Illuminate\Http\Request;
@@ -44,7 +46,7 @@ class CreatePengeluaranController extends Controller
             $validator = Validator::make($data, [
                 'id_mstr_pengeluaran' => 'required|numeric|exists:master_pengeluaran,id',
                 'tanggal' => 'required|date',
-                'metode_pembayaran' => 'required|enum:cash,transfer|in:cash,credit',
+                'metode_pembayaran' => 'required|in:cash,credit',
                 'total' => 'required|numeric',
                 'keterangan' => 'nullable|string',
                 'bukti' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
@@ -63,18 +65,17 @@ class CreatePengeluaranController extends Controller
                 );
             }
 
-            // upload image
-            $image = $request->file('bukti');
-            // make image name with timestamp format with detail time like year, month, day, hour, minute, and second
-            $image_name = 'pengeluaran_'. time() . '_' . date('YmdHis') . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('storage/pengeluaran'), $image_name);
-
-            // if upload image is fails
-            if (!$image) {
-                return redirect()->back()->with(
-                    'pesan', 'Failed upload image'
-                );
+            // if request has file bukti, simpan ke public storage - pengeluaran
+            if ($request->hasFile('bukti')) {
+                $file = $request->file('bukti');
+                // create file name (format: bukti_pembayaran_<kode_penjualan>_<tanggal>.<ext>)
+                $filename = 'pengeluaran'.'_'.date('Ymd').'_'.time().'.'.$file->getClientOriginalExtension();
+                $file->storeAs('public/pengeluaran', $filename);
+                $data['bukti'] = $filename;
+            }else{
+                $data['bukti'] = null;
             }
+            
 
             // check if total > saldo_kas in keuangan
             $keuangan = Keuangan::first();
@@ -91,7 +92,7 @@ class CreatePengeluaranController extends Controller
                 'metode_pembayaran' => $data['metode_pembayaran'],
                 'subtotal' =>$total,
                 'keterangan' => $data['keterangan'],
-                'bukti_pembayaran' => $image_name
+                'bukti_pembayaran' => $data['bukti']
             ]);
 
             // update saldo_kas in keuangan
@@ -105,6 +106,26 @@ class CreatePengeluaranController extends Controller
                 ]);
             }
 
+            // store to history
+            $history = \App\Models\History::create([
+                'keterangan' => $pengeluaran->master_pengeluaran->nama_atritut,
+                'tipe' => 'pengeluaran',
+                'jumlah' => $pengeluaran->subtotal,
+                'tanggal' => date('Y-m-d'),
+            ]);
+
+            // if metode_pembayaran is 'credit' then store data to Hutang
+            if ($pengeluaran->metode_pembayaran == 'credit') {
+                $hutang = Hutang::create([
+                    'id_pengeluaran' => $pengeluaran->id,
+                    'jumlah_hutang' => $pengeluaran->subtotal,
+                    'tgl_jatuh_tempo' => $pengeluaran->tanggal,
+                    'jumlah_bayar' => null,
+                    'sisa_hutang' => $pengeluaran->subtotal,
+                    'status' => 'Belum Lunas',
+                ]);
+            }
+
             // if create pengeluaran is fails
             if (!$pengeluaran) {
                 return redirect()->back()->with(
@@ -112,23 +133,6 @@ class CreatePengeluaranController extends Controller
                 );
             }
 
-            // return response
-            // return response()->json([
-            //     'status' => 'success',
-            //     'message' => 'Success create pengeluaran',
-            //     'data' => [
-            //         'id' => $pengeluaran->id,
-            //         'id_mstr_pengeluaran' => $pengeluaran->id_mstr_pengeluaran,
-            //         'nama_atribut' => $mstr_pengeluaran->nama_atribut,
-            //         'tanggal' => $pengeluaran->tanggal,
-            //         'metode_pembayaran' => $pengeluaran->metode_pembayaran,
-            //         'subtotal' => $pengeluaran->subtotal,
-            //         'keterangan' => $pengeluaran->keterangan,
-            //         'bukti_pembayaran' => $pengeluaran->bukti_pembayaran,
-            //     ]
-            // ], 200);
-
-            // for monolith app
             return redirect()->back()->with(
                 'success', 'Success create pengeluaran'
             );

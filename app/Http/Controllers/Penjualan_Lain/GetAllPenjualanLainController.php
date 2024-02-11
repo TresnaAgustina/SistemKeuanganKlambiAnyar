@@ -26,6 +26,12 @@ class GetAllPenjualanLainController extends Controller
              $customer = Master_Customer::all();
             $barang = Master_Barang::all();
 
+            // // return response
+            // return response()->json([
+            //     'status' => 'success',
+            //     'data' => $penjualan_lain
+            // ], 200);
+
             return view('penjualan.penjualan-lain.index')->with([
                 'data' => $data,
                 'test' => $penjualan_lain,
@@ -33,13 +39,6 @@ class GetAllPenjualanLainController extends Controller
                 'barang' => $barang,
 
             ]);
-
-            // return response
-            // return response()->json([
-            //     'status' => 'success',
-            //     'data' => $penjualan_lain
-            // ], 200);
-            
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',

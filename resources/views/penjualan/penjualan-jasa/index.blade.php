@@ -24,7 +24,7 @@
         
         <div class="card card-success card-outline">
           
-          <form action="/penjualan-jasa/create" method="POST">
+          <form action="/penjualan-jasa/create" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
               <div class="form-group">

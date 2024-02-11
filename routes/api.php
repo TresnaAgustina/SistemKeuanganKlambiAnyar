@@ -12,13 +12,11 @@ use App\Http\Controllers\Keuangan\UpdateKeuanganController;
 use App\Http\Controllers\Pemasukan\CreatePemasukanController;
 use App\Http\Controllers\Pemasukan\DeletePemasukanController;
 use App\Http\Controllers\Pemasukan\GetAllPemasukanController;
-use App\Http\Controllers\Pemasukan\SearchPemasukanController;
 use App\Http\Controllers\Pemasukan\UpdatePemasukanController;
 use App\Http\Controllers\Pemasukan\GetDetailPemasukanController;
 use App\Http\Controllers\Pengeluaran\CreatePengeluaranController;
 use App\Http\Controllers\Pengeluaran\DeletePengeluaranController;
 use App\Http\Controllers\Pengeluaran\GetAllPengeluaranController;
-use App\Http\Controllers\Pengeluaran\SearchPengeluaranController;
 use App\Http\Controllers\Pengeluaran\UpdatePengeluaranController;
 use App\Http\Controllers\Master\Barang\CreateMasterBarangController;
 use App\Http\Controllers\Master\Barang\DeleteMasterBarangController;
@@ -32,7 +30,6 @@ use App\Http\Controllers\Master\Jaritan\UpdateMasterJaritanController;
 use App\Http\Controllers\Penjualan_Lain\CreatePenjualanLainController;
 use App\Http\Controllers\Penjualan_Lain\DeletePenjualanLainController;
 use App\Http\Controllers\Penjualan_Lain\GetAllPenjualanLainController;
-use App\Http\Controllers\Penjualan_Lain\UpdatePenjualanLainController;
 use App\Http\Controllers\Master\Customer\CreateMasterCustomerController;
 use App\Http\Controllers\Master\Customer\DeleteMasterCustomerController;
 use App\Http\Controllers\Master\Customer\GetAllMasterCustomerController;
@@ -153,8 +150,6 @@ Route::prefix('/pemasukan')->group(function () {
     Route::get('/all', GetAllPemasukanController::class, '__invoke')->name('pemasukan.all');
     // --get by id
     Route::get('/detail/{id}', GetDetailPemasukanController::class)->name('pemasukan.detail');
-    // --search
-    Route::post('/search', SearchPemasukanController::class)->name('pemasukan.search');
     // --create
     Route::post('/create', CreatePemasukanController::class)->name('pemasukan.create');
     // --update
@@ -182,8 +177,6 @@ Route::prefix('/pengeluaran')->group(function () {
     Route::get('/all', GetAllPengeluaranController::class)->name('pengeluaran.all');
     // --get by id
     Route::get('/detail/{id}', GetDetailPengeluaranController::class)->name('pengeluaran.detail');
-    // --search
-    Route::post('/search', SearchPengeluaranController::class)->name('pengeluaran.search');
     // --create
     Route::post('/create', CreatePengeluaranController::class)->name('pengeluaran.create');
     // --update

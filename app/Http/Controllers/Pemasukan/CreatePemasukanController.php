@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Pemasukan;
 
-use App\Http\Controllers\Controller;
-use App\Models\Master_Pemasukan;
+use App\Models\History;
+use App\Models\Keuangan;
 use App\Models\Pemasukan;
 use Illuminate\Http\Request;
+use App\Models\Master_Pemasukan;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class CreatePemasukanController extends Controller
 {
@@ -18,43 +21,34 @@ class CreatePemasukanController extends Controller
     public function __invoke(Request $request)
     {
         try {
-            // get all request
+            //get all request data
             $data = $request->all();
 
-            // check if request data is empty
+            //if request data is empty
             if (!$data) {
-                // return response()->json([
-                //     'status' => 'error',
-                //     'message' => 'Request data is empty',
-                // ], 400);
-
-                // for monolith app
                 return redirect()->back()->with(
                     'pesan', 'Request data is empty'
                 );
             }
 
-            // get data master_pemasukan by id_mstr_pemasukan
-            $data_mstr = Master_Pemasukan::find($data['id_mstr_pemasukan']);
+            //get data master_pemasukan by id_mstr_pemasukan
+            $mstr_pemasukan = Master_Pemasukan::find($data['id_mstr_pemasukan']);
 
-            // check if data_mstr is null
-            if ($data_mstr == null) {
-                // return response()->json([
-                //     'message' => 'Data pemasukan tidak ditemukan'
-                // ], 404);
-
-                // for monolith app
+            //if data master_pemasukan is null
+            if (!$mstr_pemasukan) {
                 return redirect()->back()->with(
-                    'pesan', 'Data pemasukan tidak ditemukan'
+                    'pesan', 'Data master pemasukan not found'
                 );
             }
 
-            // validation
-            $validate = $request->validate([
-                'id_mstr_pemasukan' => 'required|numeric',
+            // validate request data
+            $validator = Validator::make($data, [
+                'id_mstr_pemasukan' => 'required|numeric|exists:master_pemasukan,id',
                 'tanggal' => 'required|date',
+                'metode_pembayaran' => 'required|in:cash,credit',
                 'total' => 'required|numeric',
-                'keterangan' => 'nullable|string'
+                'keterangan' => 'nullable|string',
+                'bukti_pembayaran' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
             ]);
 
             if (!empty($data['total'])) {
@@ -63,68 +57,66 @@ class CreatePemasukanController extends Controller
                 $total = null;
             }
 
-            // if validation is fails
-            if (!$validate) {
-                // return response()->json([
-                //     'status' => 'error',
-                //     'message' => $request->errors(),
-                // ], 400);
-
-                // for monolith app
+            //if validation is fails
+            if ($validator->fails()) {
                 return redirect()->back()->with(
-                    'pesan', 'Failed validate data'
+                    'pesan', $validator->errors()->first()
                 );
             }
 
-            // create pemasukan
+            //if request has file bukti_pembayaran
+            if ($request->hasFile('bukti_pembayaran')) {
+                $file = $request->file('bukti_pembayaran');
+                // create file name (format: bukti_pembayaran_<kode_penjualan>_<tanggal>.<ext>)
+                $filename = 'pemasukan'.'_'.date('Ymd').'_'.time().'.'.$file->getClientOriginalExtension();
+                $file->storeAs('public/pemasukan', $filename);
+                $data['bukti_pembayaran'] = $filename;
+            }else{
+                $data['bukti_pembayaran'] = null;
+            }
+
+            //create pemasukan
             $pemasukan = Pemasukan::create([
                 'id_mstr_pemasukan' => $data['id_mstr_pemasukan'],
-                'id_keuangan' => 1,
                 'tanggal' => $data['tanggal'],
+                'metode_pembayaran' => $data['metode_pembayaran'],
                 'total' => $total,
                 'keterangan' => $data['keterangan'],
+                'bukti_pembayaran' => $data['bukti_pembayaran']
+            ]);            
+
+            // update saldo_kas in keuangan
+            $keuangan = Keuangan::first();
+            $keuangan->update([
+                'saldo_kas' => $keuangan->saldo_kas + $total
             ]);
 
-            // if create pemasukan is fails
-            if (!$pemasukan) {
-                // return response()->json([
-                //     'status' => 'error',
-                //     'message' => $pemasukan->errors(),
-                // ], 400);
+            // store to history
+            History::create([
+                'keterangan' => $pemasukan->master_pemasukan->nama_atribut,
+                'tipe' => 'Pemasukan',
+                'jumlah' => $total,
+                // set tanggan to today
+                'tanggal' => date('Y-m-d')
+            ]);
 
-                // for monolith app
+
+            // if create fails
+            if (!$pemasukan) {
                 return redirect()->back()->with(
-                    'pesan', $pemasukan->errors()
+                    'pesan', 'Failed create pemasukan'
                 );
             }
 
-            // return json response
-            // return response()->json([
-            //     'status' => 'success',
-            //     'message' => 'Success: Success to create pemasukan',
-            //     'data' => [
-            //             'id' => $pemasukan->id,
-            //             'id_mstr_pemasukan' => $pemasukan->id_mstr_pemasukan,
-            //             'nama_atribut' => $data_mstr->nama_atribut,
-            //             'tanggal' => $pemasukan->tanggal,
-            //             'total' => $pemasukan->total,
-            //             'keterangan' => $pemasukan->keterangan,
-            //         ],
-            // ], 200);
+            // redirect to pemasukan index
 
-            // for monolith app
             return redirect()->back()->with(
-                'success', 'Success create data'
+                'success', 'Success create pemasukan'
             );
+            
         } catch (\Exception $e) {
-            // return response()->json([
-            //     'status' => 'error',
-            //     'message' => 'Error: '.$e->getMessage(),
-            // ], 400);
-
-            // for monolith app
             return redirect()->back()->with(
-                'error', 'Error:' . $e->getMessage()
+                'pesan', $e->getMessage()
             );
         }
     }

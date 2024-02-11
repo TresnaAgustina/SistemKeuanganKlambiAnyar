@@ -33,7 +33,7 @@ class CreatePenjualanLainController extends Controller
                 'tgl_jatuh_tempo' => 'nullable|date',
                 'jmlh_dibayar' => 'nullable|numeric',
                 'keterangan' => 'nullable|string',
-                'bukti_pembayaran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'bukti_pembayaran' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
                 'barang.*.id_mstr_barang' => 'required|numeric',
                 'barang.*.jumlah_barang' => 'required|numeric',
             ]);
@@ -53,11 +53,7 @@ class CreatePenjualanLainController extends Controller
 
             // if validation fails
             if ($validate->fails()){
-                // return response()->json([
-                //     'status' => 'error',
-                //     'message' => $validate->errors()
-                // ], 422);
-                return redirect()->back()->with('pesan', 'Data gagal divalidasi')->withErrors($validate);
+                return redirect()->back()->with('pesan', 'Error: '.$validate->errors());
             }
 
             // *** CONFIGURATION *** //
@@ -83,33 +79,25 @@ class CreatePenjualanLainController extends Controller
 
             // chek if metode_pembayaran == 'cash' && jmlh_dibayar < total_harga, show alert
             if ($data['metode_pembayaran'] == 'cash' && $cash < array_sum(array_column($data['barang'], 'subtotal'))) {
-                // return response()->json([
-                //     'status' => 'error',
-                //     'message' => 'Jumlah dibayar tidak mencukupi'
-                // ], 422);
                 return redirect()->back()->with('pesan', 'Jumlah dibayar tidak mencukupi');
             }
             if($data['metode_pembayaran'] == 'credit' && $credit > array_sum(array_column($data['barang'], 'subtotal'))){
-                // return response()->json([
-                //     'status' => 'error',
-                //     'message' => 'Jumlah Bayar Awal Melebihi Total Harga'
-                // ], 422);
                 return redirect()->back()->with('pesan', 'Jumlah bayar awal melebihi total harga');
             }
 
             // generate kode penjualan (format: PL-<rand(4 anngka)>-<tanggal>)
             $kode_penjualan = 'PL-'.rand(1000, 9999).'-'.date('Ymd');
 
-            // store bukti pembayaran to storage
-            if ($request->hasFile('bukti_pembayaran')) {
-                $file = $request->file('bukti_pembayaran');
-                // create file name (format: bukti_pembayaran_<kode_penjualan>_<tanggal>.<ext>)
-                $filename = 'bukti_pembayaran_'.$kode_penjualan.'_'.date('Ymd').'_'.time().'.'.$file->getClientOriginalExtension();
-                $file->storeAs('public/bukti_pembayaran', $filename);
-                $data['bukti_pembayaran'] = $filename;
-            }else{
-                $data['bukti_pembayaran'] = null;
-            }
+           // store bukti pembayaran to storage
+           if ($request->hasFile('bukti_pembayaran')) {
+            $file = $request->file('bukti_pembayaran');
+            // create file name (format: bukti_pembayaran_<kode_penjualan>_<tanggal>.<ext>)
+            $filename = 'bukti_pembayaran_'.$kode_penjualan.'_'.date('Ymd').'_'.time().'.'.$file->getClientOriginalExtension();
+            $file->storeAs('public/Penjualan_Lain', $filename);
+            $data['bukti_pembayaran'] = $filename;
+        }else{
+            $data['bukti_pembayaran'] = null;
+        }
 
             // *** STORE PROCESS *** //
             // store data to penjualan_lain
@@ -166,10 +154,6 @@ class CreatePenjualanLainController extends Controller
 
                 // if fails
                 if (!$piutang) {
-                    // return response()->json([
-                    //     'status' => 'error',
-                    //     'message' => 'Gagal membuat piutang'
-                    // ], 500);
                     return redirect()->back()->with('pesan', 'Gagal membuat piutang');
                 }
             }
@@ -185,27 +169,12 @@ class CreatePenjualanLainController extends Controller
 
             // check if fails
             if (!$penjualan_lain || !$penjualan_lain->cart_penjualan_lain()->exists()) {
-                // return response()->json([
-                //     'status' => 'error',
-                //     'message' => 'Gagal membuat penjualan'
-                // ], 500);
                 return redirect()->back()->with('pesan', 'Gagal membuat penjualan');
             }
 
-            // return success response
-            // return response()->json([
-            //     'status' => 'success',
-            //     'message' => 'Berhasil membuat penjualan',
-            //     'data' => $penjualan_lain,
-            // ], 200);
             return redirect()->back()->with('success', 'Berhasil membuat penjualan');
 
         } catch (\Exception $e) {
-            // return response()->json([
-            //     'status' => 'error',
-            //     'message' => $e->getMessage()
-            // ], 500);
-
             return redirect()->back()->with('pesan', $e->getMessage());
         }
     }
