@@ -42,6 +42,9 @@ class DataTransaksi extends Controller
                 return 'Rp. ' . 0;
             }
         })
+        ->addColumn('nama', function($data){
+           return $data->master_pemasukan->nama_pemasukan;
+        })
         ->addColumn('tgl', function($data){
             return  date('d-m-Y', strtotime($data->tanggal));
         })
@@ -99,6 +102,7 @@ class DataTransaksi extends Controller
                 return '<span class="badge bg-success" style="font-size: 12px;">Lunas</span>';
             }
         }) 
+        
         ->addColumn('sisa', function($data){
             if ($data->sisa_piutang) {
                 return 'Rp. '. number_format($data->sisa_piutang) ?? 0;

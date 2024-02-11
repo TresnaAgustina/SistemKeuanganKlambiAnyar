@@ -65,6 +65,7 @@ use App\Http\Controllers\Master\Pengeluaran\UpdateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\GetUpdateMasterPengeluaranController;
 use App\Http\Controllers\Penjualan_Jasa_Jarit\CreatePenjualanJasaJaritController;
 use App\Http\Controllers\Penjualan_Jasa_Jarit\GetAllPenjualanJasaJaritController;
+use App\Http\Controllers\Penjualan_Jasa_Jarit\GetDetailPenjualanJasaJaritController;
 use App\Http\Controllers\Penjualan_Jasa_Jarit\GetUpdatePenjualanJasaJaritController;
 use App\Http\Controllers\Penjualan_Lain\CreatePenjualanLainController;
 use App\Http\Controllers\Penjualan_Lain\GetAllPenjualanLainController;
@@ -272,6 +273,7 @@ Route::prefix('/penjualan-jasa')->group(function(){
     Route::get('/all', GetAllPenjualanJasaJaritController::class)->name('penjualanJasa.all');
     Route::post('/create', CreatePenjualanJasaJaritController::class)->name('penjualanJasa.create');
     Route::get('/update/{id}', GetUpdatePenjualanJasaJaritController::class)->name('penjualanJasa.update.index');
+    Route::get('/detail/{kode_penjualan}', GetDetailPenjualanJasaJaritController::class)->name('penjualanJasa.update.index');
 
 });
 Route::prefix('/piutang')->group(function(){
