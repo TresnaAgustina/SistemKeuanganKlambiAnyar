@@ -81,7 +81,7 @@ class UpdateHutangController extends Controller
             } 
 
             //return hutang
-            return redirect()->back()->with('success', 'Hutang berhasil diupdate');
+            return redirect()->to('hutang/all')->with('success', 'Hutang berhasil diupdate');
         } catch (\Exception $e) {
             return redirect()->back()->with('pesan', 'Error: ' . $e->getMessage());
         }

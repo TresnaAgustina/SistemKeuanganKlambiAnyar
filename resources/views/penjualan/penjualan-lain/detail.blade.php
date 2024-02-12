@@ -8,7 +8,7 @@
         
         <div class="card card-success card-outline mt-4">
           <div class="card-header">
-            <strong><h5 >Detail Penjualan Jasa Jarit  </h5></strong>
+            <strong><h5 >Detail Penjualan Lainnya  </h5></strong>
           </div>
         
           <div class="card-header" style=" border-bottom: none;">
@@ -30,11 +30,11 @@
           </div>
 
           <div class="card-body">
-            <h4>Daftar Penjualan Jasa Jarit :</h4>
+            <h4>Daftar Penjualan Lainnya :</h4>
               <table class="table table-bordered ">
                   <thead>
                       <tr>
-                          <th>Jenis Jaritan</th>
+                          <th>Jenis Barang</th>
                           <th>Jumlah Barang</th>
                           <th>Harga Satuan</th>
                           <th>Subtotal</th>
@@ -43,7 +43,7 @@
                   <tbody>
                       @foreach ($penjualan as $item)
                           <tr>
-                              <td>{{ $item->master_jaritan->jenis_jaritan }}</td>
+                              <td>{{ $item->master_barang->nama_barang }}</td>
                               <td>{{ $item->jumlah_barang }}</td>
                               <td>Rp.{{ number_format($item->harga_satuan) }}</td>
                               <td>Rp.{{ number_format($item->subtotal) }}</td>
@@ -55,7 +55,7 @@
           </div>
 
           <div class="card-footer float-right">
-            <a href="/penjualan-jasa/all" class="btn btn-primary btn-sm float-right" > <i class="fas fa-chevron-left"></i> Kembali </a>
+            <a href="/penjualan-lain/all" class="btn btn-primary btn-sm float-right" > <i class="fas fa-chevron-left"></i> Kembali </a>
           </div>
           
           </div>

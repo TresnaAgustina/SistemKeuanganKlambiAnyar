@@ -79,7 +79,7 @@ class UpdatePiutangController extends Controller
             if($sisa_piutang == 0){
                 $status = 'Lunas';
             }else{
-                $status = $request->status;
+                $status = 'Belum Lunas';
             }
 
             // update data piutang
@@ -98,12 +98,12 @@ class UpdatePiutangController extends Controller
                 return redirect()->back()->with('pesan', 'Gagal update piutang');
             }
 
-            return redirect()->back()->with('pesan', 'Berhasil update piutang');
+            return redirect()->to('/piutang/all')->with('success', 'Berhasil update piutang');
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 500);
+            // return response()->json([
+            //     'status' => 'error',
+            //     'message' => $e->getMessage()
+            // ], 500);
 
             return redirect()->back()->with('pesan', $e->getMessage());
         }

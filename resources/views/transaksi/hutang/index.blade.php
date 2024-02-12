@@ -27,7 +27,7 @@
       
             <div class="info-box-content">
               <span class="info-box-text">HUTANG</span>
-              <span class="info-box-number">Rp.  </span>
+              <span class="info-box-number">Rp. {{ number_format($hutang) }}  </span>
               {{-- <span class="info-box-number">Rp. {{ number_format($bank) }} </span> --}}
             </div>
             <!-- /.info-box-content -->
@@ -47,14 +47,14 @@
               <strong><h4 >{{-- <i class="fas fa-edit"></i> --}}Data Hutang  </h4></strong>
             </div>
 
-            <div class="card-body">
+            {{-- <div class="card-body">
               
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#md-isiBank">
                 <i class="fas fa-plus"></i>
                 Tambah
               </button>
              
-            </div>
+            </div> --}}
 
             <div class="card-body">
                 <table id="histori" class="table table-bordered table-striped">
@@ -66,6 +66,7 @@
                     <th>Jatuh Tempo</th>
                     <th>Sisa</th>
                     <th>Status</th>
+                    <th>Aksi</th>
                   </tr>
                   </thead>
                 </table>
@@ -80,7 +81,7 @@
     </div><!-- /.container-fluid -->
 
     
-    <div class="modal fade" id="md-isiBank">
+    {{-- <div class="modal fade" id="md-isiBank">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
@@ -91,14 +92,23 @@
           </div>
 
           <div class="modal-body">
-            <form action="{{ url('/keuangan/saldo-bank') }}" method="POST">
+            <form action="{{ url('/hutang/create') }}" method="POST">
               @csrf
+              <div class="form-group">
+                <label>Jenis Pengeluaran</label>
+                <select class="form-control" name='id_mstr_pengeluaran' id="jenis">
+                  <option value="">~ Pilih ~</option>
+                  @foreach ($pengeluaran as $item)
+                    @if (old('id_mstr_pengeluaran') == $item->id)
+                      <option value="{{ $item->id }}" selected>{{ $item->nama_atribut }}</option>
+                    @else
+                     <option value="{{ $item->id }}">{{ $item->nama_atribut }}</option>
+                    @endif
+                  @endforeach
+                </select>
+              </div>        
                 <div class="form-group">
-                    <label for="tipe">Tipe</label>
-                    <input value="Isi Saldo Bank" name="tipe" type="text" class="form-control" id="tipe" required>
-                </div>      
-                <div class="form-group">
-                  <label for="jumlah">Jumlah</label>
+                  <label for="jumlah">Jumlah Hutang</label>
                     <div class="input-group mb-3">
                       <div class="input-group-prepend">
                         <span class="input-group-text">Rp. </span>
@@ -107,15 +117,27 @@
                     </div>
                 </div>   
                 <div class="form-group">
-                  <label for="tanggal">Tanggal</label>
+                  <label for="jumlah">sisa Hutang</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Rp. </span>
+                      </div>
+                      <input name="sisa" type="text" class="form-control" id="jmlBank" required>
+                    </div>
+                </div>   
+                <div class="form-group">
+                  <label for="tanggal">Tanggal Jatuh Tempo</label>
                   <input name="tanggal" type="date" class="form-control" id="tglBank" required>
                 </div> 
-              
+                                         
                 <div class="form-group">
-                  <label>Keterangan</label>
-                  <textarea name="keterangan" id="ket" class="form-control" rows="4" placeholder="keterangan"></textarea>
+                  <label>Status</label>
+                  <select name="status" id="status" class="form-control">
+                    <option>Pilih</option>
+                    <option value="Lunas">Lunas</option>
+                    <option value="Belum Lunas">Belum Lunas</option>
+                  </select>
                 </div>
-                
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan</button>
@@ -126,7 +148,7 @@
         <!-- /.modal-content -->
       </div>
       <!-- /.modal-dialog -->
-    </div>
+    </div> --}}
    
     <!-- /.modal -->
 
@@ -222,20 +244,23 @@
                 orderable: false,
                 searchable: false
             },{
-                data: 'id_pengeluaran',
+                data: 'nama',
                 name: 'Jenis Pengeluaran'
             },{
-                data: 'jumlah_hutang',
+                data: 'jumlah',
                 name: 'Jumlah Hutang'
             },{
                 data: 'tgl_jatuh_tempo',
                 name: 'Jatuh Tempo'
             },{
-                data: 'sisa_hutang',
+                data: 'sisa',
                 name: 'Sisa'
             },{
                 data: 'status',
                 name: 'Status'
+            },{
+                data: 'aksi',
+                name: 'Aksi'
             }]
         });
     });
