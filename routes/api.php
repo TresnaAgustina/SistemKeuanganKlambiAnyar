@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Aktivitas\CreateActivityController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
@@ -63,6 +64,8 @@ use App\Http\Controllers\Penjualan_Jasa_Jarit\GetAllPenjualanJasaJaritController
 */
 
 // === *** TESTING BACKEND *** === //
+
+Route::post('/activity/create', CreateActivityController::class)->name('activity.create');
 
 // *** Auth Routes *** //
 Route::prefix('/auth')->group(function () {

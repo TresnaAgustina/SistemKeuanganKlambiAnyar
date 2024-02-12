@@ -11,9 +11,9 @@ class DashboardController extends Controller
 {
     public function index (){
         // get total money spend from Pengeluaran Table
-        $total_spend = History::where('tipe', 'pengeluaran');
+        // $total_spend = History::where('tipe', 'pengeluaran');
         // get total money income from Pemasukan Table
-        $total_income = History::where('tipe', 'pemasukan');
+        // $total_income = History::where('tipe', 'pemasukan');
         // return dashboard
         return view('dashboard.index');
     }

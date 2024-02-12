@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\Pegawai_Rumahan;
+use App\Models\ActivityDetail;
 use App\Models\Master_Jaritan;
+use App\Models\Pegawai_Rumahan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -15,11 +16,7 @@ class Pgwr_Activity extends Model
     protected $fillable = [
         'nama',
         'id_pgw_rumahan',
-        'id_mstr_jahitan',
-        'tanggal',
-        'jumlah_jaritan',
-        'total_jaritan',
-        'total_bayaran',
+        'gaji_bulanan',
     ];
 
     public function pegawai_rumahan()
@@ -27,8 +24,8 @@ class Pgwr_Activity extends Model
         return $this->belongsTo(Pegawai_Rumahan::class, 'id_pgw_rumahan', 'id');
     }
 
-    public function master_jaritan()
+    public function activity_details()
     {
-        return $this->belongsToMany(Master_Jaritan::class, 'id_mstr_jahitan', 'id');
+        return $this->hasMany(ActivityDetail::class, 'id_pgwr_activity', 'id');
     }
 }

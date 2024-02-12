@@ -222,7 +222,7 @@
                 orderable: false,
                 searchable: false
             },{
-                data: 'id_pengeluaran',
+                data: 'nama',
                 name: 'Jenis Pengeluaran'
             },{
                 data: 'jumlah_hutang',

@@ -86,6 +86,9 @@ class DataTransaksi extends Controller
         $coba = Hutang::orderBy('id', 'asc');
         return DataTables::of($coba)
         ->addIndexColumn()
+        ->addColumn('nama', function($data){
+            return $data->pengeluaran->master_pengeluaran->nama_atribut;
+        })
         ->addColumn('aksi', function($data){
             return view('Master.barang.tombol')->with('data', $data);
         })

@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pgwr_activities', function (Blueprint $table) {
+        Schema::create('activity_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_pgw_rumahan');
-            $table->double('gaji_bulanan');
+            $table->unsignedBigInteger('id_pgwr_activity');
+            $table->date('tanggal');
+            $table->double('gaji_harian');
 
-            $table->foreign('id_pgw_rumahan')->references('id')->on('pegawai_rumahan')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_pgwr_activity')->references('id')->on('pgwr_activities')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pgwr_activities');
+        Schema::dropIfExists('activity_details');
     }
 };

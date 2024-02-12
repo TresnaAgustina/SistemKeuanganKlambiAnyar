@@ -1,41 +1,53 @@
 [
     {
         "id": 1,
-        "name": "John Doe",
-        "email": "email@email.com",
+        "id_pgwr_rumahan": 1,
         "aktivitas": [
             {
                 "id": 1,
+                "id_pgwr_activity": 1,
                 "tanggal": "2020-01-01",
-                "aktivitas": [
+                "detail": [
                     {
                         "id": 1,
-                        "nama": "Mandi",
-                        "waktu": "07:00"
+                        "id_detail_activity": 1,
+                        "id_mstr_jaritan": 1,
+                        "jumlah": 7,
+                        "total_bayaran": 100000
                     },
                     {
                         "id": 2,
-                        "nama": "Sarapan",
-                        "waktu": "08:00"
+                        "id_detail_activity": 1,
+                        "id_mstr_jaritan": 2,
+                        "jumlah": 20,
+                        "total_bayaran": 200000
                     }
-                ]
+                ],
+                "total_bayaran_harian": 300000
             },
             {
                 "id": 2,
+                "id_pgwr_activity": 1,
                 "tanggal": "2020-01-02",
-                "aktivitas": [
+                "detail": [
                     {
-                        "id": 1,
-                        "nama": "Mandi",
-                        "waktu": "07:00"
+                        "id": 3,
+                        "id_detail_activity": 2,
+                        "id_mstr_jaritan": 1,
+                        "jumlah": 7,
+                        "total_bayaran": 100000
                     },
                     {
-                        "id": 2,
-                        "nama": "Sarapan",
-                        "waktu": "08:00"
+                        "id": 4,
+                        "id_detail_activity": 2,
+                        "id_mstr_jaritan": 2,
+                        "jumlah": 20,
+                        "total_bayaran": 200000
                     }
-                ]
+                ],
+                "total_bayaran_harian": 300000
             }
-        ]
+        ],
+        "total_bayaran_bulanan": 600000
     }
 ]
