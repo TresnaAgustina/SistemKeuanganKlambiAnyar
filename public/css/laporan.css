@@ -1,0 +1,62 @@
+
+    .header {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .logo {
+        width: 85px; /* Lebar logo */
+        float: left; /* Menggunakan float untuk meletakkan logo di sebelah kiri */
+    }
+
+    .judul {
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 0;
+        /* Margin auto akan membuat judul tetap rata tengah */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .subjudul {
+        font-size: 15px;
+    }
+
+    .hp {
+        margin-top: 5px;
+        font-size: 15px;
+    }
+
+    /* Style untuk tabel neraca */
+    .tabel-neraca {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .tabel-neraca th {
+        border: 1px solid #053b5f;
+        padding: 8px;
+        text-align: center;
+        font-size: 14px;
+
+    }
+
+    .tabel-neraca td{
+        border: 1px solid black;
+        padding: 8px;
+        text-align: center;
+        font-size: 14px;
+
+    }
+
+    .tabel-neraca th {
+        background-color: #053b5f;
+        color: #fff;
+    }
+    .garis{
+        margin-top: 10px;
+        border-top: 3px solid black;
+        height: 2px;
+        border-bottom: 1px solid black;
+    }
+   

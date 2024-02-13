@@ -113,7 +113,7 @@ Route::prefix('/dataTable')->group(function () {
     Route::get('/penjualan-jasa', [TablePenjualanController::class, 'penjualanJasa'])->name('dataTable.penjualan-jasa');
     Route::get('/penjualan-lain', [TablePenjualanController::class, 'penjualanLain'])->name('dataTable.penjualan-lain');
     Route::get('/PegawaiAktivitas', [TableAktivitasController::class, 'DataPegawai'])->name('dataTable.DataPegawaiAktivitas');
-    Route::get('/LaporanPemasukan', [TableLaporanController::class, 'DataPemasukan'])->name('dataTable.laporanPemasukan');
+    Route::post('/LaporanPemasukan', [TableLaporanController::class, 'DataPemasukan'])->name('dataTable.laporanPemasukan');
 });
 
 
@@ -301,6 +301,7 @@ Route::prefix('/aktivitas')->group(function(){
 });
 Route::prefix('/laporan-pemasukan')->group(function(){
     Route::get('/all', [LaporanPemasukanController::class, 'index'])->name('laporan-pemasukan.all');
+    Route::get('/cetak', [LaporanPemasukanController::class, 'cetak'])->name('laporan-pemasukan.cetak');
 });
 
 

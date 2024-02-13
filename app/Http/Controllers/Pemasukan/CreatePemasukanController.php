@@ -45,7 +45,9 @@ class CreatePemasukanController extends Controller
             $validator = Validator::make($data, [
                 'id_mstr_pemasukan' => 'required|numeric|exists:master_pemasukan,id',
                 'tanggal' => 'required|date',
+                'metode_pembayaran' => 'required|in:cash,credit',
                 'total' => 'required|numeric',
+                'keterangan' => 'nullable|string',
                 'bukti_pembayaran' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
             ]);
 
@@ -73,15 +75,13 @@ class CreatePemasukanController extends Controller
                 $data['bukti_pembayaran'] = null;
             }
 
-            $metode = 'credit';
-
             //create pemasukan
             $pemasukan = Pemasukan::create([
                 'id_mstr_pemasukan' => $data['id_mstr_pemasukan'],
                 'tanggal' => $data['tanggal'],
-                'metode_pembayaran' => $metode,
+                'metode_pembayaran' => $data['metode_pembayaran'],
                 'total' => $total,
-                'keterangan' => $metode,
+                'keterangan' => $data['keterangan'],
                 'bukti_pembayaran' => $data['bukti_pembayaran']
             ]);            
 

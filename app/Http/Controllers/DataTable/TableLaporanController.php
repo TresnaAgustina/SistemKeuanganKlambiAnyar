@@ -9,8 +9,19 @@ use App\Http\Controllers\Controller;
 
 class TableLaporanController extends Controller
 {
-    public function DataPemasukan(){
-        $coba = Pemasukan::orderBy('id', 'asc');
+    public function DataPemasukan(Request $request){
+        $tanggalMulai = $request->input('tanggal_mulai');
+        $tanggalAkhir = $request->input('tanggal_akhir');
+
+        $coba = Pemasukan::select(['id_mstr_pemasukan', 'metode_pembayaran', 'tanggal', 'total', 'keterangan', 'created_at'])
+        ->when($tanggalMulai && $tanggalAkhir, function ($query) use ($tanggalMulai, $tanggalAkhir) {
+            return $query->whereBetween('tanggal', [$tanggalMulai, $tanggalAkhir]);
+        })
+        ->orderBy('tanggal', 'desc')
+        ->get();
+
+        // $coba = Pemasukan::orderBy('id', 'asc');
+
         return DataTables::of($coba)
         ->addIndexColumn()
         ->addColumn('nama', function($data){
