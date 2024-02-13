@@ -13,6 +13,7 @@ use App\Http\Controllers\Views\DashboardController;
 use App\Http\Controllers\DataTable\DataTransaksi;
 use App\Http\Controllers\DataTable\TableAktivitasController;
 use App\Http\Controllers\DataTable\TableHistoriesController;
+use App\Http\Controllers\DataTable\TableLaporanController;
 use App\Http\Controllers\DataTable\TablePenjualanController;
 use App\Http\Controllers\Hutang\CreateHutangController;
 use App\Http\Controllers\Hutang\GetAllHutangController;
@@ -23,7 +24,8 @@ use App\Http\Controllers\Keuangan\DeleteKeuanganController;
 use App\Http\Controllers\Keuangan\GetAllKeuanganController;
 use App\Http\Controllers\Keuangan\HitungController;
 use App\Http\Controllers\Keuangan\UpdateKeuanganController;
-use App\Http\Controllers\Laporan\Laporan_Pemasukan\GetAllLaporanPemasukan;
+use App\Http\Controllers\Laporan\LaporanPemasukanController;
+use App\Http\Controllers\Laporan\Pemasukan\GetViewLaporanPemasukanController;
 use App\Http\Controllers\Pemasukan\CreatePemasukanController;
 use App\Http\Controllers\Pemasukan\DeletePemasukanController;
 use App\Http\Controllers\Pemasukan\GetAllPemasukanController;
@@ -111,6 +113,7 @@ Route::prefix('/dataTable')->group(function () {
     Route::get('/penjualan-jasa', [TablePenjualanController::class, 'penjualanJasa'])->name('dataTable.penjualan-jasa');
     Route::get('/penjualan-lain', [TablePenjualanController::class, 'penjualanLain'])->name('dataTable.penjualan-lain');
     Route::get('/PegawaiAktivitas', [TableAktivitasController::class, 'DataPegawai'])->name('dataTable.DataPegawaiAktivitas');
+    Route::get('/LaporanPemasukan', [TableLaporanController::class, 'DataPemasukan'])->name('dataTable.laporanPemasukan');
 });
 
 
@@ -297,11 +300,9 @@ Route::prefix('/aktivitas')->group(function(){
     Route::post('/bayar/{id}', UpdatePiutangController::class)->name('hutang.update');
 });
 Route::prefix('/laporan-pemasukan')->group(function(){
-    Route::get('/all', GetAllLaporanPemasukan::class)->name('laporan-pemasukan.all');
-    Route::get('/create/{nip}', GetCreateAktivitasController::class)->name('aktivitas.create.index');
-    Route::post('/create/{nip}', CreateAktivitasController::class)->name('aktivitas.create');
-    Route::post('/bayar/{id}', UpdatePiutangController::class)->name('hutang.update');
+    Route::get('/all', [LaporanPemasukanController::class, 'index'])->name('laporan-pemasukan.all');
 });
+
 
 // coba test fitur keuangan
 

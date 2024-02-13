@@ -88,13 +88,12 @@
                   @endforeach
                 </select>
               </div> 
+                           
                 <div class="form-group">
-                  <label>Metode Pembayaran</label>
-                  <select name="metode_pembayaran" id="metode" class="form-control">
-                    <option value="cash">Cash</option>
-                    <option value="credit">Credit</option>
-                  </select>
-                </div>            
+                  <label>metode</label>
+                  <input name="metode_pembayaran" type="text" class="form-control">
+                </div>         
+
                 <div class="form-group">
                   <label for="tanggal">Tanggal</label>
                   <input name="tanggal" type="date" class="form-control" id="tgl" required>
@@ -229,7 +228,7 @@
                 data: 'tgl',
                 name: 'Tanggal'
             },{
-                data: 'metode_pembayaran',
+                data: 'metode_pembayaran♣',
                 name: 'Metode Pembayaran'
             },{
                 data: 'total',
