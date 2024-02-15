@@ -61,7 +61,7 @@ class CreatePengeluaranController extends Controller
             // if validation is fails
             if (!$validator) {
                 return redirect()->back()->with(
-                    'pesan', 'Failed validate data'
+                    'pesan', $validator->errors()->first()
                 );
             }
 
@@ -75,8 +75,9 @@ class CreatePengeluaranController extends Controller
             }else{
                 $data['bukti'] = null;
             }
-            
 
+            ddd($data);
+            
             // check if total > saldo_kas in keuangan
             $keuangan = Keuangan::first();
             if ($keuangan->saldo_kas < $data['total']){

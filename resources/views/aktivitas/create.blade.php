@@ -5,7 +5,7 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0">Penjualan Lainnya</h1>
+        <h1 class="m-0">Aktivitas Pegawai</h1>
       </div><!-- /.col -->
     </div><!-- /.row -->
   </div><!-- /.container-fluid -->
@@ -24,76 +24,33 @@
         
         <div class="card card-success card-outline">
           
-          <form action="/penjualan-lain/create" method="POST" enctype="multipart/form-data">
+          <form action="/aktivitas/create/{{ $data->nip }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
               <div class="form-group">
-                <label for="tanggal">Tanggal</label>
-                <input name="tanggal" type="date" class="form-control" id="tgl" required>
+                <label for="nip">NIP</label>
+                <input readonly name="nip" type="text" class="form-control" id="nip" value="{{ $data->nip }}">
               </div>          
               <div class="form-group">
-                <label>Pelanggan</label>
-                <select class="form-control" name='id_customer' id="pelanggan">
-                  <option value="">~ Pilih ~</option>
-                  @foreach ($pelanggan as $item)
-                    @if (old('id_customer') == $item->id)
-                      <option value="{{ $item->id }}" selected>{{ $item->nama_customer }}</option>
-                    @else
-                     <option value="{{ $item->id }}">{{ $item->nama_customer }}</option>
-                    @endif
-                  @endforeach
-                </select>
-              </div>
+                <label for="nama">Nama Pegawai</label>
+                <input readonly name="nama" type="text" class="form-control" id="nama" value="{{ $data->nama }}">
+              </div>          
               <div class="form-group">
-                <label>Metode Pembayaran</label>
-                <select class="form-control" name='metode_pembayaran' id="pembayaran_penjualan">
-                  <option value="Pilih">~ Pilih ~</option>                 
-                  <option value="cash">Cash</option>                 
-                  <option value="credit">Credit</option>                 
-                </select>
-              </div> 
-              <div class="card dibayar">
-                <div class="card-body">
-                  <div class="form-group ">
-                    <label for="jmlh_bayar_awal">Pembayaran Awal</label>
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text">Rp. </span>
-                        </div>
-                        <input name="jmlh_bayar_awal" type="text" class="form-control pembayaran_awal" >
-                      </div>
-                  </div> 
-                </div>
-              </div>  
-              <div class="form-group bayar">
-                <label for="jmlh_dibayar">Dibayar</label>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">Rp. </span>
-                    </div>
-                    <input name="jmlh_dibayar" type="text" class="form-control pembayaran_cash" >
-                  </div>
-              </div> 
-              <div class="form-group ">
-                <label for="bukti">Bukti Pembayaran</label> <br>
-                <input type="file" id="bukti" name="bukti_pembayaran">
-              </div>
-              <div class="form-group">
-                <label>Keterangan</label>
-                <textarea name="keterangan" id="ket" class="form-control" rows="4" placeholder="keterangan"></textarea>
-              </div>
+                <label for="tanggal">Tanggal</label>
+                <input name="activity[0][tanggal]" type="date" class="form-control" id="tgl" required>
+              </div>          
               
             </div>
 
             <div class="card-header">
-              <strong><h4 >Tambah Barang </h4></strong>
+              <strong><h4 >Tambah Data </h4></strong>
             </div>
             <div class="card-body">
               <table id="barang" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Nama Barang</th>
-                  <th>Jumlah Barang</th>
+                  <th>Jumlah Jarit</th>
                   <th>Harga Satuan</th>
                   <th>Subtotal</th>
                   <th><a href="javascript:void(0)" class="btn btn-success btn-sm addRow"> <i class="fas fa-plus"></i> </a></th>
@@ -102,20 +59,20 @@
                 <tbody>
                   <tr>
                     <td>
-                      <select class="form-control barangSelect" name="barang[0][id_mstr_barang]">
+                      <select class="form-control barangSelect" name="activity[0][detail][0][id_mstr_jaritan]">
                       <option value="">~ Pilih ~</option>
-                      @foreach ($barang as $item)
-                        @if (old('barang[0][id_mstr_barang]') == $item->id)
-                          <option data-id={{ $item->id }} value="{{ $item->id }}" selected>{{ $item->nama_barang }}</option>
+                      @foreach ($jaritan as $item)
+                        @if (old('activity[0][detail][0][id_mstr_jaritan]') == $item->id)
+                          <option data-id={{ $item->id }} value="{{ $item->id }}" selected>{{ $item->jenis_jaritan }}</option>
                         @else
-                         <option data-id={{ $item->id }} value="{{ $item->id }}">{{ $item->nama_barang }}</option>
+                         <option data-id={{ $item->id }} value="{{ $item->id }}">{{ $item->jenis_jaritan }}</option>
                         @endif
                       @endforeach
                     </select>
                     </td>
-                    <td><input type="number" name="barang[0][jumlah_barang]" class="form-control jumlah-barang"></td>
-                    <td><input type="text" name="barang[0][harga_satuan]" class="form-control hargaSatuanInput"></td>
-                    <td><input type="text" name="barang[0][subtotal]" class="form-control subtotal"></td>
+                    <td><input type="number" name="activity[0][detail][0][jumlah_barang]" class="form-control jumlah-barang"></td>
+                    <td><input type="text" name="activity[0][detail][0][harga_satuan]" class="form-control hargaSatuanInput"></td>
+                    <td><input type="text" name="activity[0][detail][0][subtotal]" class="form-control subtotal"></td>
                   </tr>
                 </tbody>
                 <tfoot>
@@ -132,20 +89,17 @@
           </div>
           <div class="card card-primary card-outline">
             <div class="card-header">
-              <strong><h4 >{{-- <i class="fas fa-edit"></i> --}}Data Penjualan </h4></strong>
+              <strong><h4 >{{-- <i class="fas fa-edit"></i> --}}Data Aktivitas </h4></strong>
             </div>
           
             <div class="card-body">
-                <table id="penjualan" class="table table-bordered table-striped">
+                <table id="aktivitas" class="table table-bordered table-striped">
                   <thead>
                     <tr>
                       <th>Nomor</th>
-                      <th>Nama Customer</th>
-                      <th>Kode</th>
-                      <th>Tanggal</th>
-                      <th>Metode Pembayaran</th>
-                      <th>Pembayaran Cash</th>
-                      <th>Pembayaran Credit</th>
+                      <th>NIP</th>
+                      <th>Nama Pegawai</th>
+                      <th>Tanggal Aktivitas</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
@@ -178,7 +132,7 @@
             "autoWidth": false,
             "processing": true,
             "serverside": true,
-            "ajax": "{{ url('/dataTable/penjualan-lain') }}",
+            "ajax": "{{ url('/dataTable/penjualan-jasa') }}",
             "columns": [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
@@ -216,20 +170,20 @@
     var newIndex = rowCount; // Tentukan indeks baru
         var tr = `<tr> 
           <td>
-            <select class="form-control barangSelect" name="barang[${newIndex}][id_mstr_barang]">
+            <select class="form-control barangSelect" name="activity[0][detail][${newIndex}][id_mstr_jaritan]">
               <option value="">~ Pilih ~</option>
-              @foreach ($barang as $item)
-                @if (old('barang[${newIndex}][id_mstr_barang]') == $item->id)
-                  <option data-id={{ $item->id }} value="{{ $item->id }}" selected>{{ $item->nama_barang }}</option>
+              @foreach ($jaritan as $item)
+                @if (old('activity[0][detail][${newIndex}][id_mstr_jaritan]') == $item->id)
+                  <option data-id={{ $item->id }} value="{{ $item->id }}" selected>{{ $item->jenis_jaritan }}</option>
                 @else
-                  <option data-id={{ $item->id }} value="{{ $item->id }}">{{ $item->nama_barang }}</option>
+                  <option data-id={{ $item->id }} value="{{ $item->id }}">{{ $item->jenis_jaritan }}</option>
                 @endif
               @endforeach
             </select>
           </td>
-          <td><input type="number" name="barang[${newIndex}][jumlah_barang]" class="form-control jumlah-barang"></td>
-          <td><input type="text" name="barang[${newIndex}][harga_satuan]" class="form-control hargaSatuanInput"></td>
-          <td><input type="text" name="barang[${newIndex}][subtotal]" class="form-control subtotal"></td>
+          <td><input type="number" name="activity[0][detail][${newIndex}][jumlah_barang]" class="form-control jumlah-barang"></td>
+          <td><input type="text" name="activity[0][detail][${newIndex}][harga_satuan]" class="form-control hargaSatuanInput"></td>
+          <td><input type="text" name="activity[0][detail][${newIndex}][subtotal]" class="form-control subtotal"></td>
           <td><a href="javascript:void(0)" class="btn btn-danger btn-sm deleteRow">
               <i class="fas fa-minus"></i></a>
           </td>
@@ -260,10 +214,10 @@
 
         if (selectedOption !== '') {                        
             $.ajax({
-                url: '/penjualan-lain/update/' + selectedOption, 
+                url: '/penjualan-jasa/update/' + selectedOption, 
                 method: 'GET', 
                 success: function(response) {
-                    hargaSatuanInput.val(response.result.harga_jual);
+                    hargaSatuanInput.val(response.result.harga_dalam);
                     formatRupiah(hargaSatuanInput);          
                 },
                 error: function(xhr, status, error) {
@@ -297,7 +251,7 @@
         row.find('.subtotal').val(subtotal.toFixed(3));
 
         // Panggil fungsi untuk menghitung total keseluruhan setelah memperbarui subtotal
-        formatRupiah(calculateTotal());
+        calculateTotal();
     }
 
     // Fungsi untuk menghitung total keseluruhan
@@ -307,7 +261,7 @@
             total += parseFloat($(this).val()) || 0;
         });
         $('.total').text(total.toFixed(3));
-    } 
+    }
 
     // Fungsi untuk format rupiah
     function formatRupiah(input) {
@@ -331,22 +285,25 @@
 });
 
 </script>
-{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+
 <script>
   $(document).ready(function() {
     $('.dibayar').hide();
     $('.bayar').show();
 
-    $('#pembayaran_penjualan').change(function() {
+    $('#pembayaran').change(function() {
       var pembayaran = $(this).val();
 
       if (pembayaran === 'credit') {
-        $('.dibayar').show().prop('required', true);
-        $('.bayar').hide().prop('required', false);
-      } else if (pembayaran === 'Pilih' || pembayaran === 'cash') {
-        $('.bayar').show().prop('required', true);
-        $('.dibayar').hide().prop('required', false);
-      }
+            $('.dibayar').show().find('input').prop('required', true); 
+            $('.bayar').hide().find('input').prop('required', false); 
+        } else if (pembayaran === 'Pilih') {
+            $('.bayar').show().find('input').prop('required', false); 
+            $('.dibayar').hide().find('input').prop('required', false); 
+        } else if (pembayaran === 'cash') {
+            $('.bayar').show().find('input').prop('required', true); 
+            $('.dibayar').hide().find('input').prop('required', false); 
+        }
     });
   });
 </script>
@@ -472,11 +429,11 @@
       return rupiah;
     }
 
-    $('.pembayaran_awal').on('input', function() {
+    $('.pembayaranAwal').on('input', function() {
         var value = $(this).val().replace(/[^\d]/g, '');
         $(this).val(formatRupiah(value));
     });
-    $('.pembayaran_cash').on('input', function() {
+    $('.pembayaranCash').on('input', function() {
         var value = $(this).val().replace(/[^\d]/g, '');
         $(this).val(formatRupiah(value));
     });

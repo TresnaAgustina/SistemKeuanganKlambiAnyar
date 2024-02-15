@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Hutang;
 
-use App\Http\Controllers\Controller;
 use App\Models\History;
 use App\Models\Keuangan;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Hutang;
+use Illuminate\Support\Facades\Validator;
 
 class CreateHutangController extends Controller
 {
@@ -22,7 +24,7 @@ class CreateHutangController extends Controller
             $data = $request->all();
 
             // validation
-            $validator = \Validator::make($data, [
+            $validator = Validator::make($data, [
                 'id_pengeluaran' => 'required|exists:pengeluaran,id',
                 'jumlah_hutang' => 'required|numeric',
                 'tgl_jatuh_tempo' => 'required|date',
@@ -35,7 +37,7 @@ class CreateHutangController extends Controller
             }
 
             //create hutang
-            $hutang = \App\Models\Hutang::create([
+            $hutang = Hutang::create([
                 'id_pengeluaran' => $data['id_pengeluaran'],
                 'jumlah_hutang' => $data['jumlah_hutang'],
                 'tgl_jatuh_tempo' => $data['tgl_jatuh_tempo'],

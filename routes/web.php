@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Aktivitas\CreateActivityController;
+use App\Http\Controllers\Aktivitas\CreateAktivitasController;
+use App\Http\Controllers\Aktivitas\GetAllAktivitasController;
+use App\Http\Controllers\Aktivitas\GetCreateAktivitasController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
@@ -8,13 +12,19 @@ use App\Http\Controllers\Auth\ViewLoginController;
 use App\Http\Controllers\DataTable\DataMasterController;
 use App\Http\Controllers\Views\DashboardController;
 use App\Http\Controllers\DataTable\DataTransaksi;
+use App\Http\Controllers\DataTable\TableAktivitasController;
 use App\Http\Controllers\DataTable\TableHistoriesController;
 use App\Http\Controllers\DataTable\TablePenjualanController;
+use App\Http\Controllers\Hutang\CreateHutangController;
+use App\Http\Controllers\Hutang\GetAllHutangController;
+use App\Http\Controllers\Hutang\GetUpdateHutangController;
+use App\Http\Controllers\Hutang\UpdateHutangController;
 use App\Http\Controllers\Keuangan\CreateKeuanganController;
 use App\Http\Controllers\Keuangan\DeleteKeuanganController;
 use App\Http\Controllers\Keuangan\GetAllKeuanganController;
 use App\Http\Controllers\Keuangan\HitungController;
 use App\Http\Controllers\Keuangan\UpdateKeuanganController;
+use App\Http\Controllers\Laporan\Laporan_Pemasukan\GetAllLaporanPemasukan;
 use App\Http\Controllers\Pemasukan\CreatePemasukanController;
 use App\Http\Controllers\Pemasukan\DeletePemasukanController;
 use App\Http\Controllers\Pemasukan\GetAllPemasukanController;
@@ -62,9 +72,11 @@ use App\Http\Controllers\Master\Pengeluaran\UpdateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\GetUpdateMasterPengeluaranController;
 use App\Http\Controllers\Penjualan_Jasa_Jarit\CreatePenjualanJasaJaritController;
 use App\Http\Controllers\Penjualan_Jasa_Jarit\GetAllPenjualanJasaJaritController;
+use App\Http\Controllers\Penjualan_Jasa_Jarit\GetDetailPenjualanJasaJaritController;
 use App\Http\Controllers\Penjualan_Jasa_Jarit\GetUpdatePenjualanJasaJaritController;
 use App\Http\Controllers\Penjualan_Lain\CreatePenjualanLainController;
 use App\Http\Controllers\Penjualan_Lain\GetAllPenjualanLainController;
+use App\Http\Controllers\Penjualan_Lain\GetDetailPenjualLainController;
 use App\Http\Controllers\Penjualan_Lain\GetUpdatePenjualanLainController;
 use App\Http\Controllers\Piutang\GetAllPiutangController;
 use App\Http\Controllers\Piutang\GetUpdatePiutangController;
@@ -99,6 +111,7 @@ Route::prefix('/dataTable')->group(function () {
     Route::get('/hutang',[DataTransaksi::class, 'hutang'] )->name('dataTable.hutang');
     Route::get('/penjualan-jasa', [TablePenjualanController::class, 'penjualanJasa'])->name('dataTable.penjualan-jasa');
     Route::get('/penjualan-lain', [TablePenjualanController::class, 'penjualanLain'])->name('dataTable.penjualan-lain');
+    Route::get('/PegawaiAktivitas', [TableAktivitasController::class, 'DataPegawai'])->name('dataTable.DataPegawaiAktivitas');
 });
 
 
@@ -258,49 +271,40 @@ Route::prefix('/penjualan-lain')->group(function(){
     Route::get('/all', GetAllPenjualanLainController::class)->name('penjualanLain.all');
     Route::post('/create', CreatePenjualanLainController::class)->name('penjualanLain.create');
     Route::get('/update/{id}', GetUpdatePenjualanLainController::class)->name('penjualanLain.update.index');
-
+    Route::get('/detail/{kode_penjualan}', GetDetailPenjualLainController::class)->name('penjualanLain.Detail.index');
 });
 Route::prefix('/penjualan-jasa')->group(function(){
     Route::get('/all', GetAllPenjualanJasaJaritController::class)->name('penjualanJasa.all');
     Route::post('/create', CreatePenjualanJasaJaritController::class)->name('penjualanJasa.create');
     Route::get('/update/{id}', GetUpdatePenjualanJasaJaritController::class)->name('penjualanJasa.update.index');
+    Route::get('/detail/{kode_penjualan}', GetDetailPenjualanJasaJaritController::class)->name('penjualanJasa.update.index');
 
 });
 Route::prefix('/piutang')->group(function(){
     Route::get('/all', GetAllPiutangController::class)->name('piutang.all');
     Route::get('/bayar/{id}', GetUpdatePiutangController::class)->name('piutang.update.index');
     Route::post('/bayar/{id}', UpdatePiutangController::class)->name('piutang.update');
-
+});
+Route::prefix('/hutang')->group(function(){
+    Route::get('/all', GetAllHutangController::class)->name('hutang.all');
+    Route::post('/create', CreateHutangController::class)->name('hutang.create');
+    Route::get('/bayar/{id}', GetUpdateHutangController::class)->name('hutang.update.index');
+    Route::post('/bayar/{id}', UpdateHutangController::class)->name('hutang.update');
+});
+Route::prefix('/aktivitas')->group(function(){
+    Route::get('/all', GetAllAktivitasController::class)->name('aktivitas.all');
+    Route::get('/create/{nip}', GetCreateAktivitasController::class)->name('aktivitas.create.index');
+    Route::post('/create/{nip}', CreateActivityController::class)->name('aktivitas.create');
+    Route::post('/bayar/{id}', UpdatePiutangController::class)->name('hutang.update');
+});
+Route::prefix('/laporan-pemasukan')->group(function(){
+    // Route::get('/all', GetAllLaporanPemasukan::class)->name('laporan-pemasukan.all');
+    Route::get('/create/{nip}', GetCreateAktivitasController::class)->name('aktivitas.create.index');
+    // Route::post('/create/{nip}', CreateAktivitasController::class)->name('aktivitas.create');
+    Route::post('/bayar/{id}', UpdatePiutangController::class)->name('hutang.update');
 });
 
 // coba test fitur keuangan
-
-// Route::get('/piutang/all', function(){
-//     return view('transaksi.piutang.index');
-// });
-
-
-Route::get('/hutang/all', function(){
-    return view('transaksi.hutang.index');
-});
-
-Route::get('/aktivitas/all', function(){
-    return view('aktivitas.index');
-});
-
-Route::post('/aktivitas/create', [HitungController::class , 'test']);
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Route::get('/auth/login', function () {
 //     return view('welcome');

@@ -15,6 +15,7 @@ class Pemasukan extends Model
     protected $fillable = [
         'id_mstr_pemasukan',
         'tanggal',
+        'metode_pembayaran',
         'total',
         'keterangan',
         'bukti_pembayaran',

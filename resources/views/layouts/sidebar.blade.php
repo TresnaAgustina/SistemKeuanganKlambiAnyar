@@ -147,8 +147,8 @@
           </li>
           <li class="nav-item {{ Request::is('penjualan-jasa*', 'penjualan-lain*') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link {{ Request::is('penjualan-jasa*', 'penjualan-lain*') ? 'active' : '' }}">
-                <i class="nav-icon fas fa-money-bill-alt"></i>
-              {{-- <i class="nav-icon fas fa-circle"></i> --}}
+                {{-- <i class="nav-icon fas fa-money-bill-alt"></i> --}}
+                <i class="nav-icon fas fa-shopping-cart"></i>
               <p>
                 Penjualan
                 <i class="right fas fa-angle-left"></i>
@@ -174,13 +174,13 @@
 
           <li class="nav-item ">
             <a href="/aktivitas/all" class="nav-link {{ Request::is('aktivitas*') ? 'active' : '' }}">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-user-clock"></i>
               <p>Aktivitas</p>
             </a>
           </li>
 
-          <li class="nav-item">
-            <a href="#" class="nav-link">
+          <li class="nav-item {{ Request::is('laporan-pemasukan*', 'laporan-pengeluaran*', 'laporan-keuntungan*', 'laporan-pajak*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ Request::is('laporan-pemasukan*', 'laporan-pengeluaran*', 'laporan-keuntungan*', 'laporan-pajak*') ? 'active' : '' }}">
                 <i class="nav-icon fas fa-file-alt"></i>
               {{-- <i class="nav-icon fas fa-circle"></i> --}}
               <p>
@@ -191,28 +191,28 @@
 
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="/laporan-pemasukan/all" class="nav-link {{ Request::is('laporan-pemasukan*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Laporan Pemasukan</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link {{ Request::is('laporan-pengeluaran*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Laporan Pengeluaran</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link {{ Request::is('laporan-keuntungan*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Laporan Keuntungan</p>
                 </a>
               </li>
               
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link {{ Request::is('laporan-pajak*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Laporan Pajak</p>
                 </a>

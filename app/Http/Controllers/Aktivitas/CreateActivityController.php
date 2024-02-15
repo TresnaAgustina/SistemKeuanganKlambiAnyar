@@ -26,14 +26,11 @@ class CreateActivityController extends Controller
             $data = $request->all();
 
             // get data pegawai_rumahan by id_pgwr_rumahan
-            $pegawai_rumahan = Pegawai_Rumahan::find($data['id_pgw_rumahan']);
-
+            $pegawai_rumahan = Pegawai_Rumahan::where('nip', $data['nip'])->first();
+            $id_pegawai = $pegawai_rumahan->id;
+            
             // if pegawai_rumahan not found
             if (!$pegawai_rumahan) {
-                return response()->json([
-                    'message' => 'Error: Pegawai Rumahan tidak ditemukan'
-                ], 404);
-
                 return redirect()->back()->with(
                     'pesan', 'Error: Pegawai Rumahan tidak ditemukan'
                 );
@@ -41,79 +38,97 @@ class CreateActivityController extends Controller
 
             // validate data
             $validator = Validator::make($data, [
-                'id_pgw_rumahan' => 'required|exists:pegawai_rumahan,id',
-                // 'activity.*.tanggal' => 'required|date',
+                'activity.*.tanggal' => 'required|date',
                 'activity.*.detail.*.id_mstr_jaritan' => 'required|exists:master_jaritan,id',
-                'activity.*.detail.*.jumlah_jaritan' => 'required|numeric',
+                'activity.*.detail.*.jumlah_barang' => 'required|numeric',
+                'activity.*.detail.*.harga_satuan' => 'required|numeric',
+                'activity.*.detail.*.subtotal' => 'required|numeric',
             ]);
 
             // if validation fails
             if ($validator->fails()) {
-                return response()->json([
-                    'message' => 'Error: ' . $validator->errors()
-                ], 500);
-
                 return redirect()->back()->with(
                     'pesan', 'Error: ' . $validator->errors()
                 );
             }
 
             // KURANG PERHITUNGAN TOTAL-TOTAL //
-            // calculate gaji_bulanan
-            $gaji_bulanan = 0;
+            // hitung gaji_harian dari activity_detail
+            $gaji_harian = 0;
             foreach ($data['activity'] as $activity) {
-                foreach ($activity['detail'] as $detail) {
-                    $jaritan = Master_Jaritan::find($detail['id_mstr_jaritan']);
-                    $gaji_bulanan += $jaritan->harga * $detail['jumlah_jaritan'];
+                foreach ($activity['detail'] as $activity_item) {
+                    $gaji_harian += $activity_item['subtotal'];
                 }
-            }   
-            //
+            }
+
+            // tambahkan gaji_harian dengan gaji yang sudah ada pada activity_detail untuk mendapat gaji_bulanan
+            $pgwr_activity = Pgwr_Activity::where('id_pgw_rumahan', $id_pegawai)->first();
+            if ($pgwr_activity) {
+                $gaji_bulanan = $pgwr_activity->gaji_bulanan + $gaji_harian;
+            }else{
+                $gaji_bulanan = $gaji_harian;
+            }
             // BUAT DI ATAS INI //
 
-            // *** --- create pgwr_activity --- *** //
-            $pgwr_activity = Pgwr_Activity::create([
-                'id_pgw_rumahan' => $data['id_pgw_rumahan'],
-                // 'gaji_bulanan' => $gaji_bulanan,
-            ]);
+            // jika data pgwr_activity dengan id_pgw_rumahan sudah ada, maka update data pgwr_activity namun untuk data activity_detail dan activity_items tetap di create
+            $pgwr_activity = Pgwr_Activity::where('id_pgw_rumahan', $id_pegawai)->first();
+            if ($pgwr_activity) {
+                $pgwr_activity->gaji_bulanan = $gaji_bulanan;
+                $pgwr_activity->save();
+            }else{
+                // *** --- create pgwr_activity --- *** //
+                $pgwr_activity = Pgwr_Activity::create([
+                    'id_pgw_rumahan' => $id_pegawai,
+                    'gaji_bulanan' => $gaji_bulanan,
+                ]);
+            }
 
-            // *** --- create activity --- *** //
-            foreach ($data['activity'] as $activity) {
-                $activity['id_pgwr_activity'] = $pgwr_activity->id;
-                $activity_detail = ActivityDetail::create($activity);
+            // jika data activity_detail dengan id_pgwr_activity dan tanggal yang sama sudah ada pada database, maka update data activity_detail namun untuk data activity_items tetap di create
+            $activity_detail = ActivityDetail::where('id_pgwr_activity', $pgwr_activity->id)->where('tanggal', date('Y-m-d', strtotime($data['activity'][0]['tanggal'])))->first();
+            if ($activity_detail) {
+                $activity_detail->gaji_harian = $gaji_harian + $activity_detail->gaji_harian;
+                $activity_detail->save();
 
                 // *** --- create activity_items --- *** //
-                foreach ($activity['activity_items'] as $activity_item) {
+                foreach ($data['activity'][0]['detail'] as $activity_item) {
                     $activity_item['id_activity_detail'] = $activity_detail->id;
+                    $activity_item['id_mstr_jaritan'] = $data['activity'][0]['detail'][0]['id_mstr_jaritan'];
+                    $activity_item['jumlah_jaritan'] = $activity_item['jumlah_barang'];
+                    $activity_item['total_bayaran'] = $activity_item['jumlah_barang'] * $activity_item['harga_satuan'];
                     ActivityItem::create($activity_item);
+                }
+            }else{
+                // *** --- create activity --- *** //
+                foreach ($data['activity'] as $activity) {
+                    $activity['id_pgwr_activity'] = $pgwr_activity->id;
+                    $activity['tanggal'] = date('Y-m-d', strtotime($activity['tanggal']));
+                    $activity['gaji_harian'] = $gaji_harian;
+
+                    $activity_detail = ActivityDetail::create($activity);
+
+                    // *** --- create activity_items --- *** //
+                    foreach ($activity['detail'] as $activity_item) {
+                        $activity_item['id_activity_detail'] = $activity_detail->id;
+                        $activity_item['id_mstr_jaritan'] = $activity['detail'][0]['id_mstr_jaritan'];
+                        $activity_item['jumlah_jaritan'] = $activity_item['jumlah_barang'];
+                        $activity_item['total_bayaran'] = $activity_item['jumlah_barang'] * $activity_item['harga_satuan'];
+                        ActivityItem::create($activity_item);
+                    }
                 }
             }
 
             // if fails
             if (!$pgwr_activity) {
-                return response()->json([
-                    'message' => 'Error: Gagal membuat aktivitas'
-                ], 500);
-
                 return redirect()->back()->with(
                     'pesan', 'Error: Gagal membuat aktivitas'
                 );
             }
-
-            return response()->json([
-                'message' => 'Berhasil membuat aktivitas',
-                'data' => $pgwr_activity
-            ], 200);
 
             return redirect()->back()->with(
                 'success', 'Berhasil membuat aktivitas'
             );
 
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error: ' . $e->getMessage(),
-                'line' => $e->getLine(),
-            ], 500);
-
             return redirect()->back()->with(
                 'pesan', 'Error: ' . $e->getMessage()
 

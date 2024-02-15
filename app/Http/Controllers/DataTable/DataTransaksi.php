@@ -89,9 +89,33 @@ class DataTransaksi extends Controller
         ->addColumn('nama', function($data){
             return $data->pengeluaran->master_pengeluaran->nama_atribut;
         })
-        ->addColumn('aksi', function($data){
-            return view('Master.barang.tombol')->with('data', $data);
+        ->addColumn('status', function ($data) {
+            if ($data->status == 'Belum Lunas') {
+                // return '<span class="label label-success">Aktif</span>';
+                return '<span class="badge bg-warning" style="font-size: 12px;">Belum Lunas</span>';
+            } else {
+                return '<span class="badge bg-success" style="font-size: 12px;">Lunas</span>';
+            }
+        }) 
+        
+        ->addColumn('sisa', function($data){
+            if ($data->sisa_hutang) {
+                return 'Rp. '. number_format($data->sisa_hutang) ?? 0;
+            } else {
+                return 'Rp. ' . 0;
+            }
         })
+        ->addColumn('jumlah', function($data){
+            if ($data->jumlah_hutang) {
+                return 'Rp. '. number_format($data->jumlah_hutang) ?? 0;
+            } else {
+                return 'Rp. ' . 0;
+            }
+        })
+        ->addColumn('aksi', function($data){
+            return view('transaksi.hutang.tombol')->with('data', $data);
+        })
+        ->rawColumns(['status'])
         ->make(true);
     }
 
@@ -115,6 +139,7 @@ class DataTransaksi extends Controller
                 return '<span class="badge bg-success" style="font-size: 12px;">Lunas</span>';
             }
         }) 
+        
         ->addColumn('sisa', function($data){
             if ($data->sisa_piutang) {
                 return 'Rp. '. number_format($data->sisa_piutang) ?? 0;

@@ -146,6 +146,7 @@
                       <th>Metode Pembayaran</th>
                       <th>Pembayaran Cash</th>
                       <th>Pembayaran Credit</th>
+                      <th>Aksi</th>
                     </tr>
                   </thead>
                 </table>
@@ -201,6 +202,9 @@
             },{
                 data: 'bayarAwal',
                 name: 'Pembayaran Credit'
+            },{
+                data: 'aksi',
+                name: 'Aksi'
             }]
         });
     });

@@ -24,10 +24,10 @@
         
         <div class="card card-success card-outline">
           <div class="card-header">
-            <strong><h4 >Bayar Piutang  </h4></strong>
+            <strong><h4 >Bayar Hutang  </h4></strong>
           </div>
           
-          <form action="/piutang/bayar/{{ $data->id }}" method="POST">
+          <form action="/hutang/bayar/{{ $data->id }}" method="POST">
             @csrf
             <div class="card-body">
               <div class="form-group">
@@ -35,12 +35,12 @@
                 <input readonly name="jatuhTempo" type="text" class="form-control" value="{{ date('d-m-Y', strtotime($data->tgl_jatuh_tempo )) }}" >
               </div>
               <div class="form-group">
-                <label>Jumlah Piutang</label>
-                <input readonly name="jmlhPiutang" type="text" class="form-control" value="Rp. {{ number_format($data->jumlah_piutang)}}" >
+                <label>Jumlah Hutang</label>
+                <input readonly name="jmlhPiutang" type="text" class="form-control" value="Rp. {{ number_format($data->jumlah_hutang)}}" >
               </div>
               <div class="form-group">
-                <label>Sisa Piutang</label>
-                <input readonly name="sisa" type="text" class="form-control" value="Rp. {{ number_format($data->sisa_piutang)}}" >
+                <label>Sisa Hutang</label>
+                <input readonly name="sisa" type="text" class="form-control" value="Rp. {{ number_format($data->sisa_hutang)}}" >
               </div>
               <div class="form-group">
                 <label for="jumlah">Jumlah Bayar</label>

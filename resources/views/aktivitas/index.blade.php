@@ -5,7 +5,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Data Master</h1>
+          <h1 class="m-0">Data Aktivitas</h1>
         </div><!-- /.col -->
       </div><!-- /.row -->
     </div><!-- /.container-fluid -->
@@ -17,6 +17,17 @@
 <div class="error" data-swal="{{ session('pesan') }}">
 </div>
 
+{{-- error and success handling --}}
+{{-- @if (session('pesan'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session('pesan') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">×</span>
+    </button> 
+</div>
+@endif --}}
+{{-- end --}}
+
 <section class="content">
     <div class="container-fluid">
       <div class="row">
@@ -24,38 +35,25 @@
           
           <div class="card card-primary card-outline">
             <div class="card-header">
-              <strong><h4 >{{-- <i class="fas fa-edit"></i> --}}Data Jaritan </h4></strong>
+              <strong><h4 >{{-- <i class="fas fa-edit"></i> --}}Pegawai Rumahan </h4></strong>
             </div>
 
-            <form action="/aktivitas/create" method="POST">
-              @csrf
-              <div class="card-body">
-                <table id="jaritan" class="table table-bordered table-striped">
+            <div class="card-body">
+                <table id="pegawaiRumahan" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>Nomor</th>
-                    <th>Jenis Jaritan</th>
-                    <th>Harga Dalam</th>
-                    <th>Harga Luar</th>
-                    <th><a href="javascript:void(0)" class="btn btn-success btn-sm addRow"> <i class="fas fa-plus"></i> </a></th>
+                    <th>Nama</th>
+                    <th>NIP</th>
+                    <th>Alamat</th>
+                    <th>Nomor Telepon</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
                   </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td><input type="text" name="nama[]" class="form-control"></td>
-                      <td><input type="text" name="nama[]" class="form-control"></td>
-                      <td><input type="text" name="nama[]" class="form-control"></td>
-                      <td><input type="text" name="nama[]" class="form-control"></td>
-                     
-                    </tr>
-                  </tbody>
                 </table>
-                <button type="submit" class="btn btn-success mt-4">Simpan</button>
               </div>
-            </form>
-            
-
-           
           </div>
 
         </div>
@@ -65,72 +63,11 @@
 
     </div><!-- /.container-fluid -->
 
-    
-    {{-- <div class="modal fade" id="md-jaritan">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Tambah Data Jaritan</h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-
-          <div class="modal-body">
-            <form action="{{ url('/mstr/jaritan/create') }}" method="POST">
-              @csrf
-                <div class="form-group">
-                    <label for="jenis">Jenis Jaritan</label>
-                    <input name="jenis_jaritan" type="text" class="form-control" id="jenis" required>
-                </div>
-                <div class="form-group">
-                    <label for="hargaDalam">Harga Dalam</label>
-                    <input name="harga_dalam" type="text" class="form-control" id="hargaDalam" required>
-                </div>                          
-                <div class="form-group">
-                    <label for="hargaLuar">Harga Luar</label>
-                    <input name="harga_luar" type="text" class="form-control" id="hargaLuar" required>
-                </div>                          
-
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-          </div>
-        </div>
-        <!-- /.modal-content -->
-      </div>
-      <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal --> --}}
-
-    
-    <!-- /.modal -->
-
   </section>
 
 @endsection
 
 @push('js')
-<script>
-  $('thead').on('click', '.addRow', function(){
-    var tr = `<tr> 
-        <td><input type="text" name="nama[]" class="form-control"></td>
-        <td><input type="text" name="nama[]" class="form-control"></td>
-        <td><input type="text" name="nama[]" class="form-control"></td>
-        <td><input type="text" name="nama[]" class="form-control"></td>
-        <td><a href="javascript:void(0)" class="btn btn-danger btn-sm deleteRow">
-          <i class="fas fa-minus"></i></a>
-        </td>
-      </tr>`;
-      $('tbody').append(tr);
-  });
-
-  $('tbody').on('click', '.deleteRow', function(){
-    $(this).parent().parent().remove();   
-  });
-</script>
 
 {{-- // sweetalert notification --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -180,15 +117,15 @@
             }).then((result) => {
                 if (result.value) {
                     $.ajax({
-                        type: 'DELETE',
-                        url: '/mstr/jaritan/delete/' + id, 
+                        type: 'GET',
+                        url: '/mstr/pegawai-rumahan/delete/' + id, 
                         success: function(data) {
                             Swal.fire({
                               title: 'berhasil',
                               text: data.message,
                               icon: 'success'
                             }).then((result) => {
-                               window.location.href = '/mstr/jaritan/all';
+                               window.location.href = '/mstr/pegawai-rumahan/all';
                             })
                         },
                         error: function(xhr, ajaxOptions, thrownError) {
@@ -203,35 +140,44 @@
 
 
 {{-- //Datatble Config --}}
-{{-- <script>
+<script>
     $(document).ready(function(){
-        $('#jaritan').DataTable({
+        $('#pegawaiRumahan').DataTable({
             "responsive": true, 
             "autoWidth": false,
             "processing": true,
             "serverside": true,
-            "ajax": "{{ url('dataTable/jaritan') }}",
+            "ajax": "{{ url('dataTable/PegawaiAktivitas') }}",
             "columns": [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
                 orderable: false,
                 searchable: false
             },{
-                data: 'jenis_jaritan',
-                name: 'Jenis Jaritan'
+                data: 'nama',
+                name: 'Nama'
             },{
-                data: 'harga_dalam',
-                name: 'Harga Dalam'
+                data: 'nip',
+                name: 'NIP'
             },{
-                data: 'harga_luar',
-                name: 'Harga Luar'
+                data: 'alamat',
+                name: 'Alamat'
+            },{
+                data: 'no_telp',
+                name: 'Nomor Telepon'
+            },{
+                data: 'jenis_kelamin',
+                name: 'Jenis Kelamin'
+            } ,{
+                data: 'status',
+                name: 'Status'
             },{
                 data: 'aksi',
                 name: 'Aksi'
             }]
         });
     });
-</script> --}}
+</script>
 
 <script>
 $.ajaxSetup({
@@ -243,16 +189,36 @@ $.ajaxSetup({
   $('body').on('click', '.update-btn', function(e){
       var id = $(this).data('id');
       $.ajax({
-        url:'/mstr/jaritan/update/' + id,
+        url:'/mstr/pegawai-rumahan/update/' + id,
         success:function(response){
           $('#test').modal('show');
-          $('#jenis').val(response.result.jenis_jaritan);
-          $('#hargaDalam').val(response.result.harga_dalam);
-          $('#hargaLuar').val(response.result.harga_luar);
-           // Menangani klik pada tombol Simpan di dalam modal
-           $('.simpan').click(function(){
+          $('#nama').val(response.result.nama);
+          $('#jk').val(response.result.jenis_kelamin);
+          $('#alamat').val(response.result.alamat);
+          $('#no_telp').val(response.result.no_telp);
+          $('#status').val(response.result.status);
+          var statusValue = response.result.status;
+          var selectElement = document.getElementById("status");
+          for (var i = 0; i < selectElement.options.length; i++) {
+              if (selectElement.options[i].value === statusValue) {
+                  selectElement.options[i].selected = true;
+                  break;
+              }
+          }
+
+          var jkValue = response.result.jenis_kelamin;
+          var selectJK = document.getElementById("jk");
+          for (var i = 0; i < selectJK.options.length; i++) {
+              if (selectJK.options[i].value === jkValue) {
+                  selectJK.options[i].selected = true;
+                  break;
+              }
+          }
+
+          // Menangani klik pada tombol Simpan di dalam modal
+          $('.simpan').click(function(){
                 // Mengubah action dan method form
-                $('form').attr('action', '/mstr/jaritan/update/' + id);
+                $('form').attr('action', '/mstr/pegawai-rumahan/update/' + id);
                 $('form').attr('method', 'POST');
                 // Submit form
                 $('form').submit();
@@ -263,47 +229,11 @@ $.ajaxSetup({
 
 // hapus data pada form ketika di tutup
   $(document).ready(function(){
-      $('#md-jaritan').on('hidden.bs.modal', function(){
+      $('#md-pegawaiRumahan').on('hidden.bs.modal', function(){
           $(this).find('input').val(''); // Mengosongkan nilai input di dalam modal
       });
   });
 </script>
-
-{{-- <script>
-    $(document).ready(function(){
-        $('#jaritan').DataTable({
-            "responsive": true, 
-            "lengthChange": false, 
-            "autoWidth": false,
-            "buttons": ["excel", "pdf", "print"],
-            "processing": true,
-            "serverside": true,
-            "ajax": "{{ url('dataTable/jaritan') }}",
-            "columns": [{
-                data: 'DT_RowIndex',
-                name: 'DT_RowIndex',
-                orderable: false,
-                searchable: false
-            },{
-                data: 'jenis_jaritan',
-                name: 'Jenis Jaritan'
-            },{
-                data: 'harga_dalam',
-                name: 'Harga Dalam'
-            },{
-                data: 'harga_luar',
-                name: 'Harga Luar'
-            },{
-                data: 'aksi',
-                name: 'Aksi'
-            }],
-            "initComplete": function () {
-                this.api().buttons().container().appendTo('#jaritan_wrapper .col-md-6:eq(0)');
-            }
-        });
-    });
-</script> --}}
-
 
 
 @endpush
