@@ -5,7 +5,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Transaksi</h1>
+          <h1 class="m-0">Data Kasbon</h1>
         </div><!-- /.col -->
       </div><!-- /.row -->
     </div><!-- /.container-fluid -->
@@ -17,19 +17,30 @@
 <div class="error" data-swal="{{ session('pesan') }}">
 </div>
 
+{{-- error and success handling --}}
+{{-- @if (session('pesan'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ session('pesan') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">×</span>
+    </button> 
+</div>
+@endif --}}
+{{-- end --}}
+
 <section class="content">
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
           
-          <div class="card card-success card-outline">
+          <div class="card card-primary card-outline">
             <div class="card-header">
-              <strong><h4 >{{-- <i class="fas fa-edit"></i> --}}Data Pemasukan </h4></strong>
+              <strong><h4 >{{-- <i class="fas fa-edit"></i> --}}Pegawai Rumahan </h4></strong>
             </div>
             
             <div class="card-body">
               
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#md-pemasukan">
+              <button type="button" class="btn btn-primary test" data-toggle="modal" data-target="#md-pegawai">
                 <i class="fas fa-plus"></i>
                 Tambah Data
               </button>
@@ -38,15 +49,15 @@
             <!-- /.card -->
 
             <div class="card-body">
-                <table id="pemasukan" class="table table-bordered table-striped">
+                <table id="kasbonRumahan" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>Nomor</th>
-                    <th>Jenis Pemasukan</th>
-                    <th>Tanggal</th>
-                    <th>Metode Pembayaran</th>
-                    <th>Total</th>
-                    <th>Keterangan</th>
+                    <th>Nama Pegawai</th>
+                    <th>Tanggal Kasbon</th>
+                    <th>Jumlah Kasbon</th>
+                    <th>Sisa Kasbon</th>
+                    <th>Status</th>
                     <th>Aksi</th>
                   </tr>
                   </thead>
@@ -62,61 +73,45 @@
     </div><!-- /.container-fluid -->
 
     
-    <div class="modal fade" id="md-pemasukan">
+    <div class="modal fade" id="md-pegawai">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Tambah Data Pemasukan</h4>
+            <h4 class="modal-title">Tambah Kasbon Rumahan Tetap</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
 
           <div class="modal-body">
-            <form action="{{ url('/pemasukan/create') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ url('/kasbon-rumahan/create') }}" method="POST">
               @csrf
               <div class="form-group">
-                <label>Jenis Pemasukan</label>
-                <select class="form-control" name='id_mstr_pemasukan' id="jenis">
+                <label>Nama Pegawai</label>
+                <select class="form-control" name='id_pgw_rumahan' id="nama">
                   <option value="">~ Pilih ~</option>
-                  @foreach ($pemasukan as $item)
-                    @if (old('id_mstr_pemasukan') == $item->id)
-                      <option value="{{ $item->id }}" selected>{{ $item->nama_atribut }}</option>
+                  @foreach ($data as $item)
+                    @if (old('id_pgw_rumahan') == $item->id)
+                      <option value="{{ $item->id }}" selected>{{ $item->nama }}</option>
                     @else
-                     <option value="{{ $item->id }}">{{ $item->nama_atribut }}</option>
+                     <option value="{{ $item->id }}">{{ $item->nama }}</option>
                     @endif
                   @endforeach
                 </select>
-              </div> 
+              </div>                         
                 <div class="form-group">
-                  <label>Metode Pembayaran</label>
-                  <select name="metode_pembayaran" id="metode" class="form-control">
-                    <option value="cash">Cash</option>
-                    <option value="credit">Credit</option>
-                  </select>
-                </div>            
-                <div class="form-group">
-                  <label for="tanggal">Tanggal</label>
-                  <input name="tanggal" type="date" class="form-control" id="tgl" required>
-                </div>              
-                <div class="form-group">
-                  <label for="total">Total</label>
+                  <label for="jumlah">Jumlah Kasbon</label>
                     <div class="input-group mb-3">
                       <div class="input-group-prepend">
                         <span class="input-group-text">Rp. </span>
                       </div>
-                      <input name="total" type="text" class="form-control" id="total" required>
+                      <input name="jumlah" type="text" class="form-control jumlah" required>
                     </div>
-                </div>     
-                <div class="form-group ">
-                  <label for="bukti">Bukti Pembayaran</label> <br>
-                  <input type="file" id="bukti" name="bukti_pembayaran">
-                </div>
-                       
+                </div>        
                 <div class="form-group">
-                  <label>Keterangan</label>
-                  <textarea name="keterangan" id="ket" class="form-control" rows="4" placeholder="keterangan"></textarea>
-                </div>                          
+                  <label for="tanggal">Tanggal</label>
+                  <input name="tanggal" type="date" class="form-control" id="tgl" required>
+                </div>                            
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan</button>
@@ -187,15 +182,15 @@
             }).then((result) => {
                 if (result.value) {
                     $.ajax({
-                        type: 'DELETE',
-                        url: '/pemasukan/delete/' + id, 
+                        type: 'GET',
+                        url: '/mstr/pegawai-tetap/delete/' + id, 
                         success: function(data) {
                             Swal.fire({
                               title: 'berhasil',
                               text: data.message,
                               icon: 'success'
                             }).then((result) => {
-                               window.location.href = '/pemasukan/all';
+                               window.location.href = '/mstr/pegawai-tetap/all';
                             })
                         },
                         error: function(xhr, ajaxOptions, thrownError) {
@@ -209,14 +204,15 @@
 {{-- // End sweetalert notification --}}
 
 
+{{-- //Datatble Config --}}
 <script>
     $(document).ready(function(){
-        $('#pemasukan').DataTable({
+        $('#kasbonRumahan').DataTable({
             "responsive": true, 
             "autoWidth": false,
             "processing": true,
             "serverside": true,
-            "ajax": "{{ url('dataTable/DataPemasukan') }}",
+            "ajax": "{{ url('dataTable/KasbonRumahan') }}",
             "columns": [{
                 data: 'DT_RowIndex',
                 name: 'DT_RowIndex',
@@ -224,19 +220,19 @@
                 searchable: false
             },{
                 data: 'nama',
-                name: 'Jenis Pemasukan'
+                name: 'Nama Pegawai'
             },{
                 data: 'tgl',
-                name: 'Tanggal'
+                name: 'Tanggal Kasbon'
             },{
-                data: 'metode_pembayaran',
-                name: 'Metode Pembayaran'
+                data: 'jumlah',
+                name: 'Jumlah Kasbon'
             },{
-                data: 'total',
-                name: 'Total'
+                data: 'sisa',
+                name: 'Sisa Kasbon'
             },{
-                data: 'keterangan',
-                name: 'Keterangan'
+                data: 'status',
+                name: 'Status'
             },{
                 data: 'aksi',
                 name: 'Aksi'
@@ -246,61 +242,63 @@
 </script>
 
 <script>
-  $.ajaxSetup({
-      headers:{
-        'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-      }
-  });
-  
-    $('body').on('click', '.edit', function(e){
-        var id = $(this).data('id');
-        $.ajax({
-          url:'/mstr/pemasukan/update/' + id,
-          success:function(response){
-            $('#test').modal('show');
-            $('#nama').val(response.result.nama_atribut);
-          }
-        });
-    });
-  
-  // hapus data pada form ketika di tutup
-    $(document).ready(function(){
-        $('#md-pemasukan').on('hidden.bs.modal', function(){
-            $(this).find('#jenis').val(''); // Mengosongkan nilai input di dalam modal
-            $(this).find('#total').val(''); // Mengosongkan nilai input di dalam modal
-        });
-    });
-
-    $(document).ready(function() {
-      // Mendapatkan tanggal sekarang dalam format YYYY-MM-DD
-      var tanggalSekarang = new Date().toISOString().split('T')[0];
-      $('#tgl').val(tanggalSekarang);
-    });
-
-    //set fotmat angka jumlah
-    function formatRupiah(angka) {
-      var numberString = angka.toString();
-      var splitNumber = numberString.split('.');
-      var sisa = splitNumber[0].length % 3;
-      var rupiah = splitNumber[0].substr(0, sisa);
-      var ribuan = splitNumber[0].substr(sisa).match(/\d{3}/g);
-
-      if (ribuan) {
-          var separator = sisa ? '.' : '';
-          rupiah += separator + ribuan.join('.');
-      }
-
-      if (splitNumber[1] != undefined) {
-          rupiah += ',' + splitNumber[1];
-      }
-
-      return rupiah;
+$.ajaxSetup({
+    headers:{
+      'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
     }
+});
 
-    $('#total').on('input', function() {
-        var value = $(this).val().replace(/[^\d]/g, '');
-        $(this).val(formatRupiah(value));
-    });
+  $('body').on('click', '.update-btn', function(e){
+      var id = $(this).data('id');
+      console.log(id);
+      $.ajax({
+        url:'/mstr/pegawai-tetap/update/' + id,
+        success:function(response){
+          $('#test').modal('show');
+          $('#nama').val(response.result.nama);
+          $('#jk').val(response.result.jenis_kelamin);
+          $('#alamat').val(response.result.alamat);
+          $('#no_telp').val(response.result.no_telp);
+          $('#gaji').val(response.result.gaji_pokok);
+          $('#status').val(response.result.status);
+          var statusValue = response.result.status;
+          var selectElement = document.getElementById("status");
+          for (var i = 0; i < selectElement.options.length; i++) {
+              if (selectElement.options[i].value === statusValue) {
+                  selectElement.options[i].selected = true;
+                  break;
+              }
+          }
+          console.log(response);
 
-  </script>
+          var jkValue = response.result.jenis_kelamin;
+          var selectJK = document.getElementById("jk");
+          for (var i = 0; i < selectJK.options.length; i++) {
+              if (selectJK.options[i].value === jkValue) {
+                  selectJK.options[i].selected = true;
+                  break;
+              }
+          }
+
+          // Menangani klik pada tombol Simpan di dalam modal
+          $('.simpan').click(function(){
+                // Mengubah action dan method form
+                $('form').attr('action', '/mstr/pegawai-tetap/update/' + id);
+                $('form').attr('method', 'POST');
+                // Submit form
+                $('form').submit();
+            });
+        }
+      });
+  });
+
+// hapus data pada form ketika di tutup
+  $(document).ready(function(){
+      $('#md-pegawai').on('hidden.bs.modal', function(){
+          $(this).find('input').val(''); // Mengosongkan nilai input di dalam modal
+      });
+  });
+</script>
+
+
 @endpush

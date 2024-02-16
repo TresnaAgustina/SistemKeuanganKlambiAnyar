@@ -8,7 +8,7 @@
         
         <div class="card card-success card-outline mt-4">
           <div class="card-header">
-            <strong><h5 >Laporan Pemasukan </h5></strong>
+            <strong><h5 >Laporan Pengeluaran </h5></strong>
           </div>
 
           <div class="card-body" >
@@ -56,11 +56,11 @@
                   <i class="fa fa-print"></i> Cetak
                 </a>
              </div> --}}
-            <table id="laporan-pemasukan" class="table table-bordered table-striped">
+            <table id="laporan-pengeluaran" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Nomor</th>
-                  <th>Jenis Pemasukan</th>
+                  <th>Jenis Pengeluaran</th>
                   <th>Tanggal</th>
                   <th>Metode Pembayaran</th>
                   <th>Subtotal</th>
@@ -96,10 +96,10 @@
 
         if (tanggalMulai && tanggalAkhir) {
             // Jika kedua input tanggal diisi, arahkan ke URL dengan tanggal
-            cetakButton.href = '/laporan-pemasukan/' + tanggalMulai + '/' + tanggalAkhir;
+            cetakButton.href = '/laporan-pengeluaran/' + tanggalMulai + '/' + tanggalAkhir;
         } else {
             // Jika salah satu atau keduanya kosong, arahkan ke URL tanpa parameter tanggal
-            cetakButton.href = '/laporan-pemasukan/cetak';
+            cetakButton.href = '/laporan-pengeluaran/cetak';
         }
     });
 });
@@ -121,13 +121,13 @@
 {{-- //Datatble Config --}}
 <script>
     $(document).ready(function(){
-    var table =  $('#laporan-pemasukan').DataTable({
+    var table =  $('#laporan-pengeluaran').DataTable({
             responsive: true, 
             autoWidth: false,
             processing: true,
             serverside: true,
             ajax:{
-              url: "{{ url('dataTable/LaporanPemasukan') }}",
+              url: "{{ url('dataTable/LaporanPengeluaran') }}",
               type: "POST",
               headers:{
                 'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
