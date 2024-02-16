@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_pgw_normal')->nullable();
             $table->unsignedBigInteger('id_pgw_rumahan')->nullable();
+            $table->string('tipe')->nullable();
             $table->date('tanggal');
             $table->double('jumlah_kasbon');
             $table->double('sisa');

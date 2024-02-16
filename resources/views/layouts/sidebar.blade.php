@@ -141,10 +141,10 @@
                   <p>Hutang</p>
                 </a>
               </li>
-              
-
             </ul>
           </li>
+         
+
           <li class="nav-item {{ Request::is('penjualan-jasa*', 'penjualan-lain*') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link {{ Request::is('penjualan-jasa*', 'penjualan-lain*') ? 'active' : '' }}">
                 {{-- <i class="nav-icon fas fa-money-bill-alt"></i> --}}
@@ -172,6 +172,60 @@
             </ul>
           </li>
 
+          <li class="nav-item {{ Request::is('kasbon-tetap*', 'kasbon-rumahan*') ? 'menu-open' : '' }}">
+            <a href="/kasbon-tetap/all" class="nav-link {{ Request::is('kasbon-tetap*', 'kasbon-rumahan*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-hand-holding-usd"></i>
+              <p>
+                Kasbon
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+ 
+            <ul class="nav nav-treeview">
+              
+              <li class="nav-item">
+                <a href="/kasbon-tetap/all" class="nav-link {{ Request::is('kasbon-tetap*') ? 'active' : '' }}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Pegawai Tetap</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/kasbon-rumahan/all" class="nav-link {{ Request::is('kasbon-rumahan*') ? 'active' : '' }}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Pegawai Rumahan</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item {{ Request::is('gaji-tetap*', 'gaji-rumahan*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ Request::is('gaji-tetap*', 'gaji-rumahan*') ? 'active' : '' }}">
+                {{-- <i class="nav-icon fas fa-shopping-cart"></i> --}}
+                <i class="nav-icon fas fa-file-invoice-dollar"></i>
+              <p>
+                Penggajian
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+ 
+            <ul class="nav nav-treeview">
+              
+              <li class="nav-item">
+                <a href="/gaji-tetap/all" class="nav-link {{ Request::is('gaji-tetap*') ? 'active' : '' }}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Pegawai Tetap</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/gaji-rumahan/all" class="nav-link {{ Request::is('gaji-rumahan*') ? 'active' : '' }}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Pegawai Rumahan</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          
+
           <li class="nav-item ">
             <a href="/aktivitas/all" class="nav-link {{ Request::is('aktivitas*') ? 'active' : '' }}">
               <i class="nav-icon fas fa-user-clock"></i>
@@ -198,21 +252,21 @@
               </li>
 
               <li class="nav-item">
-                <a href="#" class="nav-link {{ Request::is('laporan-pengeluaran*') ? 'active' : '' }}">
+                <a href="/laporan-pengeluaran/all" class="nav-link {{ Request::is('laporan-pengeluaran*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Laporan Pengeluaran</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="#" class="nav-link {{ Request::is('laporan-keuntungan*') ? 'active' : '' }}">
+                <a href="/laporan-keuntungan/all" class="nav-link {{ Request::is('laporan-keuntungan*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Laporan Keuntungan</p>
                 </a>
               </li>
               
               <li class="nav-item">
-                <a href="#" class="nav-link {{ Request::is('laporan-pajak*') ? 'active' : '' }}">
+                <a href="/laporan-pajak/all" class="nav-link {{ Request::is('laporan-pajak*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Laporan Pajak</p>
                 </a>

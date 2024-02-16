@@ -246,9 +246,10 @@
       total -= subtotal;
 
     // Perbarui total yang ditampilkan
-    $('.total').text(total.toFixed(3));
+    $('.total').text(total);
         $(this).parent().parent().remove();   
     });
+
   </script>
 
 <script>
@@ -264,7 +265,7 @@
                 method: 'GET', 
                 success: function(response) {
                     hargaSatuanInput.val(response.result.harga_dalam);
-                    formatRupiah(hargaSatuanInput);          
+                    formatTest(hargaSatuanInput);          
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -286,8 +287,10 @@
         // subtotalInput.val(subtotal);
         updateSubtotal($(this).closest('tr'));
         subtotalInput.val(subtotal.toFixed(3));
-        formatRupiah(subtotalInput);
+        formatTest(subtotalInput);
     });
+
+    
 
      // Fungsi untuk memperbarui subtotal untuk baris tertentu
      function updateSubtotal(row) {
@@ -306,11 +309,12 @@
         $('.subtotal').each(function() {
             total += parseFloat($(this).val()) || 0;
         });
-        $('.total').text(total.toFixed(3));
+        $('.total').text(formatRupiah(total.toFixed(3))); // Update total dengan format rupiah
     }
 
+
     // Fungsi untuk format rupiah
-    function formatRupiah(input) {
+    function formatTest(input) {
         var value = input.val().replace(/\./g, '');
         input.val(formatRupiahString(value));
     }
@@ -324,6 +328,26 @@
         if (ribuan) {
             separator = sisa ? '.' : '';
             rupiah += separator + ribuan.join('.');
+        }
+
+        return rupiah;
+    }
+
+    // Fungsi untuk format rupiah
+    function formatRupiah(angka) {
+        var numberString = angka.toString();
+        var splitNumber = numberString.split('.');
+        var sisa = splitNumber[0].length % 3;
+        var rupiah = splitNumber[0].substr(0, sisa);
+        var ribuan = splitNumber[0].substr(sisa).match(/\d{3}/g);
+
+        if (ribuan) {
+            var separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        if (splitNumber[1] != undefined) {
+            rupiah += ',' + splitNumber[1];
         }
 
         return rupiah;

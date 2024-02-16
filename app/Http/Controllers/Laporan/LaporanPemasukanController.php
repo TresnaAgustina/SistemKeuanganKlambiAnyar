@@ -22,5 +22,17 @@ class LaporanPemasukanController extends Controller
         return $pdf->stream();
     }
 
-    
+    public function cetakPemasukanTgl($tglawal, $tglakhir){
+        // dd(["tgl awal :".$tglawal, "tgl Akhir :".$tglakhir]);
+
+        $cetak = Pemasukan::whereBetween('tanggal', [$tglawal, $tglakhir])->get();
+
+        $pdf = Pdf::loadview('laporan.laporan-pemasukan.cetakfilter', [
+            'cetak' => $cetak,
+            'tglAwal' => $tglawal,
+            'tglAkhir' => $tglakhir
+        ]);
+
+        return $pdf->stream();
+    }
 }

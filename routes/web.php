@@ -13,19 +13,24 @@ use App\Http\Controllers\Views\DashboardController;
 use App\Http\Controllers\DataTable\DataTransaksi;
 use App\Http\Controllers\DataTable\TableAktivitasController;
 use App\Http\Controllers\DataTable\TableHistoriesController;
+use App\Http\Controllers\DataTable\TableKasbonController;
 use App\Http\Controllers\DataTable\TableLaporanController;
 use App\Http\Controllers\DataTable\TablePenjualanController;
 use App\Http\Controllers\Hutang\CreateHutangController;
 use App\Http\Controllers\Hutang\GetAllHutangController;
 use App\Http\Controllers\Hutang\GetUpdateHutangController;
 use App\Http\Controllers\Hutang\UpdateHutangController;
+use App\Http\Controllers\Kasbon\Kasbon_Rumahan\GetAllKasbonRumahanController;
+use App\Http\Controllers\Kasbon\Kasbon_Rumahan\GetViewBayarKasbonRumahanController;
+use App\Http\Controllers\Kasbon\Kasbon_Tetap\GetAllKasbonTetapController;
+use App\Http\Controllers\Kasbon\Kasbon_Tetap\GetViewBayarKasbonTetapController;
 use App\Http\Controllers\Keuangan\CreateKeuanganController;
 use App\Http\Controllers\Keuangan\DeleteKeuanganController;
 use App\Http\Controllers\Keuangan\GetAllKeuanganController;
 use App\Http\Controllers\Keuangan\HitungController;
 use App\Http\Controllers\Keuangan\UpdateKeuanganController;
 use App\Http\Controllers\Laporan\LaporanPemasukanController;
-use App\Http\Controllers\Laporan\Pemasukan\GetViewLaporanPemasukanController;
+use App\Http\Controllers\Laporan\LaporanPengeluaranController;
 use App\Http\Controllers\Pemasukan\CreatePemasukanController;
 use App\Http\Controllers\Pemasukan\DeletePemasukanController;
 use App\Http\Controllers\Pemasukan\GetAllPemasukanController;
@@ -71,6 +76,10 @@ use App\Http\Controllers\Master\Pengeluaran\CreateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\DeleteMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\UpdateMasterPengeluaranController;
 use App\Http\Controllers\Master\Pengeluaran\GetUpdateMasterPengeluaranController;
+use App\Http\Controllers\Penggajian\Gaji_Rumahan\GetAllGajiRumahanController;
+use App\Http\Controllers\Penggajian\Gaji_Rumahan\GetViewBayarGajiRumahanController;
+use App\Http\Controllers\Penggajian\Gaji_Tetap\GetAllGajiTetapController;
+use App\Http\Controllers\Penggajian\Gaji_Tetap\GetViewBayarGajiTetapController;
 use App\Http\Controllers\Penjualan_Jasa_Jarit\CreatePenjualanJasaJaritController;
 use App\Http\Controllers\Penjualan_Jasa_Jarit\GetAllPenjualanJasaJaritController;
 use App\Http\Controllers\Penjualan_Jasa_Jarit\GetDetailPenjualanJasaJaritController;
@@ -113,7 +122,10 @@ Route::prefix('/dataTable')->group(function () {
     Route::get('/penjualan-jasa', [TablePenjualanController::class, 'penjualanJasa'])->name('dataTable.penjualan-jasa');
     Route::get('/penjualan-lain', [TablePenjualanController::class, 'penjualanLain'])->name('dataTable.penjualan-lain');
     Route::get('/PegawaiAktivitas', [TableAktivitasController::class, 'DataPegawai'])->name('dataTable.DataPegawaiAktivitas');
+    Route::get('/KasbonTetap', [TableKasbonController::class, 'kasbonPegawaiTetap'])->name('dataTable.kasbonTetap');
+    Route::get('/KasbonRumahan', [TableKasbonController::class, 'kasbonPegawaiRumahan'])->name('dataTable.kasbonRumahan');
     Route::post('/LaporanPemasukan', [TableLaporanController::class, 'DataPemasukan'])->name('dataTable.laporanPemasukan');
+    Route::post('/LaporanPengeluaran', [TableLaporanController::class, 'DataPengeluaran'])->name('dataTable.laporanPengeluaran');
 });
 
 
@@ -302,7 +314,34 @@ Route::prefix('/aktivitas')->group(function(){
 Route::prefix('/laporan-pemasukan')->group(function(){
     Route::get('/all', [LaporanPemasukanController::class, 'index'])->name('laporan-pemasukan.all');
     Route::get('/cetak', [LaporanPemasukanController::class, 'cetak'])->name('laporan-pemasukan.cetak');
+    Route::get('/{in}/{out}', [LaporanPemasukanController::class, 'cetakPemasukanTgl'])->name('laporan-pemasukan.cetakFilter');
 });
+Route::prefix('/laporan-pengeluaran')->group(function(){
+    Route::get('/all', [LaporanPengeluaranController::class, 'index'])->name('laporan-pengeluaran.all');
+    Route::get('/cetak', [LaporanPengeluaranController::class, 'cetak'])->name('laporan-pengeluaran.cetak');
+    Route::get('/{in}/{out}', [LaporanPengeluaranController::class, 'cetakPengeluaranTgl'])->name('laporan-pengeluaran.cetakFilter');
+});
+Route::prefix('/kasbon-tetap')->group(function(){
+    Route::get('/all', GetAllKasbonTetapController::class)->name('kasbon-tetap.all');
+    Route::get('/bayar/{id}', GetViewBayarKasbonTetapController::class)->name('kasbon-tetap.bayar.index');
+   
+});
+Route::prefix('/kasbon-rumahan')->group(function(){
+    Route::get('/all', GetAllKasbonRumahanController::class)->name('kasbon-rumahan.all');
+    Route::get('/bayar/{id}', GetViewBayarKasbonRumahanController::class)->name('kasbon-rumahan.bayar.index');
+   
+});
+Route::prefix('/gaji-tetap')->group(function(){
+    Route::get('/all', GetAllGajiTetapController::class)->name('gaji-tetap.all');
+    Route::get('/bayar/{id}', GetViewBayarGajiTetapController::class)->name('gaji-tetap.bayar.index');
+   
+});
+Route::prefix('/gaji-rumahan')->group(function(){
+    Route::get('/all', GetAllGajiRumahanController::class)->name('gaji-rumahan.all');
+    Route::get('/bayar/{id}', GetViewBayarGajiRumahanController::class)->name('gaji-rumahan.bayar.index');
+   
+});
+
 
 
 // coba test fitur keuangan

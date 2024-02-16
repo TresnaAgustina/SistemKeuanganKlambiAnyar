@@ -9,7 +9,7 @@ class Kasbon_Pegawai extends Model
 {
     use HasFactory;
 
-    protected $table = 'kasbon__pegawai';
+    protected $table = 'kasbon_pegawai';
     protected $fillable = [
         'id_pgw_normal',
         'id_pgw_rumahan',

@@ -12,7 +12,7 @@
         {{-- <img src="img/test.jpg" alt="Logo Perusahaan" class="logo"> --}}
         <div class="judul">UD. KLAMBI ANYAR</div>
         <div class="judul">Laporan Pemasukan</div>
-        {{-- <div class="subjudul">Laporan Pemasukan</div> --}}
+        <div class="tanggal">{{ date('d-m-Y', strtotime($tglAwal)) }} s/d {{ date('d-m-Y', strtotime($tglAkhir)) }} </div>
       
         <div style="clear: both;"></div>
         <hr class="garis">
@@ -31,15 +31,19 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($cetak as $item)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $item->master_pemasukan->nama_atribut }}</td>
-                    <td>{{ date('d-m-Y', strtotime($item->tanggal)) }}</td>
-                    <td>{{ $item->metode_pembayaran }}</td>
-                    <td>Rp. {{number_format($item->total) }}</td>
-                </tr>
-            @endforeach
+            @forelse ($cetak as $item)
+            <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $item->master_pemasukan->nama_atribut }}</td>
+                <td>{{ date('d-m-Y', strtotime($item->tanggal)) }}</td>
+                <td>{{ $item->metode_pembayaran }}</td>
+                <td>Rp. {{number_format($item->total) }}</td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="9"><center>Tidak ada data pemasukan</center></td>
+            </tr>
+            @endforelse             
         </tbody>
     </table>
 </body>

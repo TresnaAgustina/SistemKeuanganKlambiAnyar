@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Pemasukan</title>
-    <link rel="stylesheet" href="css/laporanPemasukan.css">
+    <title>Laporan Pengeluaran</title>
+    <link rel="stylesheet" href="css/laporanPengeluaran.css">
 
 </head>
 <body>
     <div class="header">
         {{-- <img src="img/test.jpg" alt="Logo Perusahaan" class="logo"> --}}
         <div class="judul">UD. KLAMBI ANYAR</div>
-        <div class="judul">Laporan Pemasukan</div>
+        <div class="judul">Laporan Pengeluaran</div>
         {{-- <div class="subjudul">Laporan Pemasukan</div> --}}
       
         <div style="clear: both;"></div>
@@ -24,7 +24,7 @@
         <thead>
             <tr>
                 <th>Nomor</th>
-                <th>Jenis Pemasukan</th>
+                <th>Jenis Pengeluaran</th>
                 <th>Tanggal</th>
                 <th>Metode Pembayaran</th>
                 <th>Subtotal</th>
@@ -34,10 +34,10 @@
             @foreach ($cetak as $item)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $item->master_pemasukan->nama_atribut }}</td>
+                    <td>{{ $item->master_pengeluaran->nama_atribut }}</td>
                     <td>{{ date('d-m-Y', strtotime($item->tanggal)) }}</td>
                     <td>{{ $item->metode_pembayaran }}</td>
-                    <td>Rp. {{number_format($item->total) }}</td>
+                    <td>Rp. {{number_format($item->subtotal) }}</td>
                 </tr>
             @endforeach
         </tbody>
