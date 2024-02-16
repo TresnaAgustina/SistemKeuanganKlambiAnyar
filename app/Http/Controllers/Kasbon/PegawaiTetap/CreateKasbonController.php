@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Kasbon;
+namespace App\Http\Controllers\Kasbon\PegawaiTetap;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

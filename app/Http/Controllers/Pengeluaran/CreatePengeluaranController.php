@@ -76,8 +76,6 @@ class CreatePengeluaranController extends Controller
                 $data['bukti'] = null;
             }
 
-            ddd($data);
-            
             // check if total > saldo_kas in keuangan
             $keuangan = Keuangan::first();
             if ($keuangan->saldo_kas < $data['total']){

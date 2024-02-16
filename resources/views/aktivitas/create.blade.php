@@ -49,7 +49,7 @@
               <table id="barang" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Nama Barang</th>
+                  <th>Jenis Jaritan</th>
                   <th>Jumlah Jarit</th>
                   <th>Harga Satuan</th>
                   <th>Subtotal</th>
