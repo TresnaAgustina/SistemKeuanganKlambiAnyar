@@ -105,7 +105,7 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text">Rp. </span>
                       </div>
-                      <input name="jumlah" type="text" class="form-control jumlah" required>
+                      <input name="jumlah_kasbon" type="text" class="form-control jumlah" required>
                     </div>
                 </div>        
                 <div class="form-group">

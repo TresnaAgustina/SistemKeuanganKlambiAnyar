@@ -27,9 +27,11 @@
             <strong><h4 >Bayar Kasbon Pegawai Rumahan  </h4></strong>
           </div>
           
-          <form action="/piutang/bayar/{{ $data->id }}" method="POST">
+          <form action="/kasbon-rumahan/bayar/{{ $data->id }}" method="POST">
             @csrf
             <div class="card-body">
+              {{-- hidden input with value $data->id --}}
+              <input type="hidden" name="id" value="{{ $data->id }}">
               <div class="form-group">
                 <label>Nama Pegawai</label>
                 <input readonly name="nama" type="text" class="form-control" value="{{ $data->pegawai_rumahan->nama }}" >
@@ -57,10 +59,10 @@
               </div>     
               <div class="form-group">
                 <label for="tanggal">Tanggal</label>
-                <input name="tanggal" type="date" class="form-control" id="tgl" required>
+                <input name="tanggal" type="date" class="form-control" id="tgl" required value="{{ $data->tanggal }}">
               </div>          
               
-              <button type="text" class="btn btn-success mt-4">Simpan</button>
+              <button type="submit" class="btn btn-success mt-4">Simpan</button>
             </div>
           </form>
           </div>
@@ -73,8 +75,5 @@
   </div><!-- /.container-fluid -->
 
 </section>
-
-
-
 @endsection
 

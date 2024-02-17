@@ -23,8 +23,9 @@ class CreateKasbonController extends Controller
             //get all data request
             $data = $request->all();
 
+
             // get data pgw_rumahan by_id
-            $pgw = Pegawai_Rumahan::find('id', $data['id']);
+            $pgw = Pegawai_Rumahan::find($data['id_pgw_rumahan']);
 
             // if data pegawai not found
             if (!$pgw) {

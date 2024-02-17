@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Kasbon\Kasbon_Rumahan;
 
 use App\Http\Controllers\Controller;
 use App\Models\Kasbon_Pegawai;
+use App\Models\KasbonPgwRumahan;
 use Illuminate\Http\Request;
 
 class GetViewBayarKasbonRumahanController extends Controller
@@ -18,7 +19,7 @@ class GetViewBayarKasbonRumahanController extends Controller
     {
         try {
             // get data from database
-            $data = Kasbon_Pegawai::where('id', $id)->first();
+            $data = KasbonPgwRumahan::where('id', $id)->first();
 
             // // return json response
             // return response()->json([

@@ -25,6 +25,7 @@ use App\Http\Controllers\Kasbon\Kasbon_Rumahan\GetAllKasbonRumahanController;
 use App\Http\Controllers\Kasbon\Kasbon_Rumahan\GetViewBayarKasbonRumahanController;
 use App\Http\Controllers\Kasbon\Kasbon_Tetap\GetAllKasbonTetapController;
 use App\Http\Controllers\Kasbon\Kasbon_Tetap\GetViewBayarKasbonTetapController;
+use App\Http\Controllers\Kasbon\PegawaiRumahan\CreateKasbonController;
 use App\Http\Controllers\Keuangan\CreateKeuanganController;
 use App\Http\Controllers\Keuangan\DeleteKeuanganController;
 use App\Http\Controllers\Keuangan\GetAllKeuanganController;
@@ -92,6 +93,8 @@ use App\Http\Controllers\Penjualan_Lain\GetUpdatePenjualanLainController;
 use App\Http\Controllers\Piutang\GetAllPiutangController;
 use App\Http\Controllers\Piutang\GetUpdatePiutangController;
 use App\Http\Controllers\Piutang\UpdatePiutangController;
+use App\Http\Controllers\Kasbon\PegawaiRumahan;
+use App\Http\Controllers\Kasbon\PegawaiTetap;
 
 /*
 |--------------------------------------------------------------------------
@@ -324,12 +327,15 @@ Route::prefix('/laporan-pengeluaran')->group(function(){
 });
 Route::prefix('/kasbon-tetap')->group(function(){
     Route::get('/all', GetAllKasbonTetapController::class)->name('kasbon-tetap.all');
+    Route::post('/create', PegawaiTetap\CreateKasbonController::class)->name('gaji-tetap.create');
     Route::get('/bayar/{id}', GetViewBayarKasbonTetapController::class)->name('kasbon-tetap.bayar.index');
+    Route::post('/bayar/{id}', PegawaiTetap\BayarKasbonController::class)->name('gaji-tetap.bayar');
 });
 Route::prefix('/kasbon-rumahan')->group(function(){
     Route::get('/all', GetAllKasbonRumahanController::class)->name('kasbon-rumahan.all');
+    Route::post('/create', PegawaiRumahan\CreateKasbonController::class)->name('kasbon-rumahan.create');
     Route::get('/bayar/{id}', GetViewBayarKasbonRumahanController::class)->name('kasbon-rumahan.bayar.index');
-   
+    Route::post('/bayar/{id}', PegawaiRumahan\BayarKasbonController::class)->name('kasbon-rumahan.bayar');
 });
 Route::prefix('/gaji-tetap')->group(function(){
     Route::get('/all', GetAllGajiTetapController::class)->name('gaji-tetap.all');

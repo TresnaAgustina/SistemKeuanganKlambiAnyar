@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\KasbonPgwRumahan;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pegawai_Rumahan extends Model
 {
@@ -18,4 +19,9 @@ class Pegawai_Rumahan extends Model
         'jenis_kelamin',
         'status'
     ];
+
+    public function kasbon_pegawai()
+    {
+        return $this->hasMany(KasbonPgwRumahan::class, 'id_pgw_rumahan');
+    }
 }
