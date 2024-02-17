@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\ActivityItem;
+use App\Models\Penjualan_Jasa_Jarit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,14 +19,15 @@ class Master_Jaritan extends Model
     ];
 
 
-    // penjualan
-    public function penjualan()
+    // penjualan_jasa_jarit
+    public function penjualan_jasa_jarit()
     {
-        return $this->hasMany(Penjualan::class);
+        return $this->hasMany(PenjualanJasaJarit::class);
     }
 
-    public function pgwr_activity()
+    // activity_items
+    public function activity_items()
     {
-        return $this->hasMany(Pgwr_Activity::class);
+        return $this->hasMany(ActivityItem::class);
     }
 }

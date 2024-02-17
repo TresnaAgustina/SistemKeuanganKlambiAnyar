@@ -6,11 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Kasbon_Pegawai;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\Models\KasbonPgwRumahan;
+use App\Models\KasbonPgwTetap;
 
 class TableKasbonController extends Controller
 {
     public function kasbonPegawaiTetap(){
-        $coba = Kasbon_Pegawai::where('tipe', 'tetap')->get();
+        $coba = KasbonPgwTetap::all();
         // $coba = Kasbon_Pegawai::orderBy('id', 'asc');
         return DataTables::of($coba)
         ->addIndexColumn()
@@ -50,7 +52,7 @@ class TableKasbonController extends Controller
     }
 
     public function kasbonPegawaiRumahan(){
-        $coba = Kasbon_Pegawai::where('tipe', 'rumahan')->get();
+        $coba = KasbonPgwRumahan::all();
         // $coba = Kasbon_Pegawai::orderBy('id', 'asc');
         return DataTables::of($coba)
         ->addIndexColumn()

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Kasbon_Pegawai;
+use App\Models\KasbonPgwTetap;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -21,8 +21,10 @@ class Pegawai_Normal extends Model
         'status',
     ];
 
-    public function kasbon_Pegawai()
+    // kasbon KasbonPgwTetap
+    public function kasbon_pegawai()
     {
-        return $this->hasMany(Kasbon_Pegawai::class);
+        return $this->hasMany(KasbonPgwTetap::class, 'id_pgw_normal');
     }
+
 }

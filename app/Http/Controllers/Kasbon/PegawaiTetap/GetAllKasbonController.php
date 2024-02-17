@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Aktivitas;
+namespace App\Http\Controllers\Kasbon\PegawaiTetap;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class CreateAktivitasController extends Controller
+class GetAllKasbonController extends Controller
 {
     /**
      * Handle the incoming request.

@@ -50,7 +50,6 @@ class CreatePenjualanLainController extends Controller
                 $cash = null;
             }
 
-
             // if validation fails
             if ($validate->fails()){
                 return redirect()->back()->with('pesan', 'Error: '.$validate->errors());

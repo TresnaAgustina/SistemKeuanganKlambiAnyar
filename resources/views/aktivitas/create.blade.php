@@ -37,7 +37,7 @@
               </div>          
               <div class="form-group">
                 <label for="tanggal">Tanggal</label>
-                <input name="tanggal" type="date" class="form-control" id="tgl" required>
+                <input name="activity[0][tanggal]" type="date" class="form-control" id="tgl" required>
               </div>          
               
             </div>
@@ -49,7 +49,7 @@
               <table id="barang" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Nama Barang</th>
+                  <th>Jenis Jaritan</th>
                   <th>Jumlah Jarit</th>
                   <th>Harga Satuan</th>
                   <th>Subtotal</th>
@@ -59,10 +59,10 @@
                 <tbody>
                   <tr>
                     <td>
-                      <select class="form-control barangSelect" name="barang[0][id_mstr_jaritan]">
+                      <select class="form-control barangSelect" name="activity[0][detail][0][id_mstr_jaritan]">
                       <option value="">~ Pilih ~</option>
                       @foreach ($jaritan as $item)
-                        @if (old('barang[0][id_mstr_jaritan]') == $item->id)
+                        @if (old('activity[0][detail][0][id_mstr_jaritan]') == $item->id)
                           <option data-id={{ $item->id }} value="{{ $item->id }}" selected>{{ $item->jenis_jaritan }}</option>
                         @else
                          <option data-id={{ $item->id }} value="{{ $item->id }}">{{ $item->jenis_jaritan }}</option>
@@ -70,9 +70,9 @@
                       @endforeach
                     </select>
                     </td>
-                    <td><input type="number" name="barang[0][jumlah_barang]" class="form-control jumlah-barang"></td>
-                    <td><input type="text" name="barang[0][harga_satuan]" class="form-control hargaSatuanInput"></td>
-                    <td><input type="text" name="barang[0][subtotal]" class="form-control subtotal"></td>
+                    <td><input type="number" name="activity[0][detail][0][jumlah_barang]" class="form-control jumlah-barang"></td>
+                    <td><input type="text" name="activity[0][detail][0][harga_satuan]" class="form-control hargaSatuanInput"></td>
+                    <td><input type="text" name="activity[0][detail][0][subtotal]" class="form-control subtotal"></td>
                   </tr>
                 </tbody>
                 <tfoot>
@@ -170,10 +170,10 @@
     var newIndex = rowCount; // Tentukan indeks baru
         var tr = `<tr> 
           <td>
-            <select class="form-control barangSelect" name="barang[${newIndex}][id_mstr_jaritan]">
+            <select class="form-control barangSelect" name="activity[0][detail][${newIndex}][id_mstr_jaritan]">
               <option value="">~ Pilih ~</option>
               @foreach ($jaritan as $item)
-                @if (old('barang[${newIndex}][id_mstr_jaritan]') == $item->id)
+                @if (old('activity[0][detail][${newIndex}][id_mstr_jaritan]') == $item->id)
                   <option data-id={{ $item->id }} value="{{ $item->id }}" selected>{{ $item->jenis_jaritan }}</option>
                 @else
                   <option data-id={{ $item->id }} value="{{ $item->id }}">{{ $item->jenis_jaritan }}</option>
@@ -181,9 +181,9 @@
               @endforeach
             </select>
           </td>
-          <td><input type="number" name="barang[${newIndex}][jumlah_barang]" class="form-control jumlah-barang"></td>
-          <td><input type="text" name="barang[${newIndex}][harga_satuan]" class="form-control hargaSatuanInput"></td>
-          <td><input type="text" name="barang[${newIndex}][subtotal]" class="form-control subtotal"></td>
+          <td><input type="number" name="activity[0][detail][${newIndex}][jumlah_barang]" class="form-control jumlah-barang"></td>
+          <td><input type="text" name="activity[0][detail][${newIndex}][harga_satuan]" class="form-control hargaSatuanInput"></td>
+          <td><input type="text" name="activity[0][detail][${newIndex}][subtotal]" class="form-control subtotal"></td>
           <td><a href="javascript:void(0)" class="btn btn-danger btn-sm deleteRow">
               <i class="fas fa-minus"></i></a>
           </td>

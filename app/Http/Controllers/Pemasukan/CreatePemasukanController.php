@@ -100,15 +100,12 @@ class CreatePemasukanController extends Controller
                 'tanggal' => date('Y-m-d')
             ]);
 
-
             // if create fails
             if (!$pemasukan) {
                 return redirect()->back()->with(
                     'pesan', 'Failed create pemasukan'
                 );
             }
-
-            // redirect to pemasukan index
 
             return redirect()->back()->with(
                 'success', 'Success create pemasukan'

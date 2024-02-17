@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pgwr_activities', function (Blueprint $table) {
+        Schema::create('kasbon_pgw_tetap', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_pgw_rumahan');
-            $table->double('gaji_bulanan');
-
-            $table->foreign('id_pgw_rumahan')->references('id')->on('pegawai_rumahan')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('id_pgw_tetap')->constrained('pegawai_normal');
+            $table->date('tanggal');
+            $table->bigInteger('jumlah_kasbon');
+            $table->bigInteger('sisa');
+            $table->enum('status', ['lunas', 'belum lunas']);
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pgwr_activities');
+        Schema::dropIfExists('kasbon_pgw_tetap');
     }
 };
