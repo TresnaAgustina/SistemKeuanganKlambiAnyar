@@ -29,6 +29,8 @@ use App\Http\Controllers\Keuangan\DeleteKeuanganController;
 use App\Http\Controllers\Keuangan\GetAllKeuanganController;
 use App\Http\Controllers\Keuangan\HitungController;
 use App\Http\Controllers\Keuangan\UpdateKeuanganController;
+use App\Http\Controllers\Laporan\LaporanKeuntunganController;
+use App\Http\Controllers\Laporan\LaporanPajakController;
 use App\Http\Controllers\Laporan\LaporanPemasukanController;
 use App\Http\Controllers\Laporan\LaporanPengeluaranController;
 use App\Http\Controllers\Pemasukan\CreatePemasukanController;
@@ -320,6 +322,18 @@ Route::prefix('/laporan-pengeluaran')->group(function(){
     Route::get('/all', [LaporanPengeluaranController::class, 'index'])->name('laporan-pengeluaran.all');
     Route::get('/cetak', [LaporanPengeluaranController::class, 'cetak'])->name('laporan-pengeluaran.cetak');
     Route::get('/{in}/{out}', [LaporanPengeluaranController::class, 'cetakPengeluaranTgl'])->name('laporan-pengeluaran.cetakFilter');
+});
+Route::prefix('/laporan-keuntungan')->group(function(){
+    Route::get('/all', [LaporanKeuntunganController::class, 'index'])->name('laporan-keuntungan.all');
+    Route::get('/cetak', [LaporanKeuntunganController::class, 'cetak'])->name('laporan-keuntungan.cetak');
+    Route::get('/{in}/{out}', [LaporanKeuntunganController::class, 'cetakKeuntunganTgl'])->name('laporan-keuntungan.cetakFilter');
+    Route::get('/test', [LaporanKeuntunganController::class, 'test'])->name('laporan-keuntungan.cetakFilter');
+});
+Route::prefix('/laporan-pajak')->group(function(){
+    Route::get('/all', [LaporanPajakController::class, 'index'])->name('laporan-keuntungan.all');
+    Route::get('/cetak', [LaporanPajakController::class, 'cetak'])->name('laporan-keuntungan.cetak');
+    Route::get('/{in}/{out}', [LaporanPajakController::class, 'cetakKeuntunganTgl'])->name('laporan-keuntungan.cetakFilter');
+    Route::get('/test', [LaporanPajakController::class, 'test'])->name('laporan-keuntungan.cetakFilter');
 });
 Route::prefix('/kasbon-tetap')->group(function(){
     Route::get('/all', GetAllKasbonTetapController::class)->name('kasbon-tetap.all');
