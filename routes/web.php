@@ -128,6 +128,7 @@ Route::prefix('/dataTable')->group(function () {
     Route::get('/penjualan-jasa', [TablePenjualanController::class, 'penjualanJasa'])->name('dataTable.penjualan-jasa');
     Route::get('/penjualan-lain', [TablePenjualanController::class, 'penjualanLain'])->name('dataTable.penjualan-lain');
     Route::get('/PegawaiAktivitas', [TableAktivitasController::class, 'DataPegawai'])->name('dataTable.DataPegawaiAktivitas');
+    Route::get('/Aktivitas', [TableAktivitasController::class, 'dataAktivitas'])->name('dataTable.dataAktivitas');
     Route::get('/KasbonTetap', [TableKasbonController::class, 'kasbonPegawaiTetap'])->name('dataTable.kasbonTetap');
     Route::get('/KasbonRumahan', [TableKasbonController::class, 'kasbonPegawaiRumahan'])->name('dataTable.kasbonRumahan');
     Route::post('/LaporanPemasukan', [TableLaporanController::class, 'DataPemasukan'])->name('dataTable.laporanPemasukan');

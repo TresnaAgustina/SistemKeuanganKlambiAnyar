@@ -60,7 +60,7 @@
                 <input name="tanggal" type="date" class="form-control" id="tgl" required>
               </div>          
               
-              <button type="text" class="btn btn-success mt-4">Simpan</button>
+              <button type="submit" class="btn btn-success mt-4">Simpan</button>
             </div>
           </form>
           </div>

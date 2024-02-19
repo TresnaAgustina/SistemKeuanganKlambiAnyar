@@ -17,17 +17,6 @@
 <div class="error" data-swal="{{ session('pesan') }}">
 </div>
 
-{{-- error and success handling --}}
-{{-- @if (session('pesan'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ session('pesan') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">×</span>
-    </button> 
-</div>
-@endif --}}
-{{-- end --}}
-
 <section class="content">
     <div class="container-fluid">
       <div class="row">
@@ -39,11 +28,6 @@
             </div>
             
             <div class="card-body">
-              
-              <button type="button" class="btn btn-primary test" data-toggle="modal" data-target="#md-pegawai">
-                <i class="fas fa-plus"></i>
-                Tambah Data
-              </button>
              
             </div>
             <!-- /.card -->

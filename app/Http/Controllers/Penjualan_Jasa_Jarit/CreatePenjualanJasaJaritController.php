@@ -32,29 +32,30 @@ class CreatePenjualanJasaJaritController extends Controller
                 'id_customer' => 'required|numeric',
                 'tanggal' => 'required|date',
                 'metode_pembayaran' => 'required|in:cash,credit',
-                'jmlh_bayar_awal' => 'nullable|numeric',
+                'jmlh_bayar_awal' => 'nullable',
                 'tgl_jatuh_tempo' => 'nullable|date',
-                'jmlh_dibayar' => 'nullable|numeric',
+                'jmlh_dibayar' => 'nullable',
                 'keterangan' => 'nullable|string',
                 'bukti_pembayaran' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
                 'barang.*.id_mstr_jaritan' => 'required|numeric',
                 'barang.*.jumlah_barang' => 'required|numeric',
             ]);
 
-            // ddd($data, $validate, $validate->errors());
 
             if (!empty($data['jmlh_bayar_awal'])) {
-                $credit = str_replace(['.'], '', $data['jmlh_bayar_awal']);
+                $credit = str_replace(['.', ','], '', $data['jmlh_bayar_awal']);
             } else {
                 $credit = null;
             }
             
             if (!empty($data['jmlh_dibayar'])) {
-                $cash = str_replace(['.'], '', $data['jmlh_dibayar']);
+                $cash = str_replace(['.', ','], '', $data['jmlh_dibayar']);
             } else {
                 $cash = null;
             }
             
+            // ddd($credit);
+
             //if validation fails
             if ($validate->fails()) {
                 return redirect()->back()->with('pesan', 'Error: '.$validate->errors());
@@ -111,7 +112,7 @@ class CreatePenjualanJasaJaritController extends Controller
                 'metode_pembayaran' => $data['metode_pembayaran'],
                 'jmlh_bayar_awal' => $credit,
                 'tgl_jatuh_tempo' => $data['tgl_jatuh_tempo'],
-                'jmlh_dibayar' =>$cash,
+                'jmlh_dibayar' => $cash,
                 'keterangan' => $data['keterangan'],
                 'bukti_pembayaran' => $data['bukti_pembayaran'],
             ]);
