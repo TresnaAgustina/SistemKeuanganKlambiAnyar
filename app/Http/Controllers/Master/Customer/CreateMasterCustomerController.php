@@ -31,11 +31,9 @@ class CreateMasterCustomerController extends Controller
 
             //if validation fails
             if ($validate->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'pesan' => 'Create Data Master Customer Failed!',
-                    'data' => $validate->errors()
-                ], 400);
+                return redirect()->back()->with(
+                    'pesan', 'Error: '. $validate->errors()
+                );
             }
 
             //create data to database
@@ -59,11 +57,9 @@ class CreateMasterCustomerController extends Controller
             );
 
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'pesan' => 'Create Data Master Customer Failed!'. $e->getMessage(),
-                'data' => ''
-            ], 400);
+            return redirect()->back()->with(
+                'pesan', 'Error: '. $e->getMessage()
+            );
         }
     }
 }

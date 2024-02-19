@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Aktivitas\CreateActivityController;
 use App\Http\Controllers\Aktivitas\CreateAktivitasController;
+use App\Http\Controllers\Aktivitas\GetAllActivityController;
 use App\Http\Controllers\Aktivitas\GetAllAktivitasController;
 use App\Http\Controllers\Aktivitas\GetCreateAktivitasController;
 use Illuminate\Support\Facades\Route;
@@ -310,7 +311,7 @@ Route::prefix('/hutang')->group(function(){
     Route::post('/bayar/{id}', UpdateHutangController::class)->name('hutang.update');
 });
 Route::prefix('/aktivitas')->group(function(){
-    Route::get('/all', GetAllAktivitasController::class)->name('aktivitas.all');
+    Route::get('/all', GetAllActivityController::class)->name('aktivitas.all');
     Route::get('/create/{nip}', GetCreateAktivitasController::class)->name('aktivitas.create.index');
     Route::post('/create/{nip}', CreateActivityController::class)->name('aktivitas.create');
     Route::post('/bayar/{id}', UpdatePiutangController::class)->name('hutang.update');

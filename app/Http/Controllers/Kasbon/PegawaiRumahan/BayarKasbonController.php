@@ -6,6 +6,7 @@ use App\Models\Keuangan;
 use Illuminate\Http\Request;
 use App\Models\KasbonPgwRumahan;
 use App\Http\Controllers\Controller;
+use App\Models\History;
 use Illuminate\Support\Facades\Validator;
 
 class BayarKasbonController extends Controller
@@ -65,9 +66,18 @@ class BayarKasbonController extends Controller
             // update saldo kas
             $saldo = Keuangan::first();
             $saldo->saldo_kas = $saldo->saldo_kas + $data['jumlah_bayar'];
+            $saldo->save();
+
+            // update history tipe pemasukan
+            $history = History::create([
+                'tanggal' => $data['tanggal'],
+                'keterangan' => 'Pembayaran Kasbon Pegawai Rumahan',
+                'tipe' => 'Pemasukan',
+                'jumlah' => $data['jumlah_bayar'],
+            ]);
 
             // return success message
-            return redirect()->back()->with(
+            return redirect()->to('/kasbon-rumahan/all')->with(
                 'success', 'Berhasil Bayar Kasbon'
             );
         } catch (\Exception $e) {

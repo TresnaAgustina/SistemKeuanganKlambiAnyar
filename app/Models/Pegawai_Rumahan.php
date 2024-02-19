@@ -17,7 +17,8 @@ class Pegawai_Rumahan extends Model
         'alamat',
         'no_telp',
         'jenis_kelamin',
-        'status'
+        'status',
+        'gaji_bulanan',
     ];
 
     public function kasbon_pegawai()

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Kasbon\PegawaiTetap;
 
+use App\Models\History;
 use App\Models\Keuangan;
 use Illuminate\Http\Request;
 use App\Models\KasbonPgwTetap;
@@ -23,7 +24,7 @@ class BayarKasbonController extends Controller
             $data = $request->all();
 
             // get data kasbon by id
-            $kasbon = KasbonPgwTetap::find($data['id'])->first();
+            $kasbon = KasbonPgwTetap::find($data['id']);
 
             // if data kasbon not found
             if (!$kasbon) {
@@ -65,9 +66,18 @@ class BayarKasbonController extends Controller
             // update saldo kas
             $saldo = Keuangan::first();
             $saldo->saldo_kas = $saldo->saldo_kas + $data['jumlah_bayar'];
+            $saldo->save();
+
+            // update history tipe pemasukan
+            $history = History::create([
+                'tanggal' => $data['tanggal'],
+                'keterangan' => 'Pembayaran Kasbon Pegawai Tetap',
+                'tipe' => 'Pemasukan',
+                'jumlah' => $data['jumlah_bayar'],
+            ]);
 
             // return success message
-            return redirect()->back()->with(
+            return redirect()->to('/kasbon-tetap/all')->with(
                 'success', 'Berhasil Bayar Kasbon'
             );
         } catch (\Exception $e) {

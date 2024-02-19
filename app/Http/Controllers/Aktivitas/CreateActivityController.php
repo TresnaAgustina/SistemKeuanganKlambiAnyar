@@ -52,7 +52,7 @@ class CreateActivityController extends Controller
                 );
             }
 
-            // ---***--- KURANG PERHITUNGAN TOTAL-TOTAL ---***--- //
+            // ---***--- PERHITUNGAN TOTAL-TOTAL ---***--- //
             // hitung gaji_harian dari activity_detail
             $gaji_harian = 0;
             foreach ($data['activity'] as $activity) {
@@ -83,6 +83,17 @@ class CreateActivityController extends Controller
                     'gaji_bulanan' => $gaji_bulanan,
                 ]);
             }
+
+            // select activity_detail and group by tanggal
+            $gaji_reset = ActivityDetail::selectRaw('MONTH(tanggal) as bulan, SUM(gaji_harian) as gaji_harian')->where('id_pgwr_activity', $pgwr_activity->id)->groupBy('bulan')->get();
+
+            // ambil gaji_reset sesuai bulan sekarang
+            $gaji_reset = $gaji_reset->where('bulan', date('m'))->first();
+
+            ddd($gaji_reset);
+            // update data gaji_bulanan in pegawai_rumahan
+            $pegawai_rumahan->gaji_bulanan = $gaji_bulanan;
+            $pegawai_rumahan->save();
 
             // jika data activity_detail dengan id_pgwr_activity dan tanggal yang sama sudah ada pada database, maka update data activity_detail namun untuk data activity_items tetap di create
             $activity_detail = ActivityDetail::where('id_pgwr_activity', $pgwr_activity->id)->where('tanggal', date('Y-m-d', strtotime($data['activity'][0]['tanggal'])))->first();

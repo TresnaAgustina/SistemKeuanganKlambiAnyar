@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Kasbon\Kasbon_Rumahan;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kasbon_Pegawai;
 use App\Models\KasbonPgwRumahan;
 use Illuminate\Http\Request;
 

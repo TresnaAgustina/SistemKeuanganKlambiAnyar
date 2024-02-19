@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\GajiRumahan;
 use App\Models\ActivityDetail;
 use App\Models\Master_Jaritan;
 use App\Models\Pegawai_Rumahan;
@@ -14,7 +15,6 @@ class Pgwr_Activity extends Model
 
     protected $table = 'pgwr_activities';
     protected $fillable = [
-        'nama',
         'id_pgw_rumahan',
         'gaji_bulanan',
     ];
@@ -27,5 +27,11 @@ class Pgwr_Activity extends Model
     public function activity_details()
     {
         return $this->hasMany(ActivityDetail::class, 'id_pgwr_activity', 'id');
+    }
+
+    // to GajiRumahan
+    public function gaji_rumahan()
+    {
+        return $this->hasOne(GajiRumahan::class, 'id_activity');
     }
 }

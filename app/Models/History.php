@@ -14,6 +14,7 @@ class History extends Model
         'nama',
         'keterangan',
         'tipe',
+        'metode',
         'jumlah',
         'tanggal',
     ];

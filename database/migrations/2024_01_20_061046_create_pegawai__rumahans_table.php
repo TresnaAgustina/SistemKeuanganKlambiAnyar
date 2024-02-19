@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('no_telp');
             $table->enum('jenis_kelamin', ['Perempuan', 'Laki-laki']);
             $table->enum('status', ['active', 'inactive']);
+            $table->double('gaji_bulanan');
             $table->timestamps();
         });
     }

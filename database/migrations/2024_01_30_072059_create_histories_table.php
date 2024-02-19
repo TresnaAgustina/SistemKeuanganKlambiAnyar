@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->text('keterangan')->nullable();
             $table->string('tipe');
+            $table->enum('metode', ['cash', 'credit']);
             $table->double('jumlah');
             $table->date('tanggal');
             $table->timestamps();
