@@ -37,6 +37,8 @@ class CreatePgwrRumahanController extends Controller
 
             // create nip pegawai
             $nip = 'PWR - ' . rand(1, 1000);
+            // set gaji_bulanan to = 0
+            $gaji_bulanan = 0;
 
             // create data
             $store = Pegawai_Rumahan::create([
@@ -46,6 +48,7 @@ class CreatePgwrRumahanController extends Controller
                 'no_telp' => $data['no_telp'],
                 'jenis_kelamin' => $data['jenis_kelamin'],
                 'status' => $data['status'],
+                'gaji_bulanan' => $gaji_bulanan
             ]);
 
             // if store fails

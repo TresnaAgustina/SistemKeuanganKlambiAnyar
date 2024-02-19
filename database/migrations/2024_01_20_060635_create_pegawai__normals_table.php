@@ -22,6 +22,7 @@ return new class extends Migration
             $table->enum('jenis_kelamin', ['Perempuan' ,'Laki-laki']);
             $table->double('gaji_pokok');
             $table->enum('status', ['active', 'inactive']);
+            $table->double('gaji_final')->nullable();
             $table->timestamps();
         });
     }

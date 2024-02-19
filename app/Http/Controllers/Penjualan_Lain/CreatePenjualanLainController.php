@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Penjualan_Lain;
 
 use App\Models\History;
+use App\Models\Piutang;
 use App\Models\Keuangan;
 use Illuminate\Http\Request;
 use App\Models\Master_Barang;
 use App\Models\Penjualan_Lain;
 use App\Http\Controllers\Controller;
+use App\Models\CartPenjualanLain;
 use Illuminate\Support\Facades\Validator;
 
 class CreatePenjualanLainController extends Controller
@@ -23,6 +25,7 @@ class CreatePenjualanLainController extends Controller
         try {
             // *** get all request data *** //
             $data = $request->all();
+            $keuangan = Keuangan::get();
 
             // *** make validation *** //
             $validate = Validator::make($data, [
@@ -85,25 +88,25 @@ class CreatePenjualanLainController extends Controller
             }
 
             // generate kode penjualan (format: PL-<rand(4 anngka)>-<tanggal>)
-            $kode_penjualan = 'PL-'.rand(1000, 9999).'-'.date('Ymd');
+            $kode_penjualan = 'PL-'.rand(100, 999).'-'.date('Ymd');
 
            // store bukti pembayaran to storage
            if ($request->hasFile('bukti_pembayaran')) {
-            $file = $request->file('bukti_pembayaran');
-            // create file name (format: bukti_pembayaran_<kode_penjualan>_<tanggal>.<ext>)
-            $filename = 'bukti_pembayaran_'.$kode_penjualan.'_'.date('Ymd').'_'.time().'.'.$file->getClientOriginalExtension();
-            $file->storeAs('public/Penjualan_Lain', $filename);
+                $file = $request->file('bukti_pembayaran');
+                // create file name (format: bukti_pembayaran_<kode_penjualan>_<tanggal>.<ext>)
+                $filename = 'bukti_pembayaran_'.$kode_penjualan.'_'.date('Ymd').'_'.time().'.'.$file->getClientOriginalExtension();
+                $file->storeAs('public/Penjualan_Lain', $filename);
             $data['bukti_pembayaran'] = $filename;
-        }else{
-            $data['bukti_pembayaran'] = null;
-        }
+            }else{
+                $data['bukti_pembayaran'] = null;
+            }
 
-            // *** STORE PROCESS *** //
-            // store data to penjualan_lain
-            $penjualan_lain = Penjualan_Lain::create([
+            // *** STORE DATA *** //
+            $penjualan_lain = Penjualan_Lain::updateOrCreate([
                 'id_customer' => $data['id_customer'],
-                'kode_penjualan' => $kode_penjualan,
                 'tanggal' => $data['tanggal'],
+            ],[
+                'kode_penjualan' => $kode_penjualan,
                 'metode_pembayaran' => $data['metode_pembayaran'],
                 'jmlh_bayar_awal' => $credit,
                 'tgl_jatuh_tempo' => $data['tgl_jatuh_tempo'],
@@ -112,58 +115,100 @@ class CreatePenjualanLainController extends Controller
                 'bukti_pembayaran' => $data['bukti_pembayaran'],
             ]);
 
-            // store data to cart_penjualan_lain
-            foreach ($data['barang'] as $barang) {
-                $penjualan_lain->cart_penjualan_lain()->create([
-                    'id_penjualan_lain' => $penjualan_lain->id,
-                    'id_mstr_barang' => $barang['id_mstr_barang'],
-                    'jumlah_barang' => $barang['jumlah_barang'],
-                    'harga_satuan' => $barang['harga_satuan'],
-                    'subtotal' => $barang['subtotal'],
-                ]);
-            }
+            // check if the record is newly created
+            $isRecordNewlyCreated = $penjualan_lain->wasRecentlyCreated;
 
-            // update saldo_kas in keuangan, tambah dengan jmlh_bayar_awal atau jmlh_dibayar
-            $keuangan = Keuangan::first();
-            if ($penjualan_lain->metode_pembayaran == 'cash') {
-                $keuangan->update([
-                    'saldo_kas' => $keuangan->saldo_kas + $penjualan_lain->jmlh_dibayar
-                ]);
-            }else if($penjualan_lain->metode_pembayaran == 'credit'){
-                $keuangan->update([
-                    'saldo_kas' => $keuangan->saldo_kas + $penjualan_lain->jmlh_bayar_awal
-                ]);
-            }
+            // // Check if the cart exists
+            $cart = CartPenjualanLain::where('id_penjualan_lain', $penjualan_lain->id)->get();
+            // If the cart is not empty, update existing items or create new items
+            if ($cart->isNotEmpty()) {
+                foreach ($data['barang'] as $barang) {
+                    $existingCartItem = $cart->where('id_mstr_barang', $barang['id_mstr_barang'])->first();
 
-            // calculate total harga
-            $total_harga = $penjualan_lain->cart_penjualan_lain()->sum('subtotal');
-            // if jmlh_bayar_awal < total_harga, store to piutang
-            if ($penjualan_lain->metode_pembayaran == 'credit' && $penjualan_lain->jmlh_bayar_awal < $total_harga) {
-                $piutang = $penjualan_lain->piutang()->create([
-                    'id_jual_lain' => $penjualan_lain->id,
-                    'id_jual_jasa' => null,
-                    // jumlah_bayar = untuk update piutang ketika pelunasan
-                    'jumlah_bayar' => null,
-                    'jumlah_piutang' => $total_harga - $penjualan_lain->jmlh_bayar_awal,
-                    // set tanggal jatuh tempo 1 week from now
-                    'tgl_jatuh_tempo' => date('Y-m-d', strtotime('+1 week')),
-                    'sisa_piutang' => $total_harga - $penjualan_lain->jmlh_bayar_awal,
-                    'status' => 'Belum Lunas'
-                ]);
-
-                // if fails
-                if (!$piutang) {
-                    return redirect()->back()->with('pesan', 'Gagal membuat piutang');
+                    // If the item already exists in the cart, update it
+                    if ($existingCartItem) {
+                        $existingCartItem->update([
+                            'jumlah_barang' => $existingCartItem->jumlah_barang + $barang['jumlah_barang'],
+                            'harga_satuan' => $barang['harga_satuan'],
+                            'subtotal' => $existingCartItem->subtotal + $barang['subtotal'],
+                        ]);
+                    } else {
+                        // If the item doesn't exist in the cart, create a new one
+                        $penjualan_lain->cart_penjualan_lain()->create([
+                            'id_penjualan_lain' => $penjualan_lain->id,
+                            'id_mstr_barang' => $barang['id_mstr_barang'],
+                            'jumlah_barang' => $barang['jumlah_barang'],
+                            'harga_satuan' => $barang['harga_satuan'],
+                            'subtotal' => $barang['subtotal'],
+                        ]);
+                    }
+                }
+            } else {
+                // If the cart is empty, create new items
+                foreach ($data['barang'] as $barang) {
+                    $penjualan_lain->cart_penjualan_lain()->create([
+                        'id_penjualan_lain' => $penjualan_lain->id,
+                        'id_mstr_barang' => $barang['id_mstr_barang'],
+                        'jumlah_barang' => $barang['jumlah_barang'],
+                        'harga_satuan' => $barang['harga_satuan'],
+                        'subtotal' => $barang['subtotal'],
+                    ]);
                 }
             }
 
-            // insert to histories
-            $history = History::create([
-                'keterangan' => 'Penjualan Lain',
-                'tipe' => 'Pemasukan',
-                'jumlah' => $penjualan_lain->metode_pembayaran == 'cash' ? $penjualan_lain->jmlh_dibayar : $penjualan_lain->jmlh_bayar_awal,
-                'tanggal' => $penjualan_lain->tanggal,
-            ]);
+            // *** UPDATE or CREATE PIUTANG *** //
+            $total_harga = $penjualan_lain->cart_penjualan_lain()->sum('subtotal');
+            $piutang = Piutang::updateOrCreate(
+                ['id_jual_lain' => $penjualan_lain->id],
+                [
+                    'jumlah_piutang' => $total_harga - $penjualan_lain->jmlh_bayar_awal,
+                    'tgl_jatuh_tempo' => $penjualan_lain->tgl_jatuh_tempo,
+                    'sisa_piutang' => $total_harga - $penjualan_lain->jmlh_bayar_awal,
+                    'status' => 'Belum Lunas',
+                ]
+            );
+            // update saldo_kas in keuangan, tambah dengan jmlh_bayar_awal atau jmlh_dibayar
+            $keuangan = Keuangan::first();
+            $existingPiutang = Piutang::where('id_jual_lain', $penjualan_lain->id)->first();
+            if ($isRecordNewlyCreated) {
+                if ($penjualan_lain->metode_pembayaran == 'cash') {
+                    $keuangan->update([
+                        'saldo_kas' => $keuangan->saldo_kas + $penjualan_lain->jmlh_dibayar,
+                    ]);
+                } elseif ($penjualan_lain->metode_pembayaran == 'credit') {
+                    // Check if there's an existing Piutang record
+                    if ($existingPiutang) {
+                        // Get the existing jmlh_bayar_awal from the Piutang record
+                        $existingJmlhBayarAwal = $existingPiutang->jumlah_bayar_awal;
+            
+                        // Check if the new jmlh_bayar_awal is greater than the existing one
+                        if ($penjualan_lain->jmlh_bayar_awal > $existingJmlhBayarAwal) {
+                            // Calculate the difference in jmlh_bayar_awal
+                            $difference = $penjualan_lain->jmlh_bayar_awal - $existingJmlhBayarAwal;
+            
+                            // Update saldo_kas in keuangan with the difference
+                            $keuangan->update([
+                                'saldo_kas' => $keuangan->saldo_kas + $difference,
+                            ]);
+                        }
+                    } else {
+                        // If there's no existing Piutang, update saldo_kas with the new jmlh_bayar_awal
+                        $keuangan->update([
+                            'saldo_kas' => $keuangan->saldo_kas + $penjualan_lain->jmlh_bayar_awal,
+                        ]);
+                    }
+                }
+            }
+
+            // insert to histories only if the record is newly created
+            if ($isRecordNewlyCreated) {
+                History::create([
+                    'keterangan' => 'Penjualan Lain',
+                    'tipe' => 'Pemasukan',
+                    'jumlah' => $penjualan_lain->metode_pembayaran == 'cash' ? $penjualan_lain->jmlh_dibayar : $penjualan_lain->jmlh_bayar_awal,
+                    'tanggal' => $penjualan_lain->tanggal,
+                ]);
+            }
             
 
             // check if fails

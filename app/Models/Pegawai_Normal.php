@@ -19,6 +19,7 @@ class Pegawai_Normal extends Model
         'jenis_kelamin',
         'gaji_pokok',
         'status',
+        'gaji_final',
     ];
 
     // kasbon KasbonPgwTetap

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Kasbon\PegawaiRumahan;
 
-use App\Http\Controllers\Controller;
-use App\Models\KasbonPgwRumahan;
+use App\Models\History;
 use App\Models\Keuangan;
-use App\Models\Pegawai_Rumahan;
 use Illuminate\Http\Request;
+use App\Models\KasbonPgwTetap;
+use App\Models\Pegawai_Rumahan;
+use App\Models\KasbonPgwRumahan;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
 class CreateKasbonController extends Controller
@@ -61,25 +63,51 @@ class CreateKasbonController extends Controller
                 );
             }
 
-            // create data kasbon
-            $store = KasbonPgwRumahan::create([
-                'id_pgw_rumahan' => $data['id_pgw_rumahan'],
-                'tanggal' => $data['tanggal'],
-                'jumlah_kasbon' => $data['jumlah_kasbon'],
-                'sisa' => $sisa,
-                'status' => $status,
-            ]);
+            // if data kasbon with id_pgw_normal is exists, then update the sisa kasbon
+            $kasbon = KasbonPgwRumahan::where('id_pgw_rumahan', $data['id_pgw_rumahan'])->first();
+            if ($kasbon) {
+                if ($kasbon->status == 'belum lunas'){
+                    $kasbon->update([
+                        'jumlah_kasbon' => $kasbon->jumlah_kasbon + $data['jumlah_kasbon'],
+                        'sisa' => $kasbon->sisa + $data['jumlah_kasbon'],
+                    ]);
+                }else{
+                    $kasbon->update([
+                        'jumlah_kasbon' => $data['jumlah_kasbon'],
+                        'sisa' => $data['jumlah_kasbon'],
+                        'status' => $status,
+                    ]);
+                }
+                
+            }else{
+                // if doesn't exists, create new data kasbon
+                $store = KasbonPgwRumahan::create([
+                    'id_pgw_rumahan' => $data['id_pgw_rumahan'],
+                    'tanggal' => $data['tanggal'],
+                    'jumlah_kasbon' => $data['jumlah_kasbon'],
+                    'sisa' => $sisa,
+                    'status' => $status,
+                ]);
 
-            // check if store is fails
-            if (!$store) {
-                return redirect()->back()->with(
-                    'pesan', 'Error: Gagal Menyimpan Data Kasbon'
-                );
+                // check if store is fails
+                if (!$store) {
+                    return redirect()->back()->with(
+                        'pesan', 'Error: Gagal Menyimpan Data Kasbon'
+                    );
+                }
             }
 
             // update data saldo_kas
             $saldo->update([
                 'saldo_kas' => $saldo->saldo_kas - $data['jumlah_kasbon']
+            ]);
+
+            // update history tipe pengeluaran
+            History::create([
+                'tanggal' => $data['tanggal'],
+                'keterangan' => 'Kasbon Pegawai Rumahan',
+                'tipe' => 'Pengeluaran',
+                'jumlah' => $data['jumlah_kasbon'],
             ]);
 
             // return success

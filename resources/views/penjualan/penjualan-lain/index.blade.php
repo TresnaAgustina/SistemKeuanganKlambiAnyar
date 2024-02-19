@@ -47,7 +47,7 @@
               <div class="form-group">
                 <label>Metode Pembayaran</label>
                 <select class="form-control" name='metode_pembayaran' id="pembayaran_penjualan">
-                  <option value="Pilih">~ Pilih ~</option>                 
+                  <option>~ Pilih ~</option>                 
                   <option value="cash">Cash</option>                 
                   <option value="credit">Credit</option>                 
                 </select>
@@ -243,7 +243,7 @@
       var total = parseFloat($('.total').text()) || 0;
       
       // Kurangi subtotal dari total
-      total -= subtotal;
+      subtotal =- total;
 
     // Perbarui total yang ditampilkan
     $('.total').text(total);

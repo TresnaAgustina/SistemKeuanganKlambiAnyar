@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Penjualan_Jasa_Jarit;
 
+use App\Models\History;
+use App\Models\Piutang;
 use App\Models\Keuangan;
 use Illuminate\Http\Request;
 use App\Models\Master_Jaritan;
+use App\Models\CartPenjualanJasa;
 use App\Http\Controllers\Controller;
-use App\Models\History;
 use App\Models\Penjualan_Jasa_Jarit;
 use Illuminate\Support\Facades\Validator;
 
@@ -20,9 +22,6 @@ class CreatePenjualanJasaJaritController extends Controller
      */
     public function __invoke(Request $request)
     {
-
-        // dd($request->all());
-
         try {
             //get all request data
             $data = $request->all();
@@ -40,7 +39,6 @@ class CreatePenjualanJasaJaritController extends Controller
                 'barang.*.id_mstr_jaritan' => 'required|numeric',
                 'barang.*.jumlah_barang' => 'required|numeric',
             ]);
-
 
             if (!empty($data['jmlh_bayar_awal'])) {
                 $credit = str_replace(['.', ','], '', $data['jmlh_bayar_awal']);
@@ -104,11 +102,11 @@ class CreatePenjualanJasaJaritController extends Controller
             }
 
             // *** STORE PROCESS *** //
-            //store to penjualan_jasa_jarit
-            $penjualan_jasa = Penjualan_Jasa_Jarit::create([
+            $penjualan_jasa = Penjualan_Jasa_Jarit::updateOrCreate([
                 'id_customer' => $data['id_customer'],
-                'kode_penjualan' => $kode_penjualan,
                 'tanggal' => $data['tanggal'],
+            ],[
+                'kode_penjualan' => $kode_penjualan,
                 'metode_pembayaran' => $data['metode_pembayaran'],
                 'jmlh_bayar_awal' => $credit,
                 'tgl_jatuh_tempo' => $data['tgl_jatuh_tempo'],
@@ -117,61 +115,99 @@ class CreatePenjualanJasaJaritController extends Controller
                 'bukti_pembayaran' => $data['bukti_pembayaran'],
             ]);
 
-            //store to cart_penjualan_jasa
-            foreach ($data['barang'] as $barang) {
-                $penjualan_jasa->cart_penjualan_jasa()->create([
-                    'id_penjualan_jasa' => $penjualan_jasa->id,
-                    'id_mstr_jaritan' => $barang['id_mstr_jaritan'],
-                    'jumlah_barang' => $barang['jumlah_barang'],
-                    'harga_satuan' => $barang['harga_satuan'],
-                    'subtotal' => $barang['subtotal'],
-                ]);
-            }
+            $isRecordNewlyCreated = $penjualan_jasa->wasRecentlyCreated;
 
-            // update saldo_kas in keuangan, tambah dengan jmlh_bayar_awal atau jmlh_dibayar
-            $keuangan = Keuangan::first();
-            if ($penjualan_jasa->metode_pembayaran == 'cash') {
-                $keuangan->update([
-                    'saldo_kas' => $keuangan->saldo_kas + $penjualan_jasa->jmlh_dibayar
-                ]);
-            }else if($penjualan_jasa->metode_pembayaran == 'credit'){
-                $keuangan->update([
-                    'saldo_kas' => $keuangan->saldo_kas + $penjualan_jasa->jmlh_bayar_awal
-                ]);
-            }
+            // check if the cart is exist
+            $cart = CartPenjualanJasa::where('id_penjualan_jasa', $penjualan_jasa->id)->get();
+            // If the cart is not empty, update existing items or create new items
+            if ($cart->isNotEmpty()) {
+                foreach ($data['barang'] as $barang) {
+                    $existingCartItem = $cart->where('id_mstr_jaritan', $barang['id_mstr_jaritan'])->first();
 
-            // calculate total harga
-            $total_harga = $penjualan_jasa->cart_penjualan_jasa()->sum('subtotal');
-
-            // if jmlh_bayar_awal < total_harga, store to piutang
-            if ($penjualan_jasa->metode_pembayaran == 'credit' && $penjualan_jasa->jmlh_bayar_awal < $total_harga) {
-                $piutang = $penjualan_jasa->piutang()->create([
-                    'id_jual_lain' => null, 
-                    'id_jual_jasa' => $penjualan_jasa->id,
-                    'jumlah_piutang' => $total_harga - $penjualan_jasa->jmlh_bayar_awal,
-                    'tgl_jatuh_tempo' => $penjualan_jasa->tgl_jatuh_tempo,
-                    'sisa_piutang' => $total_harga - $penjualan_jasa->jmlh_bayar_awal,
-                    'status' => 'Belum Lunas'
-                ]);
-
-                // if fails
-                if (!$piutang) {
-                    return redirect()->back()->with('pesan', 'Gagal menyimpan data piutang');
+                    // If the item already exists in the cart, update it
+                    if ($existingCartItem) {
+                        $existingCartItem->update([
+                            'jumlah_barang' => $existingCartItem->jumlah_barang + $barang['jumlah_barang'],
+                            'harga_satuan' => $barang['harga_satuan'],
+                            'subtotal' => $existingCartItem->subtotal + $barang['subtotal'],
+                        ]);
+                    } else {
+                        // If the item doesn't exist in the cart, create a new one
+                        $penjualan_jasa->cart_penjualan_jasa()->create([
+                            'id_penjualan_jarit' => $penjualan_jasa->id,
+                            'id_mstr_jaritan' => $barang['id_mstr_jaritan'],
+                            'jumlah_barang' => $barang['jumlah_barang'],
+                            'harga_satuan' => $barang['harga_satuan'],
+                            'subtotal' => $barang['subtotal'],
+                        ]);
+                    }
+                }
+            } else {
+                // If the cart is empty, create new items
+                foreach ($data['barang'] as $barang) {
+                    $penjualan_jasa->cart_penjualan_jasa()->create([
+                        'id_penjualan_jarit' => $penjualan_jasa->id,
+                        'id_mstr_jaritan' => $barang['id_mstr_jaritan'],
+                        'jumlah_barang' => $barang['jumlah_barang'],
+                        'harga_satuan' => $barang['harga_satuan'],
+                        'subtotal' => $barang['subtotal'],
+                    ]);
                 }
             }
 
-            // insert to histories
-            $history = History::create([
-                'keterangan' => 'Penjualan Jasa Jarit',
-                'tipe' => 'Pemasukan',
-                'jumlah' => $penjualan_jasa->metode_pembayaran == 'cash' ? $penjualan_jasa->jmlh_dibayar : $penjualan_jasa->jmlh_bayar_awal,
-                'tanggal' => $penjualan_jasa->tanggal
-            ]);
+            // *** UPDATE or CREATE PIUTANG *** //
+            $total_harga = $penjualan_jasa->cart_penjualan_jasa()->sum('subtotal');
+            $piutang = Piutang::updateOrCreate(
+                ['id_jual_jasa' => $penjualan_jasa->id],
+                [
+                    'jumlah_piutang' => $total_harga - $penjualan_jasa->jmlh_bayar_awal,
+                    'tgl_jatuh_tempo' => $penjualan_jasa->tgl_jatuh_tempo,
+                    'sisa_piutang' => $total_harga - $penjualan_jasa->jmlh_bayar_awal,
+                    'status' => 'Belum Lunas',
+                ]
+            );
 
-            // check if fails
-            // check if fails
-            if (!$penjualan_jasa || !$penjualan_jasa->cart_penjualan_jasa()->exists()) {
-                return redirect()->back()->with('pesan', 'Gagal membuat penjualan');
+            // update saldo_kas in keuangan, tambah dengan jmlh_bayar_awal atau jmlh_dibayar
+            $keuangan = Keuangan::first();
+            $existingPiutang = Piutang::where('id_jual_jasa', $penjualan_jasa->id)->first();
+            if ($isRecordNewlyCreated) {
+                if ($penjualan_jasa->metode_pembayaran == 'cash') {
+                    $keuangan->update([
+                        'saldo_kas' => $keuangan->saldo_kas + $penjualan_jasa->jmlh_dibayar,
+                    ]);
+                } elseif ($penjualan_jasa->metode_pembayaran == 'credit') {
+                    // Check if there's an existing Piutang record
+                    if ($existingPiutang) {
+                        // Get the existing jmlh_bayar_awal from the Piutang record
+                        $existingJmlhBayarAwal = $existingPiutang->jumlah_bayar_awal;
+            
+                        // Check if the new jmlh_bayar_awal is greater than the existing one
+                        if ($penjualan_jasa->jmlh_bayar_awal > $existingJmlhBayarAwal) {
+                            // Calculate the difference in jmlh_bayar_awal
+                            $difference = $penjualan_jasa->jmlh_bayar_awal - $existingJmlhBayarAwal;
+            
+                            // Update saldo_kas in keuangan with the difference
+                            $keuangan->update([
+                                'saldo_kas' => $keuangan->saldo_kas + $difference,
+                            ]);
+                        }
+                    } else {
+                        // If there's no existing Piutang, update saldo_kas with the new jmlh_bayar_awal
+                        $keuangan->update([
+                            'saldo_kas' => $keuangan->saldo_kas + $penjualan_jasa->jmlh_bayar_awal,
+                        ]);
+                    }
+                }
+            }
+
+            // insert to histories only if the record is newly created
+            if ($isRecordNewlyCreated) {
+                History::create([
+                    'keterangan' => 'Penjualan Jasa Jarit',
+                    'tipe' => 'Pemasukan',
+                    'jumlah' => $penjualan_jasa->metode_pembayaran == 'cash' ? $penjualan_jasa->jmlh_dibayar : $penjualan_jasa->jmlh_bayar_awal,
+                    'tanggal' => $penjualan_jasa->tanggal,
+                ]);
             }
 
             return redirect()->back()->with('success', 'Berhasil membuat penjualan');

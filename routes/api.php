@@ -1,11 +1,19 @@
 <?php
 
 use App\Http\Controllers\Aktivitas\CreateActivityController;
+use App\Http\Controllers\Aktivitas\GetAllActivityController;
+use App\Http\Controllers\Aktivitas\GetDetailActivityController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Gaji\PegawaiRumahan\GetAllGajiRumahanController;
+use App\Http\Controllers\Gaji\PegawaiRumahan\GetPotongGajiRumahanController;
+use App\Http\Controllers\Gaji\PegawaiRumahan\PotongGajiRumahanController;
+use App\Http\Controllers\Gaji\PegawaiTetap\GetAllGajiTetapController;
+use App\Http\Controllers\Gaji\PegawaiTetap\GetPotongGajiTetapController;
+use App\Http\Controllers\Gaji\PegawaiTetap\PotongGajiTetapController;
 use App\Http\Controllers\Keuangan\CreateKeuanganController;
 use App\Http\Controllers\Keuangan\DeleteKeuanganController;
 use App\Http\Controllers\Keuangan\GetAllKeuanganController;
@@ -62,6 +70,27 @@ use App\Http\Controllers\Penjualan_Jasa_Jarit\GetAllPenjualanJasaJaritController
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+// test  Activity
+Route::get('/activity/all', GetAllActivityController::class)->name('activity.all');
+Route::get('/activity/detail/{id}', GetDetailActivityController::class)->name('activity.detail');
+// end test activity
+
+//  test gaji pegawai tetap
+Route::prefix('/gaji/pegawai-tetap/')->group( function () {
+    Route::get('/all', GetAllGajiTetapController::class)->name('gaji-pegawai-tetap.all');
+    Route::get('/detail/{id}', GetPotongGajiTetapController::class)->name('gaji-pegawai-tetap.detail');
+    Route::post('/potong-gaji', PotongGajiTetapController::class)->name('gaji-pegawai-tetap.potong');
+});
+// end test gaji pegawai tetap
+
+// test gaji pegawai rumahan
+Route::prefix('/gaji/pegawai-rumahan/')->group( function () {
+    Route::get('/all', GetAllGajiRumahanController::class)->name('gaji-pegawai-tetap.all');
+    Route::get('/detail/{id}', GetPotongGajiRumahanController::class)->name('gaji-pegawai-tetap.detail');
+    Route::post('/potong-gaji', PotongGajiRumahanController::class)->name('gaji-pegawai-tetap.potong');
+});
+// end test gaji pegawai rumahan
 
 // === *** TESTING BACKEND *** === //
 

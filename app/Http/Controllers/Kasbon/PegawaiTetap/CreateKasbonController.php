@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Kasbon\PegawaiTetap;
 
+use App\Models\History;
 use App\Models\Keuangan;
 use Illuminate\Http\Request;
 use App\Models\KasbonPgwTetap;
@@ -61,25 +62,65 @@ class CreateKasbonController extends Controller
                 );
             }
 
-            // create data kasbon
-            $store = KasbonPgwTetap::create([
-                'id_pgw_tetap' => $data['id_pgw_normal'],
-                'tanggal' => $data['tanggal'],
-                'jumlah_kasbon' => $data['jumlah_kasbon'],
-                'sisa' => $sisa,
-                'status' => $status,
-            ]);
+            // if data kasbon with id_pgw_normal is exists, then update the sisa kasbon
+            $kasbon = KasbonPgwTetap::where('id_pgw_tetap', $data['id_pgw_normal'])->first();
+            if ($kasbon) {
+                // jika data kasbon yang ada statusnya belum lunas, update tambah jumlah_kasbon dan update sisa kasbon
+                if ($kasbon->status == 'belum lunas'){
+                    $kasbon->update([
+                        'jumlah_kasbon' => $kasbon->jumlah_kasbon + $data['jumlah_kasbon'],
+                        'sisa' => $kasbon->sisa + $data['jumlah_kasbon'],
+                    ]);
+                }else{
+                    // jika data kasbon yang ada statusnya sudah lunas, update jumlah_kasbon dan sisa kasbon
+                    $kasbon->update([
+                        'jumlah_kasbon' => $data['jumlah_kasbon'],
+                        'sisa' => $data['jumlah_kasbon'],
+                        'status' => $status,
+                    ]);
+                }
+                // if ($kasbon->status == 'Belum Lunas'){
+                //     $kasbon->update([
+                //         'jumlah_kasbon' => $kasbon->jumlah_kasbon + $data['jumlah_kasbon'],
+                //         'sisa' => $kasbon->sisa + $data['jumlah_kasbon'],
+                //     ]);
+                // }else{
+                //     $kasbon->update([
+                //         'jumlah_kasbon' => $data['jumlah_kasbon'],
+                //         'sisa' => $data['jumlah_kasbon'],
+                //         'status' => $status,
+                //     ]);
+                // }
+                
+            }else{
+                // if doesn't exists, create new data kasbon
+                $store = KasbonPgwTetap::create([
+                    'id_pgw_tetap' => $data['id_pgw_normal'],
+                    'tanggal' => $data['tanggal'],
+                    'jumlah_kasbon' => $data['jumlah_kasbon'],
+                    'sisa' => $sisa,
+                    'status' => $status,
+                ]);
 
-            // check if store is fails
-            if (!$store) {
-                return redirect()->back()->with(
-                    'pesan', 'Error: Gagal Menyimpan Data Kasbon'
-                );
+                // check if store is fails
+                if (!$store) {
+                    return redirect()->back()->with(
+                        'pesan', 'Error: Gagal Menyimpan Data Kasbon'
+                    );
+                }
             }
 
             // update data saldo_kas
             $saldo->update([
                 'saldo_kas' => $saldo->saldo_kas - $data['jumlah_kasbon']
+            ]);
+
+            // update history tipe pengeluaran
+            History::create([
+                'tanggal' => $data['tanggal'],
+                'keterangan' => 'Kasbon Pegawai Rumahan',
+                'tipe' => 'Pengeluaran',
+                'jumlah' => $data['jumlah_kasbon'],
             ]);
 
             // return success

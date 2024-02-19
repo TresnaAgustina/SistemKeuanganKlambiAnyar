@@ -38,6 +38,8 @@ class CreatePgwrTetapController extends Controller
 
             // create nip pegawai
             $nip = 'PWT - ' . rand(1, 1000);
+            // create gaji final
+            $gaji_final = $data['gaji_pokok'];
 
             // create data
             $store = Pegawai_Normal::create([
@@ -48,6 +50,7 @@ class CreatePgwrTetapController extends Controller
                 'jenis_kelamin' => $data['jenis_kelamin'],
                 'gaji_pokok' => $data['gaji_pokok'],
                 'status' => $data['status'],
+                'gaji_final' => $gaji_final
             ]);
 
             // if store fails

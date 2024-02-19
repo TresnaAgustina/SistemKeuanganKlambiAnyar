@@ -30,6 +30,8 @@
           <form action="/kasbon-tetap/bayar/{{ $data->id }}" method="POST">
             @csrf
             <div class="card-body">
+              {{-- hidden input with value $data->id --}}
+              <input type="hidden" name="id" value="{{ $data->id }}">
               <div class="form-group">
                 <label>Nama Pegawai</label>
                 <input readonly name="nama" type="text" class="form-control" value="{{ $data->pegawai_normal->nama }}" >
@@ -57,7 +59,7 @@
               </div>     
               <div class="form-group">
                 <label for="tanggal">Tanggal</label>
-                <input name="tanggal" type="date" class="form-control" id="tgl" required>
+                <input name="tanggal" type="date" class="form-control" id="tgl" required value="{{ $data->tanggal }}">
               </div>          
               
               <button type="submit" class="btn btn-success mt-4">Simpan</button>
@@ -78,3 +80,31 @@
 
 @endsection
 
+@push('js')
+    {{-- // sweetalert notification --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+      const swal = $('.swal').data('swal');
+      if(swal){
+        Swal.fire({
+          'title': 'success',
+          'text': swal,
+          'icon': 'success',
+          'showConfirmButton': false,
+          'timer': 3500
+        })
+      }
+
+      const swalError = $('.error').data('swal');
+      if(swalError){
+        Swal.fire({
+          'title': 'Error Input',
+          'text': swalError,
+          'icon': 'error',
+          'showConfirmButton': false,
+          'timer': 3500
+        })
+      }
+    </script>
+@endpush

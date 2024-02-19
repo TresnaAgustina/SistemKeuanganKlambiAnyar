@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Kasbon\Kasbon_Tetap;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kasbon_Pegawai;
+use App\Models\KasbonPgwTetap;
 use Illuminate\Http\Request;
 
 class GetViewBayarKasbonTetapController extends Controller
@@ -18,7 +18,7 @@ class GetViewBayarKasbonTetapController extends Controller
     {
         try {
             // get data from database
-            $data = Kasbon_Pegawai::where('id', $id)->first();
+            $data = KasbonPgwTetap::where('id', $id)->first();
 
             // // return json response
             // return response()->json([
