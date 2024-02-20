@@ -20,7 +20,7 @@ return new class extends Migration
             // jumlah_bayar = untuk update piutang ketika pelunasan
             $table->double('jumlah_bayar')->nullable();
             $table->double('jumlah_piutang');
-            $table->date('tgl_jatuh_tempo');
+            $table->date('tgl_jatuh_tempo')->nullable();
             $table->double('sisa_piutang');
             $table->enum('status', ['Lunas', 'Belum Lunas']);
 

@@ -42,15 +42,15 @@ class CreatePenjualanLainController extends Controller
             ]);
 
             if (!empty($data['jmlh_bayar_awal'])) {
-                $credit = str_replace(['.'], '', $data['jmlh_bayar_awal']);
+                $data['jmlh_bayar_awal'] = str_replace(['.'], '', $data['jmlh_bayar_awal']);
             } else {
-                $credit = null;
+                $data['jmlh_bayar_awal'] = null;
             }
             
             if (!empty($data['jmlh_dibayar'])) {
-                $cash = str_replace(['.'], '', $data['jmlh_dibayar']);
+                $data['jmlh_dibayar'] = str_replace(['.'], '', $data['jmlh_dibayar']);
             } else {
-                $cash = null;
+                $data['jmlh_dibayar'] = null;
             }
 
             // if validation fails
@@ -80,11 +80,19 @@ class CreatePenjualanLainController extends Controller
             }
 
             // chek if metode_pembayaran == 'cash' && jmlh_dibayar < total_harga, show alert
-            if ($data['metode_pembayaran'] == 'cash' && $cash < array_sum(array_column($data['barang'], 'subtotal'))) {
+            if ($data['metode_pembayaran'] == 'cash' && $data['jmlh_dibayar'] < array_sum(array_column($data['barang'], 'subtotal'))) {
                 return redirect()->back()->with('pesan', 'Jumlah dibayar tidak mencukupi');
             }
-            if($data['metode_pembayaran'] == 'credit' && $credit > array_sum(array_column($data['barang'], 'subtotal'))){
+            if($data['metode_pembayaran'] == 'credit' && $data['jmlh_bayar_awal'] > array_sum(array_column($data['barang'], 'subtotal'))){
                 return redirect()->back()->with('pesan', 'Jumlah bayar awal melebihi total harga');
+            }
+
+            // jika data yang diinputkan memiliki tanggal yang sama namun metode pembayaran berbeda, maka return error
+            $penjualan_lain_same_date = Penjualan_Lain::where('tanggal', $data['tanggal'])->get();
+            foreach ($penjualan_lain_same_date as $penjualan) {
+                if ($penjualan->metode_pembayaran != $data['metode_pembayaran']) {
+                    return redirect()->back()->with('pesan', 'Tidak dapat membuat penjualan dengan metode pembayaran yang berbeda pada tanggal yang sama');
+                }
             }
 
             // generate kode penjualan (format: PL-<rand(4 anngka)>-<tanggal>)
@@ -108,9 +116,9 @@ class CreatePenjualanLainController extends Controller
             ],[
                 'kode_penjualan' => $kode_penjualan,
                 'metode_pembayaran' => $data['metode_pembayaran'],
-                'jmlh_bayar_awal' => $credit,
+                'jmlh_bayar_awal' => $data['jmlh_bayar_awal'],
                 'tgl_jatuh_tempo' => $data['tgl_jatuh_tempo'],
-                'jmlh_dibayar' => $cash,
+                'jmlh_dibayar' => $data['jmlh_dibayar'],
                 'keterangan' => $data['keterangan'],
                 'bukti_pembayaran' => $data['bukti_pembayaran'],
             ]);
@@ -158,15 +166,16 @@ class CreatePenjualanLainController extends Controller
 
             // *** UPDATE or CREATE PIUTANG *** //
             $total_harga = $penjualan_lain->cart_penjualan_lain()->sum('subtotal');
-            $piutang = Piutang::updateOrCreate(
-                ['id_jual_lain' => $penjualan_lain->id],
-                [
-                    'jumlah_piutang' => $total_harga - $penjualan_lain->jmlh_bayar_awal,
-                    'tgl_jatuh_tempo' => $penjualan_lain->tgl_jatuh_tempo,
-                    'sisa_piutang' => $total_harga - $penjualan_lain->jmlh_bayar_awal,
+            if ($penjualan_lain->metode_pembayaran == 'credit') {
+                $piutang = Piutang::updateOrCreate([
+                    'id_jual_lain' => $penjualan_lain->id,
+                ],[
+                    'jumlah_piutang' => $total_harga - $data['jmlh_bayar_awal'],
+                    'tgl_jatuh_tempo' => $data['tgl_jatuh_tempo'],
+                    'sisa_piutang' => $total_harga - $data['jmlh_bayar_awal'],
                     'status' => 'Belum Lunas',
-                ]
-            );
+                ]);
+            }
             // update saldo_kas in keuangan, tambah dengan jmlh_bayar_awal atau jmlh_dibayar
             $keuangan = Keuangan::first();
             $existingPiutang = Piutang::where('id_jual_lain', $penjualan_lain->id)->first();

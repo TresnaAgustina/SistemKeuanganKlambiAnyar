@@ -88,6 +88,12 @@ class CreatePenjualanJasaJaritController extends Controller
             // generate kode penjualan (format: PL-<rand(4 anngka)>-<tanggal>)
             $kode_penjualan = 'PJ-'.rand(1000, 9999).'-'.date('Ymd');
 
+            // jika data yang diinputkan memiliki tanggal yang sama namun metode pembayaran berbeda, return eror
+            $penjualan_jasa_same_date = Penjualan_Jasa_Jarit::where('tanggal', $data['tanggal'])->where('id_customer', $data['id_customer'])->where('metode_pembayaran', '!=', $data['metode_pembayaran'])->first();
+            if ($penjualan_jasa_same_date) {
+                return redirect()->back()->with('pesan', 'Tidak dapat membuat penjualan dengan metode pembayaran yang berbeda pada tanggal yang sama');
+            }
+
              // store bukti pembayaran to storage
              if ($request->hasFile('bukti_pembayaran')) {
                 $file = $request->file('bukti_pembayaran');
@@ -155,15 +161,17 @@ class CreatePenjualanJasaJaritController extends Controller
 
             // *** UPDATE or CREATE PIUTANG *** //
             $total_harga = $penjualan_jasa->cart_penjualan_jasa()->sum('subtotal');
-            $piutang = Piutang::updateOrCreate(
-                ['id_jual_jasa' => $penjualan_jasa->id],
-                [
-                    'jumlah_piutang' => $total_harga - $penjualan_jasa->jmlh_bayar_awal,
-                    'tgl_jatuh_tempo' => $penjualan_jasa->tgl_jatuh_tempo,
-                    'sisa_piutang' => $total_harga - $penjualan_jasa->jmlh_bayar_awal,
-                    'status' => 'Belum Lunas',
-                ]
-            );
+            if ($penjualan_jasa->metode_pembayaran == 'credit') {
+                $piutang = Piutang::updateOrCreate(
+                    ['id_jual_jasa' => $penjualan_jasa->id],
+                    [
+                        'jumlah_piutang' => $total_harga - $penjualan_jasa->jmlh_bayar_awal,
+                        'tgl_jatuh_tempo' => $penjualan_jasa->tgl_jatuh_tempo,
+                        'sisa_piutang' => $total_harga - $penjualan_jasa->jmlh_bayar_awal,
+                        'status' => 'Belum Lunas',
+                    ]
+                );
+            }
 
             // update saldo_kas in keuangan, tambah dengan jmlh_bayar_awal atau jmlh_dibayar
             $keuangan = Keuangan::first();

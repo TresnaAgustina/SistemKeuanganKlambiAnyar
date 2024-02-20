@@ -76,24 +76,21 @@ class CreateActivityController extends Controller
                 // *** --- update pgwr_activity --- *** //
                 $pgwr_activity->gaji_bulanan = $gaji_bulanan;
                 $pgwr_activity->save();
+                
+                // update data gaji_bulanan in pegawai_rumahan
+                $pegawai_rumahan->gaji_bulanan = $gaji_bulanan;
+                $pegawai_rumahan->save();
             }else{
                 // *** --- create pgwr_activity --- *** //
                 $pgwr_activity = Pgwr_Activity::create([
                     'id_pgw_rumahan' => $id_pegawai,
                     'gaji_bulanan' => $gaji_bulanan,
                 ]);
+
+                // update data gaji_bulanan in pegawai_rumahan
+                $pegawai_rumahan->gaji_bulanan = $gaji_bulanan;
+                $pegawai_rumahan->save();
             }
-
-            // select activity_detail and group by tanggal
-            $gaji_reset = ActivityDetail::selectRaw('MONTH(tanggal) as bulan, SUM(gaji_harian) as gaji_harian')->where('id_pgwr_activity', $pgwr_activity->id)->groupBy('bulan')->get();
-
-            // ambil gaji_reset sesuai bulan sekarang
-            $gaji_reset = $gaji_reset->where('bulan', date('m'))->first();
-
-            ddd($gaji_reset);
-            // update data gaji_bulanan in pegawai_rumahan
-            $pegawai_rumahan->gaji_bulanan = $gaji_bulanan;
-            $pegawai_rumahan->save();
 
             // jika data activity_detail dengan id_pgwr_activity dan tanggal yang sama sudah ada pada database, maka update data activity_detail namun untuk data activity_items tetap di create
             $activity_detail = ActivityDetail::where('id_pgwr_activity', $pgwr_activity->id)->where('tanggal', date('Y-m-d', strtotime($data['activity'][0]['tanggal'])))->first();

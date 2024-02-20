@@ -43,6 +43,14 @@ class DatabaseSeeder extends Seeder
             'status_customer' => 'aktif',
         ]);
 
+        // create data master customer
+        \App\Models\Master_Customer::create([
+            'nama_customer' => 'PT. Sedap Mulia',
+            'alamat_customer' => 'Jl. Bukit No. 9',
+            'no_telp_customer' => '081456231777',
+            'status_customer' => 'aktif'
+        ]);
+
         // make data master barang
         \App\Models\Master_Barang::create([
             'nama_barang' => 'Kaos Oblong',

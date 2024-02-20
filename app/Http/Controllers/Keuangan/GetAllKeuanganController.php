@@ -28,12 +28,6 @@ class GetAllKeuanganController extends Controller
                 $kas = 0;
             }
 
-            // return data
-            // return response()->json([
-            //     'message' => 'Berhasil mendapatkan semua data keuangan',
-            //     'data' => $keuangan
-            // ], 200);
-
             return view('transaksi.keuangan.index')->with([
                 'keuangan' => $keuangan,
                 'bank' => $bank,
@@ -41,9 +35,9 @@ class GetAllKeuanganController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error: ' . $e->getMessage()
-            ], 500);
+            return redirect()->back()->with(
+                'pesan', 'Error: ' . $e->getMessage()
+            );
         }
     }
 }
