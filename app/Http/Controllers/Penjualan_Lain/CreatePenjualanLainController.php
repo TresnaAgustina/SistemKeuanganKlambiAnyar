@@ -88,7 +88,7 @@ class CreatePenjualanLainController extends Controller
             }
 
             // jika data yang diinputkan memiliki tanggal yang sama namun metode pembayaran berbeda, maka return error
-            $penjualan_lain_same_date = Penjualan_Lain::where('tanggal', $data['tanggal'])->get();
+            $penjualan_lain_same_date = Penjualan_Lain::where('tanggal', $data['tanggal'])->where('id_customer', $data['id_customer'])->where('metode_pembayaran', '!=', $data['metode_pembayaran'])->get();
             foreach ($penjualan_lain_same_date as $penjualan) {
                 if ($penjualan->metode_pembayaran != $data['metode_pembayaran']) {
                     return redirect()->back()->with('pesan', 'Tidak dapat membuat penjualan dengan metode pembayaran yang berbeda pada tanggal yang sama');

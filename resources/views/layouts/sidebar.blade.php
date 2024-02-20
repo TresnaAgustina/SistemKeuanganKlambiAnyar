@@ -198,8 +198,8 @@
             </ul>
           </li>
 
-          <li class="nav-item {{ Request::is('gaji-tetap*', 'gaji-rumahan*') ? 'menu-open' : '' }}">
-            <a href="#" class="nav-link {{ Request::is('gaji-tetap*', 'gaji-rumahan*') ? 'active' : '' }}">
+          <li class="nav-item {{ Request::is('gaji/pegawai-tetap*', 'gaji/pegawai-rumahan*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link {{ Request::is('gaji/pegawai-tetap*', 'gaji/pegawai-rumahan*') ? 'active' : '' }}">
                 {{-- <i class="nav-icon fas fa-shopping-cart"></i> --}}
                 <i class="nav-icon fas fa-file-invoice-dollar"></i>
               <p>
@@ -211,13 +211,13 @@
             <ul class="nav nav-treeview">
               
               <li class="nav-item">
-                <a href="/gaji-tetap/all" class="nav-link {{ Request::is('gaji-tetap*') ? 'active' : '' }}">
+                <a href="/gaji/pegawai-tetap/all" class="nav-link {{ Request::is('gaji/pegawai-tetap*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Pegawai Tetap</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/gaji-rumahan/all" class="nav-link {{ Request::is('gaji-rumahan*') ? 'active' : '' }}">
+                <a href="/gaji/pegawai-rumahan/all" class="nav-link {{ Request::is('gaji/pegawai-rumahan*') ? 'active' : '' }}">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Pegawai Rumahan</p>
                 </a>

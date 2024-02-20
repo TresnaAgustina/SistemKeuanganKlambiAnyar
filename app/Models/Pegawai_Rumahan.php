@@ -21,8 +21,13 @@ class Pegawai_Rumahan extends Model
         'gaji_bulanan',
     ];
 
-    public function kasbon_pegawai()
+    public function kasbon_pegawai_rumahan()
     {
-        return $this->hasMany(KasbonPgwRumahan::class, 'id_pgw_rumahan');
+        return $this->hasOne(KasbonPgwRumahan::class, 'id_pgw_rumahan');
+    }
+
+    public function pgwr_activity()
+    {
+        return $this->hasOne(Pgwr_Activity::class, 'id_pgw_rumahan', 'id');
     }
 }

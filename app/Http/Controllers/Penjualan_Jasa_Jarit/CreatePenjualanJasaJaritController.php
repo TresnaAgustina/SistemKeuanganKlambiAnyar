@@ -41,17 +41,19 @@ class CreatePenjualanJasaJaritController extends Controller
             ]);
 
             if (!empty($data['jmlh_bayar_awal'])) {
-                $credit = str_replace(['.'], '', $data['jmlh_bayar_awal']);
+                $data['jmlh_bayar_awal'] = str_replace(['.', ','], '', $data['jmlh_bayar_awal']);
             } else {
-                $credit = null;
+                $data['jmlh_bayar_awal'] = null;
             }
             
             if (!empty($data['jmlh_dibayar'])) {
-                $cash = str_replace(['.'], '', $data['jmlh_dibayar']);
+                $data['jmlh_dibayar'] = str_replace(['.', ','], '', $data['jmlh_dibayar']);
             } else {
-                $cash = null;
+                $data['jmlh_dibayar'] = null;
             }
             
+            // ddd($data['jmlh_bayar_awal']);
+
             //if validation fails
             if ($validate->fails()) {
                 return redirect()->back()->with('pesan', 'Error: '.$validate->errors());
@@ -78,10 +80,10 @@ class CreatePenjualanJasaJaritController extends Controller
             }
 
             // chek if metode_pembayaran == 'cash' && jmlh_dibayar < total_harga, show alert
-            if ($data['metode_pembayaran'] == 'cash' && $cash < array_sum(array_column($data['barang'], 'subtotal'))) {
+            if ($data['metode_pembayaran'] == 'cash' && $data['jmlh_dibayar'] < array_sum(array_column($data['barang'], 'subtotal'))) {
                 return redirect()->back()->with('pesan', 'Jumlah dibayar tidak mencukupi');
             }
-            if($data['metode_pembayaran'] == 'credit' && $credit > array_sum(array_column($data['barang'], 'subtotal'))){
+            if($data['metode_pembayaran'] == 'credit' && $data['jmlh_bayar_awal'] > array_sum(array_column($data['barang'], 'subtotal'))){
                 return redirect()->back()->with('pesan', 'Jumlah bayar awal melebihi total harga');
             }
 
@@ -112,9 +114,9 @@ class CreatePenjualanJasaJaritController extends Controller
             ],[
                 'kode_penjualan' => $kode_penjualan,
                 'metode_pembayaran' => $data['metode_pembayaran'],
-                'jmlh_bayar_awal' => $credit,
+                'jmlh_bayar_awal' => $data['jmlh_bayar_awal'],
                 'tgl_jatuh_tempo' => $data['tgl_jatuh_tempo'],
-                'jmlh_dibayar' =>$cash,
+                'jmlh_dibayar' => $data['jmlh_dibayar'],
                 'keterangan' => $data['keterangan'],
                 'bukti_pembayaran' => $data['bukti_pembayaran'],
             ]);

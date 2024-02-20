@@ -8,13 +8,13 @@
         
         <div class="card card-success card-outline mt-4">
           <div class="card-header">
-            <strong><h5 >Laporan Pemasukan </h5></strong>
+            <strong><h5 >Laporan Keuntungan </h5></strong>
           </div>
 
           <div class="card-body" >
             <h5 style=" margin-top: 0;"><b>Filter Tanggal :</b></h5>
 
-            <form id="filterForm" action="/dataTable/LaporanPemasukan" method="POST" style=" border-bottom: 1px solid #ccc;">
+            <form id="filterForm" action="" method="" style=" border-bottom: 1px solid #ccc;">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -47,17 +47,31 @@
             </form>
           </div>
           <div class="card-body">
-           
             <table id="laporan-pemasukan" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Nomor</th>
-                  <th>Jenis Pemasukan</th>
-                  <th>Tanggal</th>
-                  <th>Metode Pembayaran</th>
-                  <th>Subtotal</th>
+                  <th>Data</th>
+                  <th>Total</th>
+                  <th>Subtotal Keuntungan</th>
                 </tr>
                 </thead>
+                <tbody>
+                  <tr>
+                    <td>Pemasukan</td>
+                    <td>Rp. 0 </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Pengeluaran</td>
+                    <td>Rp. 0 </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight: bold;">Keuntungan</td>
+                    <td></td>
+                    <td style="font-weight: bold;">Rp. 0 </td>
+                  </tr>
+                </tbody>
               </table>
          </div>
         </div>
@@ -88,10 +102,10 @@
 
         if (tanggalMulai && tanggalAkhir) {
             // Jika kedua input tanggal diisi, arahkan ke URL dengan tanggal
-            cetakButton.href = '/laporan-pemasukan/' + tanggalMulai + '/' + tanggalAkhir;
+            cetakButton.href = '/laporan-keuntungan/' + tanggalMulai + '/' + tanggalAkhir;
         } else {
             // Jika salah satu atau keduanya kosong, arahkan ke URL tanpa parameter tanggal
-            cetakButton.href = '/laporan-pemasukan/cetak';
+            cetakButton.href = '/laporan-keuntungan/cetak';
         }
     });
 });
@@ -111,51 +125,37 @@
 
 
 {{-- //Datatble Config --}}
+
 <script>
-    $(document).ready(function(){
-    var table =  $('#laporan-pemasukan').DataTable({
-            responsive: true, 
-            autoWidth: false,
-            processing: true,
-            serverside: true,
-            ajax:{
-              url: "{{ url('dataTable/LaporanPemasukan') }}",
-              type: "POST",
-              headers:{
-                'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-              },
-              data: function(d){
-                // d._token = "{{ csrf_token() }}";
-                d.tanggal_mulai = $('#tgl_mulai').val(); // Mengambil tanggal mulai
-                d.tanggal_akhir = $('#tgl_akhir').val(); // Mengambil tanggal akhir
-              } 
+  $(document).ready(function() {
+    function formatNumber(number) {
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number);
+}
+    $('#filterForm').submit(function(event) {
+        event.preventDefault();
+
+        var tanggalMulai = $('#tgl_mulai').val();
+        var tanggalAkhir = $('#tgl_akhir').val();
+
+        $.ajax({
+            url: '/laporan-keuntungan/test',
+            type: 'GET',
+            data: {
+                tglawal: tanggalMulai,
+                tglakhir: tanggalAkhir
             },
-            "columns": [{
-                data: 'DT_RowIndex',
-                name: 'DT_RowIndex',
-                orderable: false,
-                searchable: false
-            },{
-                data: 'nama',
-                name: 'Nama'
-            },{
-                data: 'tgl',
-                name: 'Tanggal'
-            },{
-                data: 'metode_pembayaran',
-                name: 'Metode Pembayaran'
-            },{
-                data: 'total',
-                name: 'Subtotal'
-            }]
+            success: function(response) {
+                // Memasukkan data ke dalam tabel HTML
+                $('#laporan-pemasukan tbody tr:nth-child(1) td:nth-child(2)').text(formatNumber(response.pemasukan));
+                $('#laporan-pemasukan tbody tr:nth-child(2) td:nth-child(2)').text(formatNumber(response.pengeluaran));
+                $('#laporan-pemasukan tbody tr:nth-child(3) td:nth-child(3)').text(formatNumber(response.keuntungan));
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
         });
-
-        $('#filterForm').submit(function (e) {
-        e.preventDefault();
-        table.ajax.reload();
-      });
-        
     });
-</script>
+});
 
+</script>
 @endpush

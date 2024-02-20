@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Pegawai_Rumahan;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\Models\ActivityDetail;
+use App\Models\Pgwr_Activity;
 
 class TableAktivitasController extends Controller
 {
@@ -28,33 +30,37 @@ class TableAktivitasController extends Controller
         ->make(true);
     }
 
-    public function dataAktivitas(){
-        $coba = Pegawai_Rumahan::orderBy('id', 'asc');
-        return DataTables::of($coba)
-        ->addIndexColumn()
-        ->addColumn('nama', function($data){
-            return $data->customer->nama_customer;
-        })
-        ->addColumn('tgl', function($data){
-            return  date('d-m-Y', strtotime($data->tanggal));
-        })
-        ->addColumn('bayarAwal', function($data){
-            if ($data->jmlh_bayar_awal) {
-                return 'Rp. '. number_format($data->jmlh_bayar_awal) ?? 0;
-            } else {
-                return 'Rp. ' . 0;
-            }
-        })
-        ->addColumn('dibayar', function($data){
-            if ($data->jmlh_dibayar) {
-                return 'Rp. '. number_format($data->jmlh_dibayar) ?? 0;
-            } else {
-                return 'Rp. ' . 0;
-            }
-        })
-        ->addColumn('aksi', function($data){
-            return view('penjualan.penjualan-jasa.tombol')->with('data', $data);
-        })
-        ->make(true);
+    public function dataAktivitas(Request $request){
+
+        $id = $request->id;
+    
+        $test = Pgwr_Activity::where('id_pgw_rumahan', $id)->first();
+    
+        // Periksa apakah $test null sebelum mengakses propertinya
+        if ($test) {
+            $test2 = $test->activity_details;
+    
+            return DataTables::of($test2)
+                ->addIndexColumn()
+                ->addColumn('nama', function($data){
+                    return $data->pgwr_activity->pegawai_rumahan->nama;
+                })
+                ->addColumn('nip', function($data){
+                    return $data->pgwr_activity->pegawai_rumahan->nip;
+                })
+                ->addColumn('tgl', function($data){
+                    return  date('d-m-Y', strtotime($data->tanggal));
+                })
+                ->addColumn('aksi', function($data){
+                    return view('aktivitas.view')->with('data', $data);
+                })
+                ->make(true);
+        } else {
+            // Jika $test null, kembalikan respons kosong
+            return DataTables::of([])
+                ->addIndexColumn()
+                ->make(true);
+        }
     }
+    
 }

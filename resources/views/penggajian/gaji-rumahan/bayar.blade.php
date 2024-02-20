@@ -24,19 +24,19 @@
         
         <div class="card card-success card-outline">
           <div class="card-header">
-            <strong><h4 >Potong Gaji Pegawai Tetap  </h4></strong>
+            <strong><h4 >Potong Gaji Pegawai Rumahan  </h4></strong>
           </div>
           
-          <form action="/gaji/pegawai-tetap/potong-gaji" method="POST">
+          <form action="/gaji/pegawai-rumahan/potong-gaji" method="POST">
             @csrf
             <div class="card-body">
-              <input name="id_kasbon_tetap" hidden type="number" value="{{ $data->id }}">
+              <input name="id_kasbon_rumahan" hidden type="number" value="{{ $data->id }}">
               <div class="form-group">
                 <label>Nama Pegawai</label>
-                <input readonly name="nama" type="text" class="form-control" value="{{ $data->pegawai_normal->nama }}" >
+                <input readonly name="nama" type="text" class="form-control" value="{{ $data->pegawai_rumahan->nama }}" >
               </div>
               <div class="form-group">
-                <label>Gaji Pokok</label>
+                <label>Gaji Final</label>
                 <input readonly name="jmlh_kasbon" type="text" class="form-control" value="Rp. {{ number_format($gaji)}}" >
               </div>
               <div class="form-group">

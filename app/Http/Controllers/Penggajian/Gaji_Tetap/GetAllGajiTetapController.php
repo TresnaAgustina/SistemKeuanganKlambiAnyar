@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Penggajian\Gaji_Tetap;
 
 use App\Http\Controllers\Controller;
+use App\Models\Pegawai_Normal;
 use App\Models\Pegawai_Rumahan;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,9 @@ class GetAllGajiTetapController extends Controller
     {
         try {
             // get data from database
-            $data = Pegawai_Rumahan::all();
+            $data = Pegawai_Normal::all();
+
+            $gaji = $data->sum('gaji_final');
 
             // // return json response
             // return response()->json([
@@ -29,7 +32,8 @@ class GetAllGajiTetapController extends Controller
 
             // for monolith app
             return view('penggajian.gaji-tetap.index')->with([
-                'data' => $data
+                'data' => $data,
+                'gaji' => $gaji
             ]);
 
 

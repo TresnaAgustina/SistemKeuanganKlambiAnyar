@@ -31,7 +31,7 @@ class CreateActivityController extends Controller
             
             // if pegawai_rumahan not found
             if (!$pegawai_rumahan) {
-                return redirect()->back()->with(
+                return redirect()->to('/aktivitas/all')->with(
                     'pesan', 'Error: Pegawai Rumahan tidak ditemukan'
                 );
             }
@@ -40,24 +40,32 @@ class CreateActivityController extends Controller
             $validator = Validator::make($data, [
                 'activity.*.tanggal' => 'required|date',
                 'activity.*.detail.*.id_mstr_jaritan' => 'required|exists:master_jaritan,id',
-                'activity.*.detail.*.jumlah_barang' => 'required|numeric',
-                'activity.*.detail.*.harga_satuan' => 'required|numeric',
-                'activity.*.detail.*.subtotal' => 'required|numeric',
+                'activity.*.detail.*.jumlah_barang' => 'required',
+                'activity.*.detail.*.harga_satuan' => 'required',
+                'activity.*.detail.*.subtotal' => 'required',
             ]);
 
             // if validation fails
             if ($validator->fails()) {
-                return redirect()->back()->with(
+                return redirect()->to('/aktivitas/all')->with(
                     'pesan', 'Error: ' . $validator->errors()
                 );
             }
-
+        
             // ---***--- PERHITUNGAN TOTAL-TOTAL ---***--- //
             // hitung gaji_harian dari activity_detail
             $gaji_harian = 0;
             foreach ($data['activity'] as $activity) {
                 foreach ($activity['detail'] as $activity_item) {
-                    $gaji_harian += $activity_item['subtotal'];
+
+                    if (!empty($activity_item['subtotal'])) {
+                        $subtotal = str_replace(['.', ','], '', $activity_item['subtotal']);
+                    } else {
+                        $subtotal = 0;
+                    } 
+
+                    $gaji_harian += $subtotal;
+
                 }
             }
 
@@ -91,6 +99,13 @@ class CreateActivityController extends Controller
                 $pegawai_rumahan->gaji_bulanan = $gaji_bulanan;
                 $pegawai_rumahan->save();
             }
+            // // ambil gaji_reset sesuai bulan sekarang
+            // $gaji_reset = $gaji_reset->where('bulan', date('m'))->first();
+
+            // // ddd($gaji_reset);
+            // // update data gaji_bulanan in pegawai_rumahan
+            // $pegawai_rumahan->gaji_bulanan = $gaji_bulanan;
+            // $pegawai_rumahan->save();
 
             // jika data activity_detail dengan id_pgwr_activity dan tanggal yang sama sudah ada pada database, maka update data activity_detail namun untuk data activity_items tetap di create
             $activity_detail = ActivityDetail::where('id_pgwr_activity', $pgwr_activity->id)->where('tanggal', date('Y-m-d', strtotime($data['activity'][0]['tanggal'])))->first();
@@ -101,10 +116,17 @@ class CreateActivityController extends Controller
 
                 // *** --- create activity_items --- *** //
                 foreach ($data['activity'][0]['detail'] as $activity_item) {
+
+                    if (!empty($activity_item['harga_satuan'])) {
+                        $harga_satuan = str_replace(['.', ','], '', $activity_item['harga_satuan']);
+                    } else {
+                        $harga_satuan = 0;
+                    }  
+
                     $activity_item['id_activity_detail'] = $activity_detail->id;
                     $activity_item['id_mstr_jaritan'] = $activity_item['id_mstr_jaritan'];
                     $activity_item['jumlah_jaritan'] = $activity_item['jumlah_barang'];
-                    $activity_item['total_bayaran'] = $activity_item['jumlah_barang'] * $activity_item['harga_satuan'];
+                    $activity_item['total_bayaran'] = $activity_item['jumlah_barang'] * $harga_satuan;
                     ActivityItem::create($activity_item);
                 }
             }else{
@@ -118,10 +140,17 @@ class CreateActivityController extends Controller
 
                     // *** --- create activity_items --- *** //
                     foreach ($activity['detail'] as $activity_item) {
+
+                        if (!empty($activity_item['harga_satuan'])) {
+                            $satuan = str_replace(['.', ','], '', $activity_item['harga_satuan']);
+                        } else {
+                            $satuan = 0;
+                        }  
+
                         $activity_item['id_activity_detail'] = $activity_detail->id;
                         $activity_item['id_mstr_jaritan'] = $activity_item['id_mstr_jaritan'];
                         $activity_item['jumlah_jaritan'] = $activity_item['jumlah_barang'];
-                        $activity_item['total_bayaran'] = $activity_item['jumlah_barang'] * $activity_item['harga_satuan'];
+                        $activity_item['total_bayaran'] = $activity_item['jumlah_barang'] * $satuan;
                         ActivityItem::create($activity_item);
                     }
                 }
@@ -129,17 +158,17 @@ class CreateActivityController extends Controller
 
             // if fails
             if (!$pgwr_activity) {
-                return redirect()->back()->with(
+                return redirect()->to('/aktivitas/all')->with(
                     'pesan', 'Error: Gagal membuat aktivitas'
                 );
             }
 
-            return redirect()->back()->with(
+            return redirect()->to('/aktivitas/all')->with(
                 'success', 'Berhasil membuat aktivitas'
             );
 
         } catch (\Exception $e) {
-            return redirect()->back()->with(
+            return redirect()->to('/aktivitas/all')->with(
                 'pesan', 'Error: ' . $e->getMessage()
 
             );

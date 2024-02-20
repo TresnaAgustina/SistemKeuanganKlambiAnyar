@@ -5,6 +5,8 @@ use App\Http\Controllers\Aktivitas\CreateAktivitasController;
 use App\Http\Controllers\Aktivitas\GetAllActivityController;
 use App\Http\Controllers\Aktivitas\GetAllAktivitasController;
 use App\Http\Controllers\Aktivitas\GetCreateAktivitasController;
+use App\Http\Controllers\Aktivitas\GetDetailActivityController;
+use App\Http\Controllers\Aktivitas\GetDetailAktivitasController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
@@ -17,7 +19,12 @@ use App\Http\Controllers\DataTable\TableAktivitasController;
 use App\Http\Controllers\DataTable\TableHistoriesController;
 use App\Http\Controllers\DataTable\TableKasbonController;
 use App\Http\Controllers\DataTable\TableLaporanController;
+use App\Http\Controllers\DataTable\TablePenggajianController;
 use App\Http\Controllers\DataTable\TablePenjualanController;
+use App\Http\Controllers\Gaji\PegawaiRumahan\GetPotongGajiRumahanController;
+use App\Http\Controllers\Gaji\PegawaiRumahan\PotongGajiRumahanController;
+use App\Http\Controllers\Gaji\PegawaiTetap\GetPotongGajiTetapController;
+use App\Http\Controllers\Gaji\PegawaiTetap\PotongGajiTetapController;
 use App\Http\Controllers\Hutang\CreateHutangController;
 use App\Http\Controllers\Hutang\GetAllHutangController;
 use App\Http\Controllers\Hutang\GetUpdateHutangController;
@@ -32,6 +39,8 @@ use App\Http\Controllers\Keuangan\DeleteKeuanganController;
 use App\Http\Controllers\Keuangan\GetAllKeuanganController;
 use App\Http\Controllers\Keuangan\HitungController;
 use App\Http\Controllers\Keuangan\UpdateKeuanganController;
+use App\Http\Controllers\Laporan\LaporanKeuntunganController;
+use App\Http\Controllers\Laporan\LaporanPajakController;
 use App\Http\Controllers\Laporan\LaporanPemasukanController;
 use App\Http\Controllers\Laporan\LaporanPengeluaranController;
 use App\Http\Controllers\Pemasukan\CreatePemasukanController;
@@ -127,12 +136,17 @@ Route::prefix('/dataTable')->group(function () {
     Route::get('/penjualan-jasa', [TablePenjualanController::class, 'penjualanJasa'])->name('dataTable.penjualan-jasa');
     Route::get('/penjualan-lain', [TablePenjualanController::class, 'penjualanLain'])->name('dataTable.penjualan-lain');
     Route::get('/PegawaiAktivitas', [TableAktivitasController::class, 'DataPegawai'])->name('dataTable.DataPegawaiAktivitas');
+    Route::get('/Aktivitas', [TableAktivitasController::class, 'dataAktivitas'])->name('dataTable.dataAktivitas');
     Route::get('/KasbonTetap', [TableKasbonController::class, 'kasbonPegawaiTetap'])->name('dataTable.kasbonTetap');
     Route::get('/KasbonRumahan', [TableKasbonController::class, 'kasbonPegawaiRumahan'])->name('dataTable.kasbonRumahan');
+    Route::get('/gajiTetap', [TablePenggajianController::class, 'pegawaiTetap'])->name('dataTable.gajiTetap');
+    Route::get('/gajiRumahan', [TablePenggajianController::class, 'pegawaiRumahan'])->name('dataTable.gajiRumahan');
     Route::post('/LaporanPemasukan', [TableLaporanController::class, 'DataPemasukan'])->name('dataTable.laporanPemasukan');
     Route::post('/LaporanPengeluaran', [TableLaporanController::class, 'DataPengeluaran'])->name('dataTable.laporanPengeluaran');
+    Route::post('/LaporanPajak', [TableLaporanController::class, 'pajak'])->name('dataTable.laporanPajak');
 });
 
+    
 
 // *** Auth Routes *** //
 // --View
@@ -314,7 +328,9 @@ Route::prefix('/aktivitas')->group(function(){
     Route::get('/all', GetAllActivityController::class)->name('aktivitas.all');
     Route::get('/create/{nip}', GetCreateAktivitasController::class)->name('aktivitas.create.index');
     Route::post('/create/{nip}', CreateActivityController::class)->name('aktivitas.create');
-    Route::post('/bayar/{id}', UpdatePiutangController::class)->name('hutang.update');
+    Route::get('/detail/{id}', GetDetailAktivitasController::class)->name('activity.detail');
+
+    // Route::post('/bayar/{id}', UpdatePiutangController::class)->name('hutang.update');
 });
 Route::prefix('/laporan-pemasukan')->group(function(){
     Route::get('/all', [LaporanPemasukanController::class, 'index'])->name('laporan-pemasukan.all');
@@ -325,6 +341,18 @@ Route::prefix('/laporan-pengeluaran')->group(function(){
     Route::get('/all', [LaporanPengeluaranController::class, 'index'])->name('laporan-pengeluaran.all');
     Route::get('/cetak', [LaporanPengeluaranController::class, 'cetak'])->name('laporan-pengeluaran.cetak');
     Route::get('/{in}/{out}', [LaporanPengeluaranController::class, 'cetakPengeluaranTgl'])->name('laporan-pengeluaran.cetakFilter');
+});
+Route::prefix('/laporan-keuntungan')->group(function(){
+    Route::get('/all', [LaporanKeuntunganController::class, 'index'])->name('laporan-keuntungan.all');
+    Route::get('/cetak', [LaporanKeuntunganController::class, 'cetak'])->name('laporan-keuntungan.cetak');
+    Route::get('/{in}/{out}', [LaporanKeuntunganController::class, 'cetakKeuntunganTgl'])->name('laporan-keuntungan.cetakFilter');
+    Route::get('/test', [LaporanKeuntunganController::class, 'test'])->name('laporan-keuntungan.cetakFilter');
+});
+Route::prefix('/laporan-pajak')->group(function(){
+    Route::get('/all', [LaporanPajakController::class, 'index'])->name('laporan-pajak.all');
+    Route::get('/cetak', [LaporanPajakController::class, 'cetak'])->name('laporan-pajak.cetak');
+    Route::get('/{in}/{out}', [LaporanPajakController::class, 'cetakPajakTgl'])->name('laporan-pajak.cetakFilter');
+    Route::get('/config', [LaporanPajakController::class, 'config'])->name('laporan-pajak.cetakFilter');
 });
 Route::prefix('/kasbon-tetap')->group(function(){
     Route::get('/all', GetAllKasbonTetapController::class)->name('kasbon-tetap.all');
@@ -338,16 +366,38 @@ Route::prefix('/kasbon-rumahan')->group(function(){
     Route::get('/bayar/{id}', GetViewBayarKasbonRumahanController::class)->name('kasbon-rumahan.bayar.index');
     Route::post('/bayar/{id}', PegawaiRumahan\BayarKasbonController::class)->name('kasbon-rumahan.bayar');
 });
-Route::prefix('/gaji-tetap')->group(function(){
-    Route::get('/all', GetAllGajiTetapController::class)->name('gaji-tetap.all');
-    Route::get('/bayar/{id}', GetViewBayarGajiTetapController::class)->name('gaji-tetap.bayar.index');
+// Route::prefix('/gaji-tetap')->group(function(){
+//     Route::get('/all', GetAllGajiTetapController::class)->name('gaji-tetap.all');
+//     Route::get('/bayar/{id}', GetViewBayarGajiTetapController::class)->name('gaji-tetap.bayar.index');
    
-});
-Route::prefix('/gaji-rumahan')->group(function(){
-    Route::get('/all', GetAllGajiRumahanController::class)->name('gaji-rumahan.all');
-    Route::get('/bayar/{id}', GetViewBayarGajiRumahanController::class)->name('gaji-rumahan.bayar.index');
+// });
+// Route::prefix('/gaji-rumahan')->group(function(){
+//     Route::get('/all', GetAllGajiRumahanController::class)->name('gaji-rumahan.all');
+//     Route::get('/bayar/{id}', GetViewBayarGajiRumahanController::class)->name('gaji-rumahan.bayar.index');
    
+// });
+
+
+// test  Activity
+Route::get('/activity/all', GetAllActivityController::class)->name('activity.all');
+Route::get('/activity/detail/{id}', GetDetailActivityController::class)->name('activity.detail');
+// end test activity
+
+//  test gaji pegawai tetap
+Route::prefix('/gaji/pegawai-tetap/')->group( function () {
+    Route::get('/all', GetAllGajiTetapController::class)->name('gaji-pegawai-tetap.all');
+    Route::get('/detail/{id}', GetPotongGajiTetapController::class)->name('gaji-pegawai-tetap.detail');
+    Route::post('/potong-gaji', PotongGajiTetapController::class)->name('gaji-pegawai-tetap.potong');
 });
+// end test gaji pegawai tetap
+
+// test gaji pegawai rumahan
+Route::prefix('/gaji/pegawai-rumahan/')->group( function () {
+    Route::get('/all', GetAllGajiRumahanController::class)->name('gaji-pegawai-tetap.all');
+    Route::get('/detail/{id}', GetPotongGajiRumahanController::class)->name('gaji-pegawai-tetap.detail');
+    Route::post('/potong-gaji', PotongGajiRumahanController::class)->name('gaji-pegawai-tetap.potong');
+});
+// end test gaji pegawai rumahan
 
 
 

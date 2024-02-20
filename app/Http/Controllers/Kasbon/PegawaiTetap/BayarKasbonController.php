@@ -28,9 +28,15 @@ class BayarKasbonController extends Controller
 
             // if data kasbon not found
             if (!$kasbon) {
-                return redirect()->back()->with(
+                // return redirect()->back()->with(
+                //     'pesan', 'Error: Data Kasbon Tidak Ditemukan'
+                // );
+
+                return redirect()->to('/kasbon-tetap/all')->with(
                     'pesan', 'Error: Data Kasbon Tidak Ditemukan'
                 );
+
+
             }
 
             // validation data request
@@ -41,14 +47,22 @@ class BayarKasbonController extends Controller
 
             // if validate fails
             if (!$validate) {
-                return redirect()->back()->with(
+                // return redirect()->back()->with(
+                //     'pesan', 'Error: '. $validate->errors()
+                // );
+                return redirect()->to('/kasbon-tetap/all')->with(
                     'pesan', 'Error: '. $validate->errors()
                 );
+
+                
             }
 
             // if jumlah bayar > sisa kasbon
             if ($data['jumlah_bayar'] > $kasbon->sisa) {
-                return redirect()->back()->with(
+                // return redirect()->back()->with(
+                //     'pesan', 'Error: Jumlah Bayar Melebihi Sisa Kasbon'
+                // );
+                return redirect()->to('/kasbon-tetap/all')->with(
                     'pesan', 'Error: Jumlah Bayar Melebihi Sisa Kasbon'
                 );
             }
