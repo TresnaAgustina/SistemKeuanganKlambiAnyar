@@ -41,6 +41,8 @@ class TablePenggajianController extends Controller
         ->rawColumns(['status'])
         ->make(true);
     }
+
+    // 
     public function pegawaiRumahan(){
         $coba = Pegawai_Rumahan::orderBy('id', 'asc');
         return DataTables::of($coba)
