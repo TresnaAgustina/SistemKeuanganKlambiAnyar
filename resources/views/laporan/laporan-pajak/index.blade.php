@@ -8,7 +8,7 @@
         
         <div class="card card-success card-outline mt-4">
           <div class="card-header">
-            <strong><h5 >Laporan Keuntungan </h5></strong>
+            <strong><h5 >Laporan Pajak </h5></strong>
           </div>
 
           <div class="card-body" >
@@ -29,7 +29,12 @@
                             <input name="nip" type="date" class="form-control" id="tgl_akhir" >
                         </div> 
                     </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="nama">Input Nama Tanda Tangan</label>
+                    <input name="nama" type="text" class="form-control" id="nama" >
                 </div>
+              
                 <div class="card-header">
                     <a class="btn btn-info float-right" target="_blank"  id="cetakButton" href="#">
                         <i class="fas fa-print"></i> Cetak
@@ -50,28 +55,23 @@
             <table id="laporan-pemasukan" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Data</th>
-                  <th>Total</th>
-                  <th>Subtotal Keuntungan</th>
+                  <th>No</th>
+                  <th>Nama</th>
+                  <th>Jumlah</th>
+                  <th>Pajak 0.5%</th>
                 </tr>
                 </thead>
                 <tbody>
+                  @foreach ($data as $item)
                   <tr>
-                    <td>Pemasukan</td>
-                    <td>Rp. 0 </td>
-                    <td></td>
+                      <td ></td>
+                      <td class="nama"></td>
+                      <td class="penjualan"></td>
+                      <td class="pajak"></td>
                   </tr>
-                  <tr>
-                    <td>Pengeluaran</td>
-                    <td>Rp. 0 </td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td style="font-weight: bold;">Keuntungan</td>
-                    <td></td>
-                    <td style="font-weight: bold;">Rp. 0 </td>
-                  </tr>
-                </tbody>
+                  @endforeach
+              </tbody>
+          
               </table>
          </div>
         </div>
@@ -95,17 +95,22 @@
     var cetakButton = document.getElementById('cetakButton');
     var tanggalMulaiInput = document.getElementById('tgl_mulai');
     var tanggalAkhirInput = document.getElementById('tgl_akhir');
+    var namaInput = document.getElementById('nama'); // Ambil elemen input nama
 
     cetakButton.addEventListener('click', function(event) {
         var tanggalMulai = tanggalMulaiInput.value;
         var tanggalAkhir = tanggalAkhirInput.value;
+        var nama = namaInput.value; // Ambil nilai input nama
+
 
         if (tanggalMulai && tanggalAkhir) {
             // Jika kedua input tanggal diisi, arahkan ke URL dengan tanggal
-            cetakButton.href = '/laporan-keuntungan/' + tanggalMulai + '/' + tanggalAkhir;
+            // cetakButton.href = '/laporan-pajak/' + tanggalMulai + '/' + tanggalAkhir;
+            cetakButton.href = '/laporan-pajak/' + tanggalMulai + '/' + tanggalAkhir + '?nama=' + encodeURIComponent(nama);
         } else {
             // Jika salah satu atau keduanya kosong, arahkan ke URL tanpa parameter tanggal
-            cetakButton.href = '/laporan-keuntungan/cetak';
+            // cetakButton.href = '/laporan-pajak/cetak';
+            cetakButton.href = '/laporan-pajak/cetak?nama=' + encodeURIComponent(nama);
         }
     });
 });
@@ -129,33 +134,49 @@
 <script>
   $(document).ready(function() {
     function formatNumber(number) {
-    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number);
+    return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(number);
 }
-    $('#filterForm').submit(function(event) {
-        event.preventDefault();
 
-        var tanggalMulai = $('#tgl_mulai').val();
-        var tanggalAkhir = $('#tgl_akhir').val();
+      function updateTable(data) {
+          var html = '';
 
-        $.ajax({
-            url: '/laporan-keuntungan/test',
-            type: 'GET',
-            data: {
-                tglawal: tanggalMulai,
-                tglakhir: tanggalAkhir
-            },
-            success: function(response) {
-                // Memasukkan data ke dalam tabel HTML
-                $('#laporan-pemasukan tbody tr:nth-child(1) td:nth-child(2)').text(formatNumber(response.pemasukan));
-                $('#laporan-pemasukan tbody tr:nth-child(2) td:nth-child(2)').text(formatNumber(response.pengeluaran));
-                $('#laporan-pemasukan tbody tr:nth-child(3) td:nth-child(3)').text(formatNumber(response.keuntungan));
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });
-    });
-});
+          // Bangun kembali isi tabel dengan data yang diterima
+          data.forEach(function(item, index) {
+              html += '<tr>';
+              html += '<td>' + (index + 1) + '</td>';
+              html += '<td class="nama">' + item.nama_customer + '</td>';
+              html += '<td class="penjualan">' + formatNumber(item.total_penjualan) + '</td>';
+              html += '<td class="pajak">' + formatNumber(item.pajak) + '</td>';
+              html += '</tr>';
+          });
 
+          // Perbarui konten tabel dengan HTML baru
+          $('#laporan-pemasukan tbody').html(html);
+      }
+
+      $('#filterForm').submit(function(event) {
+          event.preventDefault();
+
+          var tanggalMulai = $('#tgl_mulai').val();
+          var tanggalAkhir = $('#tgl_akhir').val();
+
+          $.ajax({
+              url: '/laporan-pajak/config',
+              type: 'GET',
+              data: {
+                  tglawal: tanggalMulai,
+                  tglakhir: tanggalAkhir
+              },
+              success: function(response) {
+                  // Memperbarui konten tabel dengan respons yang diterima
+                  updateTable(response);
+              },
+              error: function(xhr, status, error) {
+                  console.error(error);
+              }
+          });
+      });
+  });
 </script>
+
 @endpush

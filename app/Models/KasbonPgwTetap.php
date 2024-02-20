@@ -25,8 +25,8 @@ class KasbonPgwTetap extends Model
         return $this->belongsTo(Pegawai_Normal::class, 'id_pgw_tetap');
     }
 
-    public function gaji_tetap()
-    {
-        return $this->hasOne(GajiTetap::class, 'id_kasbon_tetap');
-    }
+    // public function gaji_tetap()
+    // {
+    //     return $this->hasOne(KasbonPgwTetap::class, 'id_kasbon_tetap');
+    // }
 }

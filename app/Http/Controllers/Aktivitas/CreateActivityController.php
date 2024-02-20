@@ -51,7 +51,7 @@ class CreateActivityController extends Controller
                     'pesan', 'Error: ' . $validator->errors()
                 );
             }
-            
+        
             // ---***--- PERHITUNGAN TOTAL-TOTAL ---***--- //
             // hitung gaji_harian dari activity_detail
             $gaji_harian = 0;
@@ -68,7 +68,6 @@ class CreateActivityController extends Controller
 
                 }
             }
-
 
             // tambahkan gaji_harian dengan gaji yang sudah ada pada activity_detail untuk mendapat gaji_bulanan
             $pgwr_activity = Pgwr_Activity::where('id_pgw_rumahan', $id_pegawai)->first();
@@ -99,7 +98,7 @@ class CreateActivityController extends Controller
             // ambil gaji_reset sesuai bulan sekarang
             $gaji_reset = $gaji_reset->where('bulan', date('m'))->first();
 
-            ddd($gaji_reset);
+            // ddd($gaji_reset);
             // update data gaji_bulanan in pegawai_rumahan
             $pegawai_rumahan->gaji_bulanan = $gaji_bulanan;
             $pegawai_rumahan->save();

@@ -47,15 +47,7 @@
             </form>
           </div>
           <div class="card-body">
-            {{-- <div class="tombol" style="margin-bottom: 20px;">
-                <button id="filterMax" class="btn btn-primary"> <i class="fas fa-arrow-up"></i></i> Kredit Terbesar</button>
-                <button id="filterMin" class="btn btn-primary"><i class="fas  fa-arrow-down"></i> Kredit Terkecil</button>
-                <button id="filterJatuhTempoButton" class="btn btn-primary"> <i class="fas fa-calendar-times"></i>Jatuh Tempo</button>
-                <button id="filterMacetButton" class="btn btn-primary"><i class="fas fa-calendar-times"></i>Kredit Macet</button>
-                <a class="btn btn-info " target="_blank"  id="cetak" href="/laporan-pinjaman/cetak">
-                  <i class="fa fa-print"></i> Cetak
-                </a>
-             </div> --}}
+           
             <table id="laporan-pemasukan" class="table table-bordered table-striped">
                 <thead>
                 <tr>

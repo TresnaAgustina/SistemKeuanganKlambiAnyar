@@ -27,7 +27,7 @@
           <form action="/aktivitas/create/{{ $data->nip }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="card-body">
-              <input hidden id="id" name="id_pgwr_activity" type="text" value="{{ $data->pgwr_activity->id }}">
+              <input hidden id="id" name="id_pgw_rumahan" type="text" value="{{ $data->id }}">
               <div class="form-group">
                 <label for="nip">NIP</label>
                 <input readonly name="nip" type="text" class="form-control" id="nip" value="{{ $data->nip }}">

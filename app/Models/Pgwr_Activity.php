@@ -30,8 +30,8 @@ class Pgwr_Activity extends Model
     }
 
     // to GajiRumahan
-    public function gaji_rumahan()
-    {
-        return $this->hasOne(GajiRumahan::class, 'id_activity');
-    }
+    // public function gaji_rumahan()
+    // {
+    //     return $this->hasOne(GajiRumahan::class, 'id_activity');
+    // }
 }

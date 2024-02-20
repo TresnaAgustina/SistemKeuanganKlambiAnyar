@@ -24,7 +24,7 @@
           
           <div class="card card-primary card-outline">
             <div class="card-header">
-              <strong><h4 >Pegawai Tetap </h4></strong>
+              <strong><h4 >Pegawai Rumahan </h4></strong>
             </div>
 
             <div class="card-body">
@@ -40,7 +40,6 @@
                   <tr>
                     <th>Nomor</th>
                     <th>Nama Pegawai</th>
-                    <th>Gaji Pokok</th>
                     <th>Gaji Final</th>
                     <th>Jumlah Kasbon</th>
                     <th>Sisa Kasbon</th>
@@ -60,6 +59,7 @@
       <!-- ./row -->
 
     </div><!-- /.container-fluid -->
+    <!-- /.modal -->
 
     
     <!-- /.modal -->
@@ -148,7 +148,7 @@
         "autoWidth": false,
         "processing": true,
         "serverside": true,
-        "ajax": "{{ url('dataTable/gajiTetap') }}",
+        "ajax": "{{ url('dataTable/gajiRumahan') }}",
         "columns": [{
             data: 'DT_RowIndex',
             name: 'DT_RowIndex',
@@ -157,9 +157,6 @@
         },{
             data: 'nama',
             name: 'Nama Pegawai'
-        },{
-            data: 'pokok',
-            name: 'Gaji Pokok'
         },{
             data: 'final',
             name: 'Gaji Final'

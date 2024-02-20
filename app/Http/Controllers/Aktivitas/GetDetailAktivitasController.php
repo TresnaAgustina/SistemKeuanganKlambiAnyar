@@ -18,20 +18,20 @@ class GetDetailAktivitasController extends Controller
     public function __invoke(Request $request, $id)
     {
         try {
+            
             // get data id
-            $data = ActivityDetail::where('id_pgwr_activity', $id)->first();
+            $data = ActivityDetail::where('id', $id)->first();
             $id_activity = $data->id;
 
             $detail = ActivityItem::where('id_activity_detail', $id_activity)->get();
             
-           
-            
+
             // if data empty
-            if (!$data) {
-                return back()->with(
-                    'pesan', 'Error: Data not found'
-                );
-            }
+            // if (!$data) {
+            //     return back()->with(
+            //         'pesan', 'Error: Data not found'
+            //     );
+            // }
             // return data
             // return response()->json([
             //     'result' => $data

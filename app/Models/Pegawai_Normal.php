@@ -23,9 +23,9 @@ class Pegawai_Normal extends Model
     ];
 
     // kasbon KasbonPgwTetap
-    public function kasbon_pegawai()
+    public function kasbon_pegawai_tetap()
     {
-        return $this->hasMany(KasbonPgwTetap::class, 'id_pgw_normal');
+        return $this->hasOne(KasbonPgwTetap::class, 'id_pgw_tetap');
     }
 
 }

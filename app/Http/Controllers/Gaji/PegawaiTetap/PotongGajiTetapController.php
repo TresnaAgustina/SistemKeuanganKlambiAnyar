@@ -24,24 +24,44 @@ class PotongGajiTetapController extends Controller
             // validation
             $validate = Validator::make($data, [
                 'id_kasbon_tetap' => 'required|numeric',
-                'jumlah_potong' => 'nullable|numeric',
-                'jumlah_beri' => 'nullable|numeric'
+                'jumlah_potong' => 'nullable',
+                'jumlah_beri' => 'nullable'
             ]);
+
+            if (!empty($data['jumlah_potong'])) {
+                $jumlah_potong = str_replace(['.'], '', $data['jumlah_potong']);
+            } else {
+                $jumlah_potong = null;
+            }
+
+            if (!empty($data['jumlah_beri'])) {
+                $jumlah_beri = str_replace(['.'], '', $data['jumlah_beri']);
+            } else {
+                $jumlah_beri = null;
+            }
 
             // if validation fails
             if (!$validate) {
-                return response()->json([
-                    'message' => 'validation failed',
-                    'error' => $validate->errors()
-                ], 422);
+                // return response()->json([
+                //     'message' => 'validation failed',
+                //     'error' => $validate->errors()
+                // ], 422);
+
+                return redirect()->to('/gaji/pegawai-tetap/all')->with(
+                    'pesan' , $validate->errors()
+            );
             }
 
             // jika data jumlah_potong dan jumlah_beri kosong, atau data jumlah_potong dan jumlah_beri tidak kosong, maka return error
             if (($data['jumlah_potong'] == null && $data['jumlah_beri'] == null) || ($data['jumlah_potong'] != null && $data['jumlah_beri'] != null)) {
-                return response()->json([
-                    'message' => 'failed',
-                    'error' => 'Gagal memproses data, cek data inputan anda'
-                ], 422);
+                // return response()->json([
+                //     'message' => 'failed',
+                //     'error' => 'Gagal memproses data, cek data inputan anda'
+                // ], 422);
+
+                return redirect()->to('/gaji/pegawai-tetap/all')->with(
+                    'pesan' , 'Gagal memproses data, cek data inputan anda'
+                );
             }
 
             // get data kasbon_pgw_tetap with pegawai_normal according to the id
@@ -50,19 +70,24 @@ class PotongGajiTetapController extends Controller
             // jika nilai jumlah_potong tidak kosong, maka update data kasbon_pgw_tetap -> sisa, status
             if ($data['jumlah_potong'] != null) {
                 // calculate gaji_final
-                $gaji_final = $kasbon->pegawai_normal->gaji_pokok - $data['jumlah_potong'];
+                $gaji_final = $kasbon->pegawai_normal->gaji_pokok - $jumlah_potong;
 
                 // jika gaji_pokok dari pegawai_normal lebih sedikit dari jumlah_potong, maka return error
-                if ($kasbon->pegawai_normal->gaji_pokok < $data['jumlah_potong']) {
-                    return response()->json([
-                        'message' => 'failed',
-                        'error' => 'Gaji pokok tidak cukup untuk melakukan potongan'
-                    ], 422);
+                if ($kasbon->pegawai_normal->gaji_pokok < $jumlah_potong) {
+                    // return response()->json([
+                    //     'message' => 'failed',
+                    //     'error' => 'Gaji pokok tidak cukup untuk melakukan potongan'
+                    // ], 422);
+
+                    
+                    return redirect()->to('/gaji/pegawai-tetap/all')->with(
+                        'pesan' , 'Gaji pokok tidak cukup untuk melakukan potongan'
+                    );
                 }
 
                 $potong = $kasbon->update([
-                    'sisa' => $kasbon->sisa - $data['jumlah_potong'],
-                    'status' => $kasbon->sisa - $data['jumlah_potong'] == 0 ? 'lunas' : 'belum lunas'
+                    'sisa' => $kasbon->sisa - $jumlah_potong,
+                    'status' => $kasbon->sisa - $jumlah_potong == 0 ? 'lunas' : 'belum lunas'
                 ]);
 
                 // jika kasbon sudah lunas, maka kembalikan gaji_final ke gaji_pokok
@@ -71,12 +96,12 @@ class PotongGajiTetapController extends Controller
                 }
             }else{
                 // calculate gaji_final
-                $gaji_final = $kasbon->pegawai_normal->gaji_pokok + $data['jumlah_beri'];
+                $gaji_final = $kasbon->pegawai_normal->gaji_pokok + $jumlah_beri;
 
                 // jika data jumlah_potong kosong dan data jumlah_beri tidak kosong, maka update data kasbon_pgw_tetap -> sisa, status
                 $potong = $kasbon->update([
-                    'sisa' => $kasbon->sisa + $data['jumlah_beri'],
-                    'status' => $kasbon->sisa + $data['jumlah_beri'] == 0 ? 'lunas' : 'belum lunas'
+                    'sisa' => $kasbon->sisa + $jumlah_beri,
+                    'status' => $kasbon->sisa + $jumlah_beri == 0 ? 'lunas' : 'belum lunas'
                 ]);
             }
 
@@ -87,17 +112,27 @@ class PotongGajiTetapController extends Controller
 
             // if update fails
             if (!$potong) {
-                return response()->json([
-                    'message' => 'failed',
-                    'error' => 'Gagal memproses data, cek data inputan anda'
-                ], 500);
+                // return response()->json([
+                //     'message' => 'failed',
+                //     'error' => 'Gagal memproses data, cek data inputan anda'
+                // ], 500);
+
+                
+            return redirect()->to('/gaji/pegawai-tetap/all')->with(
+                'pesan' , 'Gagal memproses data, cek data inputan anda'
+            );
             }
 
             // return success response
-            return response()->json([
-                'message' => 'success',
-                'data' => $kasbon
-            ], 200);
+            // return response()->json([
+            //     'message' => 'success',
+            //     'data' => $kasbon
+            // ], 200);
+
+            return redirect()->to('/gaji/pegawai-tetap/all')->with(
+                'success', 'Success Potong Gaji'
+            );
+
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'failed',
